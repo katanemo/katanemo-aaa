@@ -34,8 +34,8 @@ Katanemo AAA
 
 # Requirements
 
-- Docker
-- Terraform
+- Docker: version 20.10.23
+- Terraform: version v1.4.6
 - AWS Account
 
 # Setup
