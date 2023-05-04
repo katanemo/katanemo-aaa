@@ -1,0 +1,10 @@
+#!/bin/sh
+docker inspect katutil &> /dev/null
+if [ $? -ne 0 ]; then
+  EXECUTABLE_PATH=`dirname $0`
+  echo $EXECUTABLE_PATH
+  echo "katutil image not found, building ..."
+  docker build -f $EXECUTABLE_PATH/../Dockerfile $EXECUTABLE_PATH/.. -t katutil
+fi
+
+docker run -i -e API_ENDPOINT=$API_ENDPOINT -e AUTH_ENDPOINT=$AUTH_ENDPOINT -v `pwd`:`pwd` --network="host" --rm katutil "$@"
