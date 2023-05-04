@@ -67,7 +67,7 @@ xxxxxx
 - Onboard HealthWell Clinic with AcmeHealth's patient record service
 
 ```
-➜  ehr-service git:(adil/ehr_sammple) ~ sh signup-subscriber.sh adil+healthwell_admin@katanemo.com adil+healthwell_doctor@katanemo.com
+➜  ehr-service git:(main) ~ sh signup-subscriber.sh adil+healthwell_admin@katanemo.com adil+healthwell_doctor@katanemo.com
 2023-05-04T16:43:22-0700  -  === signing up subscriber to katanemo ===
 enter code sent to adil+healthwell_admin@katanemo.com
 xxx
@@ -76,5 +76,5 @@ enter code sent to adil+healthwell_doctor@katanemo.com
 xxx
 2023-05-04T16:43:50-0700  -  === subscribed adil+healthwell_admin@katanemo.com to xxx with accountId xxx ===
 2023-05-04T16:43:50-0700  -  === added doctor account adil+healthwell_doctor@katanemo.com with roleId xxx  ===
-➜  ehr-service git:(adil/ehr_sammple) ~
+➜  ehr-service git:(main) ~
 ```
