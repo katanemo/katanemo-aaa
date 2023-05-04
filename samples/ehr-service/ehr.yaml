@@ -1,0 +1,130 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Modernizing Medicine Patient Records
+  description: Cloud service to manage patient records
+  termsOfService: https://swagger.io/terms/
+  contact:
+    name: Katanemo Labs Inc.
+    email: info@katanemo.com
+    url: https://katanemo.com
+servers:
+  - url: http://localhost:8082
+components:
+  schemas:
+    Patient:
+      properties:
+        patientId:
+          type: string
+          description: Patient ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "patientId, hash"
+        name:
+          type: string
+          description: Patient name
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "name"
+        notes:
+          type: string
+          description: Doctor notes
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "notes"
+        lastVisitDate:
+          type: string
+          format: date-time
+          description: last visit date
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "lastVisitDate"
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
+paths:
+  /patient:
+    post:
+      summary: Creates a new patient account
+      description: Creates a new patient account
+      operationId: create_patient
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: api.create_patient
+      requestBody:
+        description: Details of patient
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        '200':
+          description: Patient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/patient/{patientId}":
+    get:
+      summary: Gets a patient object
+      description: Gets a patient object
+      operationId: get_patient
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: api.get_patient
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      responses:
+        '200':
+          description: Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update patient record
+      description: Updates a patient object
+      operationId: update_patient
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: api.update_patient
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      responses:
+        '200':
+          description: Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
