@@ -10,19 +10,14 @@ resource "aws_dynamodb_table" "patientrecords_table" {
   hash_key = "patientId"
 }
 
-resource "aws_dynamodb_table" "diagnostics_table" {
-  name           = var.diagnostics_table_name
+resource "aws_dynamodb_table" "diagnostic_table" {
+  name           = var.diagnostic_table_name
   billing_mode   = "PROVISIONED"
   read_capacity  = "30"
   write_capacity = "30"
   attribute {
-    name = "patientId"
+    name = "diagnosticId"
     type = "S"
   }
-  attribute {
-    name = "reportId"
-    type = "S"
-  }
-  hash_key = "patientId"
-  range_key = "reportId"
+  hash_key = "diagnosticId"
 }

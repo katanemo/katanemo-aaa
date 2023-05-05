@@ -75,17 +75,17 @@ resource "aws_lambda_permission" "apigw_patient_service" {
 }
 
 
-module "aws_lambda_diagnostics_service" {
+module "aws_lambda_diagnostic_service" {
 	source = "terraform-aws-modules/lambda/aws"
 	version = "~> 2.5"
 
-	function_name = var.diagnostics_service
+	function_name = var.diagnostic_service
 	handler = "index.handler"
 	runtime = "nodejs18.x"
 	source_path = [
 		{
 			commands = ["npm install", ":zip"]
-			path = "${path.module}/../lambda/diagnostics",
+			path = "${path.module}/../lambda/diagnostic",
 			patterns = [
 				"!.*", // * Exclude everything
 				"index.js",
@@ -96,22 +96,22 @@ module "aws_lambda_diagnostics_service" {
 		},
 	]
   environment_variables = {
-    DIAGNOSTICS_TABLE_NAME = var.diagnostics_table_name
+    DIAGNOSTIC_TABLE_NAME = var.diagnostic_table_name
   }
   attach_policy_statements = true
   policy_statements = {
     dynamodb = {
       effect    = "Allow",
       actions   = ["dynamodb:*"],
-      resources = ["arn:aws:dynamodb:${var.aws_region}:${local.account_id}:table/${var.diagnostics_table_name}"]
+      resources = ["arn:aws:dynamodb:${var.aws_region}:${local.account_id}:table/${var.diagnostic_table_name}"]
     },
   }
 }
 
-resource "aws_lambda_permission" "apigw_diagnostics_service" {
+resource "aws_lambda_permission" "apigw_diagnostic_service" {
   statement_id  = "AllowAPIGatewayInvoke1"
   action        = "lambda:InvokeFunction"
-  function_name = "${module.aws_lambda_diagnostics_service.lambda_function_name}"
+  function_name = "${module.aws_lambda_diagnostic_service.lambda_function_name}"
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_rest_api.patient_records_api.execution_arn}/*/*"

@@ -35,6 +35,23 @@ components:
           description: last visit date
           x-oapi-codegen-extra-tags:
             dynamodbav: "lastVisitDate"
+    Diagnostic:
+      properties:
+        diagnosticId:
+          type: string
+          description: Diagnostic ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "diagnosticId, hash"
+        patientId:
+          type: string
+          description: Patient ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "patientId"
+        report:
+          type: string
+          description: diagnostic report
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "report"
     Error:
       required:
         - code
@@ -122,6 +139,86 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Patient'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /diagnostic:
+    post:
+      summary: Creates a new diagnostic record
+      description: Creates a new diagnostic record for patient
+      operationId: create_diagnostic
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: api.create_diagnostic
+      requestBody:
+        description: Details of diagnostic
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Diagnostic'
+      responses:
+        '200':
+          description: Diagnostic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnostic'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/diagnostic/{diagnosticId}":
+    get:
+      summary: Gets a diagnostic object
+      description: Gets a diagnostic object
+      operationId: get_diagnostic
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: api.get_diagnostic
+      parameters:
+        - name: diagnosticId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      responses:
+        '200':
+          description: Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnostic'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update diagnostic record
+      description: Updates a diagnostic object
+      operationId: update_diagnostic
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: api.update_diagnostic
+      parameters:
+        - name: diagnosticId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      responses:
+        '200':
+          description: Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnostic'
         default:
           description: unexpected error
           content:
