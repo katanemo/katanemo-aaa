@@ -24,7 +24,6 @@ log enter code sent to $SUBSCRIBER_EMAIL
 read CODE
 
 if [[ -z "$CODE" ]]; then
-  echo "code is empty"
   CODE="-"
 fi
 
@@ -46,7 +45,6 @@ log enter code sent to $DOCTOR_EMAIL
 read CODE
 
 if [[ -z "$CODE" ]]; then
-  echo "code is empty"
   CODE="-"
 fi
 
@@ -73,7 +71,6 @@ log enter code sent to $RECEPTIONIST_EMAIL
 read CODE
 
 if [[ -z "$CODE" ]]; then
-  echo "code is empty"
   CODE="-"
 fi
 
