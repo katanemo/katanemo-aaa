@@ -55,7 +55,10 @@ katutil assign-role --principal_id $DOCTOR_EMAIL --role_id $DOCTOR_ROLE_ID --tok
 
 echo SUBSCRIBER_EMAIL=$SUBSCRIBER_EMAIL > .subscriber_details
 echo DOCTOR_EMAIL=$DOCTOR_EMAIL >> .subscriber_details
+echo SUBSCRIBER_PASSWORD=$SUBSCRIBER_PASSWORD >> .subscriber_details
 echo DOCTOR_ACCOUNT_ID=$DOCTOR_ACCOUNT_ID >> .subscriber_details
+echo DOCTOR_EMAIL=$DOCTOR_EMAIL >> .subscriber_details
+echo DOCTOR_PASSWORD=$DOCTOR_PASSWORD >> .subscriber_details
 echo DOCTOR_ROLE_ID=$DOCTOR_ROLE_ID >> .subscriber_details
 
 log "=== subscribed $SUBSCRIBER_EMAIL to $EHR_SERVICE_ID with accountId $SUBSCRIBER_ACCOUNT_ID ==="

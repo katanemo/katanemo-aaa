@@ -8,7 +8,7 @@ module "aws_lambda_auth" {
 	source_path = [
 		{
 			commands = ["npm install", ":zip"]
-			path = "${path.module}/lambda-auth",
+			path = "${path.module}/../lambda-auth",
 			patterns = [
 				"!.*", // * Exclude everything
 				"index.js",
@@ -19,8 +19,7 @@ module "aws_lambda_auth" {
 		},
 	]
   environment_variables = {
-    # AUTH_ENDPOINT = "https://auth.us-west-2.katanemo.dev"
-    AUTH_ENDPOINT = "https://253e-50-35-95-98.ngrok-free.app"
+    AUTH_ENDPOINT = "https://auth.us-west-2.katanemo.dev"
   }
 }
 
@@ -43,7 +42,7 @@ module "aws_lambda_patient_service" {
 	source_path = [
 		{
 			commands = ["npm install", ":zip"]
-			path = "${path.module}/patients-service",
+			path = "${path.module}/../patients-service",
 			patterns = [
 				"!.*", // * Exclude everything
 				"index.js",
@@ -86,7 +85,7 @@ module "aws_lambda_diagnostics_service" {
 	source_path = [
 		{
 			commands = ["npm install", ":zip"]
-			path = "${path.module}/diagnostics-service",
+			path = "${path.module}/../diagnostics-service",
 			patterns = [
 				"!.*", // * Exclude everything
 				"index.js",

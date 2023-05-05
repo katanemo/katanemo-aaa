@@ -35,6 +35,7 @@ EHR_CLIENT_SECRET=$(echo $EHR_CLIENT_KEY | jq -r .clientSecret)
 
 echo EHR_ADMIN_ACCOUNT_ID=$EHR_ADMIN_ACCOUNT_ID > .ehr_admin_details
 echo EHR_ADMIN_EMAIL=$EHR_ADMIN_EMAIL >> .ehr_admin_details
+echo EHR_ADMIN_PASSWORD=$EHR_ADMIN_PASSWORD >> .ehr_admin_details
 echo EHR_CLIENT_ID=$EHR_CLIENT_ID >> .ehr_admin_details
 echo EHR_CLIENT_SECRET=$EHR_CLIENT_SECRET >> .ehr_admin_details
 

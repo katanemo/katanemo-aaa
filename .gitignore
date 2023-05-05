@@ -2,7 +2,7 @@
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
-samples/ehr-service/builds/
+samples/ehr-service/infra/builds/
 node_modules
 
 samples/ehr-service/.ehr*
