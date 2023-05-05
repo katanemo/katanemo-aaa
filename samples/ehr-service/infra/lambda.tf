@@ -8,7 +8,7 @@ module "aws_lambda_auth" {
 	source_path = [
 		{
 			commands = ["npm install", ":zip"]
-			path = "${path.module}/../lambda-auth",
+			path = "${path.module}/../lambda/auth",
 			patterns = [
 				"!.*", // * Exclude everything
 				"index.js",
@@ -42,7 +42,7 @@ module "aws_lambda_patient_service" {
 	source_path = [
 		{
 			commands = ["npm install", ":zip"]
-			path = "${path.module}/../patients-service",
+			path = "${path.module}/../lambda/patients",
 			patterns = [
 				"!.*", // * Exclude everything
 				"index.js",
@@ -85,7 +85,7 @@ module "aws_lambda_diagnostics_service" {
 	source_path = [
 		{
 			commands = ["npm install", ":zip"]
-			path = "${path.module}/../diagnostics-service",
+			path = "${path.module}/../lambda/diagnostics",
 			patterns = [
 				"!.*", // * Exclude everything
 				"index.js",
