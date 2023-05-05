@@ -31,6 +31,7 @@ This sample application uses lambda authorizer to authenticate calls to EHR serv
 
 - Docker: version 20.10.23
 - Terraform: version v1.4.6
+- jq: v1.6
 - AWS Account
 
 # Setup
