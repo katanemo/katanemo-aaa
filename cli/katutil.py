@@ -165,7 +165,7 @@ if args.sub_parser == "signup-service":
 
 if args.sub_parser == "confirm-and-set-password":
     code = args.code
-    if code == "":
+    if code == "-" or code == "":
         code = core_utils.generate_dev_confirmation_code(args.email, args.account_id)
     user_session = core_utils.confirm_user(code)["session"]
     core_utils.set_password(args.service_id, args.email, user_session, args.password, args.account_id)

@@ -21,6 +21,11 @@ EHR_ADMIN_ACCOUNT_ID=$(katutil signup-service --service_id $KATANEMO_SERVICE_ID 
 log enter code sent to $EHR_ADMIN_EMAIL
 read CODE
 
+if [[ -z "$CODE" ]]; then
+  echo "code is empty"
+  CODE="-"
+fi
+
 # confirm and set its password
 log katutil confirm-and-set-password --code $CODE --service_id $KATANEMO_SERVICE_ID --account_id $EHR_ADMIN_ACCOUNT_ID --email $EHR_ADMIN_EMAIL --password xxxx
 katutil confirm-and-set-password --code $CODE --service_id $KATANEMO_SERVICE_ID --account_id $EHR_ADMIN_ACCOUNT_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD
