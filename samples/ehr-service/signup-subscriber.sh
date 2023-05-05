@@ -7,13 +7,14 @@ set -e -o errexit -o pipefail
 
 log '=== signing up subscriber to katanemo ==='
 
-if [[ -z "$1" ]] || [[ -z "$2" ]]; then
-  echo "usage: $0 <subscriber_admin_email> <subscriber_doctor_email>"
+if [[ -z "$1" ]] || [[ -z "$2" ]] || [[ -z "$3" ]]; then
+  echo "usage: $0 <subscriber_admin_email> <subscriber_doctor_email> <receptionist_email>"
   exit 1
 fi
 
 SUBSCRIBER_EMAIL=$1
 DOCTOR_EMAIL=$2
+RECEPTIONIST_EMAIL=$3
 
 log signing up subscriber $SUBSCRIBER_EMAIL to $EHR_SERVICE_ID
 log katutil signup-service --email $SUBSCRIBER_EMAIL --service_id $EHR_SERVICE_ID
@@ -39,7 +40,7 @@ log '=== adding doctor account ==='
 # create doctor account to manage patient record
 log adding doctor account $DOCTOR_EMAIL
 log katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --token xxxx --tags '{"function": ["doctor"]}'
-DOCTOR_ACCOUNT_ID=`katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --token $SUBSCRIBER_ACCESS_TOKEN --tags '{"function": ["doctor"]}' | jq -r .accountId`
+katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --token $SUBSCRIBER_ACCESS_TOKEN --tags '{"function": ["doctor"]}' &> /dev/null
 
 log enter code sent to $DOCTOR_EMAIL
 read CODE
@@ -49,9 +50,9 @@ if [[ -z "$CODE" ]]; then
   CODE="-"
 fi
 
-log katutil confirm-and-set-password --account_id $DOCTOR_ACCOUNT_ID --email $DOCTOR_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password xxxx --account_id $DOCTOR_ACCOUNT_ID
+log katutil confirm-and-set-password --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password xxxx
 # activate doctor account
-katutil confirm-and-set-password --account_id $DOCTOR_ACCOUNT_ID --email $DOCTOR_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password $DOCTOR_PASSWORD --account_id $DOCTOR_ACCOUNT_ID
+katutil confirm-and-set-password --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password $DOCTOR_PASSWORD
 
 log creating role with access to patient record
 log katutil create-role --policies '[{"allow": ["GET:/patient/{patientId}", "PUT:/patient/{patientId}"], "where": "$principalTags:function = doctor"}, {"allow": ["POST:/diagnostics/", "GET:/diagnostics/{diagnosticsId}"], "where": "$principalTags:function = doctor"}]' --account_id $SUBSCRIBER_ACCOUNT_ID --service_id $EHR_SERVICE_ID --role_name 'patient record doctor access' --token xxxx
@@ -63,13 +64,38 @@ log assigning doctor role to doctor account
 log katutil assign-role --principal_id $DOCTOR_EMAIL --role_id $DOCTOR_ROLE_ID --token xxxx
 katutil assign-role --principal_id $DOCTOR_EMAIL --role_id $DOCTOR_ROLE_ID --token $SUBSCRIBER_ACCESS_TOKEN &> /dev/null
 
+# create receptionist account to manage appointments
+log adding receptionist account $RECEPTIONIST_EMAIL
+log katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $RECEPTIONIST_EMAIL --token xxxx --tags '{"function": ["doctor"]}'
+katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $RECEPTIONIST_EMAIL --token $SUBSCRIBER_ACCESS_TOKEN --tags '{"function": ["receptionist"]}' &> /dev/null
+
+log enter code sent to $RECEPTIONIST_EMAIL
+read CODE
+
+if [[ -z "$CODE" ]]; then
+  echo "code is empty"
+  CODE="-"
+fi
+
+log katutil confirm-and-set-password --account_id $SUBSCRIBER_ACCOUNT_ID --email $RECEPTIONIST_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password xxxx
+# activate doctor account
+katutil confirm-and-set-password --account_id $SUBSCRIBER_ACCOUNT_ID --email $RECEPTIONIST_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password $DOCTOR_PASSWORD
+
+SUBSCRIBER_USER_ROLE_ID=`katutil get-roles --account_id $SUBSCRIBER_ACCOUNT_ID --token $SUBSCRIBER_ACCESS_TOKEN | jq -r '.[] | select(.rolename | test("user") ) | .roleId'`
+log assigning user role to receptionist account
+log katutil assign-role --principal_id $RECEPTIONIST_EMAIL --role_id $SUBSCRIBER_USER_ROLE_ID --token xxxx
+katutil assign-role --principal_id $RECEPTIONIST_EMAIL --role_id $SUBSCRIBER_USER_ROLE_ID --token $SUBSCRIBER_ACCESS_TOKEN &> /dev/null
+
 echo SUBSCRIBER_ACCOUNT_ID=$SUBSCRIBER_ACCOUNT_ID > .subscriber_details
-echo SUBSCRIBER_EMAIL=$SUBSCRIBER_EMAIL > .subscriber_details
+echo SUBSCRIBER_EMAIL=$SUBSCRIBER_EMAIL >> .subscriber_details
 echo SUBSCRIBER_PASSWORD=$SUBSCRIBER_PASSWORD >> .subscriber_details
-echo DOCTOR_ACCOUNT_ID=$DOCTOR_ACCOUNT_ID >> .subscriber_details
+
 echo DOCTOR_EMAIL=$DOCTOR_EMAIL >> .subscriber_details
 echo DOCTOR_PASSWORD=$DOCTOR_PASSWORD >> .subscriber_details
 echo DOCTOR_ROLE_ID=$DOCTOR_ROLE_ID >> .subscriber_details
+
+echo RECEPTIONIST_EMAIL=$RECEPTIONIST_EMAIL >> .subscriber_details
+echo RECEPTIONIST_PASSWORD=$DOCTOR_PASSWORD >> .subscriber_details
 
 log "=== subscribed $SUBSCRIBER_EMAIL to $EHR_SERVICE_ID with accountId $SUBSCRIBER_ACCOUNT_ID ==="
 log "=== added doctor account $DOCTOR_EMAIL with roleId $DOCTOR_ROLE_ID  ==="

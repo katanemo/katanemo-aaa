@@ -41,5 +41,5 @@ variable "aws_region" {
 variable "auth_endpoint" {
   description = "katanemo auth endpoint"
   type        = string
-  default = "https://cfbe-205-175-106-123.ngrok-free.app"
+  default = "https://auth.us-west-2.katanemo.dev"
 }
