@@ -53,6 +53,21 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
           }
         }
       },
+      "/diagnosticreport/patientId/{patientId}" = {
+        get = {
+          security : [
+            {
+              katanemo-authorizer : []
+            }
+          ]
+          x-amazon-apigateway-integration = {
+            httpMethod           = "POST"
+            payloadFormatVersion = "1.0"
+            type                 = "AWS_PROXY"
+            uri                  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.patient_service}/invocations"
+          }
+        }
+      }
       "/diagnosticreport/patientId/{patientId}/reportId/{reportId}" = {
         get = {
           security : [
@@ -67,7 +82,8 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             uri                  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.patient_service}/invocations"
           }
         }
-      }    }
+      }
+    }
     components = {
       securitySchemes = {
         katanemo-authorizer = {
@@ -81,7 +97,7 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             # identityValidationExpression : "^x-[a-z]+",
             # TODO: put caching back
             authorizerResultTtlInSeconds : 1
-            type : "token",                               // Required property and the value must "token"
+            type : "token", // Required property and the value must "token"
           }
         }
       }
@@ -112,12 +128,12 @@ resource "aws_api_gateway_stage" "patient_records_stage" {
 }
 
 resource "aws_api_gateway_method_settings" "patient_records_stage_settings" {
-  rest_api_id = "${aws_api_gateway_rest_api.patient_records_api.id}"
-  stage_name  = "${aws_api_gateway_stage.patient_records_stage.stage_name}"
+  rest_api_id = aws_api_gateway_rest_api.patient_records_api.id
+  stage_name  = aws_api_gateway_stage.patient_records_stage.stage_name
   method_path = "*/*"
   settings {
-    logging_level = "INFO"
+    logging_level      = "INFO"
     data_trace_enabled = true
-    metrics_enabled = true
+    metrics_enabled    = true
   }
 }

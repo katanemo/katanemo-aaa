@@ -1,4 +1,4 @@
-resource "aws_dynamodb_table" "patientprofiles_table" {
+resource "aws_dynamodb_table" "patientrecords_table" {
   name           = var.patient_records_table_name
   billing_mode   = "PROVISIONED"
   read_capacity  = "30"
