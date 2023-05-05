@@ -128,6 +128,8 @@ if args.sub_parser == "init-service":
     service_id = resp["serviceId"]
     onboardURL = resp["onboardURL"]
 
+    print(json.dumps(resp))
+
     log.info("")
     log.info("Successfully Created Service ✅")
     log.info("Your Service ID is: %s " % service_id)
