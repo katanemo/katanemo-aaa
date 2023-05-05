@@ -22,7 +22,6 @@ log enter code sent to $EHR_ADMIN_EMAIL
 read CODE
 
 if [[ -z "$CODE" ]]; then
-  echo "code is empty"
   CODE="-"
 fi
 
