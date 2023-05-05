@@ -38,7 +38,7 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
           }
         }
       },
-      "/diagnosticreport" = {
+      "/diagnostic" = {
         post = {
           security : [
             {
@@ -49,11 +49,11 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.patient_service}/invocations"
+            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.diagnostic_service}/invocations"
           }
         }
       },
-      "/diagnosticreport/{reportId}" = {
+      "/diagnostic/{diagnosticId}" = {
         get = {
           security : [
             {
@@ -64,7 +64,7 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.patient_service}/invocations"
+            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.diagnostic_service}/invocations"
           }
         }
       }

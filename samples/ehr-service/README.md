@@ -8,9 +8,9 @@ Following are main applications and their roles in this sample code,
 - POST:/patient
 - PUT:/patient/{patientId}
 - GET:/patient/{patientId}
-- POST:/diagnostics
-- PUT:/diagnostics/{diagnosticsId}
-- GET:/diagnostics/{diagnosticsId}
+- POST:/diagnostic
+- PUT:/diagnostic/{diagnosticId}
+- GET:/diagnostic/{diagnosticId}
 
 `AcmeHealth.io`: A health provider that uses EHR SaaS Service to store patient records.
 
@@ -84,7 +84,7 @@ CyL8xJgeja3B
 6Patk2zgtnlP
 2023-05-04T22:31:44-0700  -  katutil confirm-and-set-password --account_id e36xmc2fd --email adil+acmehealth_doctor1@katanemo.com --code 6Patk2zgtnlP --service_id kud6r8zd7 --password xxxx --account_id e36xmc2fd
 2023-05-04T22:31:46-0700  -  creating role with access to patient record
-2023-05-04T22:31:46-0700  -  katutil create-role --policies [{"allow": ["GET:/patient/{patientId}", "PUT:/patient/{patientId}"], "where": "$principalTags:function = doctor"}, {"allow": ["POST:/diagnostics/", "GET:/diagnostics/{diagnosticsId}"], "where": "$principalTags:function = doctor"}] --account_id e36xmc2fd --service_id kud6r8zd7 --role_name patient record doctor access --token xxxx
+2023-05-04T22:31:46-0700  -  katutil create-role --policies [{"allow": ["GET:/patient/{patientId}", "PUT:/patient/{patientId}"], "where": "$principalTags:function = doctor"}, {"allow": ["POST:/diagnostic/", "GET:/diagnostic/{diagnosticId}"], "where": "$principalTags:function = doctor"}] --account_id e36xmc2fd --service_id kud6r8zd7 --role_name patient record doctor access --token xxxx
 2023-05-04T22:31:46-0700  -  assigning doctor role to doctor account
 2023-05-04T22:31:46-0700  -  katutil assign-role --principal_id adil+acmehealth_doctor1@katanemo.com --role_id a33f5fq87 --token xxxx
 2023-05-04T22:31:47-0700  -  === subscribed adil+acmeheathl_admin1@katanemo.com to kud6r8zd7 with accountId e36xmc2fd ===

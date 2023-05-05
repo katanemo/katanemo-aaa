@@ -3,10 +3,10 @@ variable "patient_records_table_name" {
   type        = string
   default     = "patient-records"
 }
-variable "diagnostics_table_name" {
-  description = "The name of the DynamoDB table for diagnostics"
+variable "diagnostic_table_name" {
+  description = "The name of the DynamoDB table for diagnostic"
   type        = string
-  default     = "diagnostics"
+  default     = "diagnostic"
 }
 variable "client_key" {
   description = "client key to access katanemo api"
@@ -27,10 +27,10 @@ variable "patient_service" {
   type        = string
   default = "patient-service"
 }
-variable "diagnostics_service" {
-  description = "diagnostics service lamnbda function name"
+variable "diagnostic_service" {
+  description = "diagnostic service lamnbda function name"
   type        = string
-  default = "diagnostics-service"
+  default = "diagnostic-service"
 }
 
 variable "aws_region" {

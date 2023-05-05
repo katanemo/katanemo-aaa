@@ -53,9 +53,9 @@ log katutil confirm-and-set-password --account_id $SUBSCRIBER_ACCOUNT_ID --email
 katutil confirm-and-set-password --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password $DOCTOR_PASSWORD
 
 log creating role with access to patient record
-log katutil create-role --policies '[{"allow": ["GET:/patient/{patientId}", "PUT:/patient/{patientId}"], "where": "$principalTags:function = doctor"}, {"allow": ["POST:/diagnostics/", "GET:/diagnostics/{diagnosticsId}"], "where": "$principalTags:function = doctor"}]' --account_id $SUBSCRIBER_ACCOUNT_ID --service_id $EHR_SERVICE_ID --role_name 'patient record doctor access' --token xxxx
+log katutil create-role --policies '[{"allow": ["GET:/patient/{patientId}", "PUT:/patient/{patientId}"], "where": "$principalTags:function = doctor"}, {"allow": ["POST:/diagnostic", "GET:/diagnostic/{diagnosticId}"], "where": "$principalTags:function = doctor"}]' --account_id $SUBSCRIBER_ACCOUNT_ID --service_id $EHR_SERVICE_ID --role_name 'patient record doctor access' --token xxxx
 # create role to manage patient record and assign it to doctor account
-DOCTOR_ROLE_DETAILS=`katutil create-role --policies '[{"allow": ["GET:/patient/{patientId}", "PUT:/patient/{patientId}"], "where": "$principalTags:function = doctor"}, {"allow": ["POST:/diagnostics/", "GET:/diagnostics/{diagnosticsId}"], "where": "$principalTags:function = doctor"}]' --account_id $SUBSCRIBER_ACCOUNT_ID --service_id $EHR_SERVICE_ID --role_name 'patient record doctor access' --token $SUBSCRIBER_ACCESS_TOKEN`
+DOCTOR_ROLE_DETAILS=`katutil create-role --policies '[{"allow": ["GET:/patient/{patientId}", "PUT:/patient/{patientId}"], "where": "$principalTags:function = doctor"}, {"allow": ["POST:/diagnostic", "GET:/diagnostic/{diagnosticId}"], "where": "$principalTags:function = doctor"}]' --account_id $SUBSCRIBER_ACCOUNT_ID --service_id $EHR_SERVICE_ID --role_name 'patient record doctor access' --token $SUBSCRIBER_ACCESS_TOKEN`
 DOCTOR_ROLE_ID=`echo $DOCTOR_ROLE_DETAILS | jq -r .roleId`
 
 log assigning doctor role to doctor account
