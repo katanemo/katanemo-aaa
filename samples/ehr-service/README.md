@@ -22,15 +22,10 @@ TODO: Add more details
 
 This sample application uses lambda authorizer to authenticate calls to EHR service. Here is how different services are interacting with each other,
 
-```
-EHR SaaS Service --- AcmeHealth.io
-    |
-    |
-Lambda Authorizer
-    |
-    |
-Katanemo AAA
-```
+
+
+<img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
+
 
 # Requirements
 
