@@ -129,12 +129,12 @@ if args.sub_parser == "init-service":
     onboardURL = resp["onboardURL"]
 
 
-    print("")
-    print("Successfully Created Service ✅")
-    print("Your Service ID is: %s " % service_id)
-    print("Katanemo's hosted Sign-up/Login URL for your service: %s " % onboardURL)
-    print("Katanemo's Console to manage your customers % s" % "https://console.us-west-2.katanemo.dev/sign-up/3xA")
-    print("")
+    log.info("")
+    log.info("Successfully Created Service ✅")
+    log.info("Your Service ID is: %s " % service_id)
+    log.info("Katanemo's hosted Sign-up/Login URL for your service: %s " % onboardURL)
+    log.info("Katanemo's Console to manage your customers % s" % "https://console.us-west-2.katanemo.dev/sign-up/3xA")
+    log.info("")
 
 
 if args.sub_parser == "get-service":
