@@ -14,6 +14,7 @@ sub_parsers = parser.add_subparsers(help="sub-command help", dest="sub_parser")
 
 init_service_cmd = sub_parsers.add_parser("init-service", help="registers service with katanemo")
 init_service_cmd.add_argument("--service_name", type=str, help="service name", required=True)
+init_service_cmd.add_argument("--service_description", type=str, help="service description", required=False)
 init_service_cmd.add_argument("--api_spec", type=str, help="open api spec for service", required=True)
 init_service_cmd.add_argument("--redirect_uri", type=str, help="redirect url service", required=True)
 init_service_cmd.add_argument("--token", type=str, help="access token", required=True)
@@ -120,13 +121,20 @@ if args.sub_parser == "init-service":
     resp = core_utils.create_service(
         args.token,
         args.service_name,
-        "",
+        args.service_description,
         args.api_spec,
         args.redirect_uri,
     )
     service_id = resp["serviceId"]
+    onboardURL = resp["onboardURL"]
 
-    print(json.dumps({"message": "service registered", "serviceId": service_id}))
+
+    log.info("")
+    log.info("Successfully Created Service ✅")
+    log.info("Your Service ID is: %s " % service_id)
+    log.info("Katanemo's hosted Sign-up/Login URL for your service: %s " % onboardURL)
+    log.info("Katanemo's Console to manage your customers % s" % "https://console.us-west-2.katanemo.dev/sign-up/3xA")
+    log.info("")
 
 
 if args.sub_parser == "get-service":
