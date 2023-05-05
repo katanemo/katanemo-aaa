@@ -18,6 +18,7 @@ init_service_cmd.add_argument("--service_description", type=str, help="service d
 init_service_cmd.add_argument("--api_spec", type=str, help="open api spec for service", required=True)
 init_service_cmd.add_argument("--redirect_uri", type=str, help="redirect url service", required=True)
 init_service_cmd.add_argument("--token", type=str, help="access token", required=True)
+init_service_cmd.add_argument("--print_output", type=bool, help="print response from server", default=False)
 
 create_service_cmd = sub_parsers.add_parser("create-service", help="registers service with katanemo")
 create_service_cmd.add_argument("--name", type=str, help="", required=True)
