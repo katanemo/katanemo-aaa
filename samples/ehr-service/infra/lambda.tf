@@ -2,7 +2,7 @@ module "aws_lambda_auth" {
 	source = "terraform-aws-modules/lambda/aws"
 	version = "~> 2.5"
 
-	function_name = local.authorizer_name
+	function_name = var.lambda_auth_name
 	handler = "index.handler"
 	runtime = "nodejs18.x"
 	source_path = [
@@ -19,14 +19,14 @@ module "aws_lambda_auth" {
 		},
 	]
   environment_variables = {
-    AUTH_ENDPOINT = "https://auth.us-west-2.katanemo.dev"
+    AUTH_ENDPOINT = var.auth_endpoint
   }
 }
 
 resource "aws_lambda_permission" "apigw_lambda_auth" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = "${local.authorizer_name}"
+  function_name = "${var.lambda_auth_name}"
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_rest_api.patient_records_api.execution_arn}/*/*"
@@ -36,7 +36,7 @@ module "aws_lambda_patient_service" {
 	source = "terraform-aws-modules/lambda/aws"
 	version = "~> 2.5"
 
-	function_name = local.patient_service
+	function_name = var.patient_service
 	handler = "index.handler"
 	runtime = "nodejs18.x"
 	source_path = [
@@ -60,7 +60,7 @@ module "aws_lambda_patient_service" {
     dynamodb = {
       effect    = "Allow",
       actions   = ["dynamodb:*"],
-      resources = ["arn:aws:dynamodb:${local.region}:${local.account_id}:table/${var.patient_records_table_name}"]
+      resources = ["arn:aws:dynamodb:${var.aws_region}:${local.account_id}:table/${var.patient_records_table_name}"]
     },
   }
 }
@@ -79,7 +79,7 @@ module "aws_lambda_diagnostics_service" {
 	source = "terraform-aws-modules/lambda/aws"
 	version = "~> 2.5"
 
-	function_name = local.diagnostics_service
+	function_name = var.diagnostics_service
 	handler = "index.handler"
 	runtime = "nodejs18.x"
 	source_path = [
@@ -103,7 +103,7 @@ module "aws_lambda_diagnostics_service" {
     dynamodb = {
       effect    = "Allow",
       actions   = ["dynamodb:*"],
-      resources = ["arn:aws:dynamodb:${local.region}:${local.account_id}:table/${var.diagnostics_table_name}"]
+      resources = ["arn:aws:dynamodb:${var.aws_region}:${local.account_id}:table/${var.diagnostics_table_name}"]
     },
   }
 }

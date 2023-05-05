@@ -19,7 +19,7 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.patient_service}/invocations"
+            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.patient_service}/invocations"
           }
         }
       },
@@ -34,7 +34,7 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.patient_service}/invocations"
+            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.patient_service}/invocations"
           }
         }
       },
@@ -49,11 +49,11 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.patient_service}/invocations"
+            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.patient_service}/invocations"
           }
         }
       },
-      "/diagnosticreport/patientId/{patientId}" = {
+      "/diagnosticreport/{reportId}" = {
         get = {
           security : [
             {
@@ -64,22 +64,7 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
             httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.patient_service}/invocations"
-          }
-        }
-      }
-      "/diagnosticreport/patientId/{patientId}/reportId/{reportId}" = {
-        get = {
-          security : [
-            {
-              katanemo-authorizer : []
-            }
-          ]
-          x-amazon-apigateway-integration = {
-            httpMethod           = "POST"
-            payloadFormatVersion = "1.0"
-            type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.patient_service}/invocations"
+            uri                  = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.patient_service}/invocations"
           }
         }
       }
@@ -92,7 +77,7 @@ resource "aws_api_gateway_rest_api" "patient_records_api" {
           in                           = "header",        // Required and the value must be "header" for an API Gateway API.
           x-amazon-apigateway-authtype = "custom",        // Specifies the authorization mechanism for the client.
           x-amazon-apigateway-authorizer = {              // An API Gateway Lambda authorizer definition
-            authorizerUri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:function:${local.authorizer_name}/invocations",
+            authorizerUri = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${var.aws_region}:${local.account_id}:function:${var.lambda_auth_name}/invocations",
             # authorizerCredentials : "arn:aws:iam::account-id:role",
             # identityValidationExpression : "^x-[a-z]+",
             # TODO: put caching back

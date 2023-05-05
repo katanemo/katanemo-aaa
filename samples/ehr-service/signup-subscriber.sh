@@ -22,6 +22,11 @@ SUBSCRIBER_ACCOUNT_ID=$(katutil signup-service --email $SUBSCRIBER_EMAIL --servi
 log enter code sent to $SUBSCRIBER_EMAIL
 read CODE
 
+if [[ -z "$CODE" ]]; then
+  echo "code is empty"
+  CODE="-"
+fi
+
 log katutil confirm-and-set-password --code $CODE --email $SUBSCRIBER_EMAIL --service_id $EHR_SERVICE_ID --password xxxx --account_id $SUBSCRIBER_ACCOUNT_ID
 katutil confirm-and-set-password --code $CODE --email $SUBSCRIBER_EMAIL --service_id $EHR_SERVICE_ID --password $SUBSCRIBER_PASSWORD --account_id $SUBSCRIBER_ACCOUNT_ID
 
@@ -39,6 +44,11 @@ DOCTOR_ACCOUNT_ID=`katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email 
 log enter code sent to $DOCTOR_EMAIL
 read CODE
 
+if [[ -z "$CODE" ]]; then
+  echo "code is empty"
+  CODE="-"
+fi
+
 log katutil confirm-and-set-password --account_id $DOCTOR_ACCOUNT_ID --email $DOCTOR_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password xxxx --account_id $DOCTOR_ACCOUNT_ID
 # activate doctor account
 katutil confirm-and-set-password --account_id $DOCTOR_ACCOUNT_ID --email $DOCTOR_EMAIL --code $CODE --service_id $EHR_SERVICE_ID --password $DOCTOR_PASSWORD --account_id $DOCTOR_ACCOUNT_ID
@@ -53,8 +63,8 @@ log assigning doctor role to doctor account
 log katutil assign-role --principal_id $DOCTOR_EMAIL --role_id $DOCTOR_ROLE_ID --token xxxx
 katutil assign-role --principal_id $DOCTOR_EMAIL --role_id $DOCTOR_ROLE_ID --token $SUBSCRIBER_ACCESS_TOKEN &> /dev/null
 
+echo SUBSCRIBER_ACCOUNT_ID=$SUBSCRIBER_ACCOUNT_ID > .subscriber_details
 echo SUBSCRIBER_EMAIL=$SUBSCRIBER_EMAIL > .subscriber_details
-echo DOCTOR_EMAIL=$DOCTOR_EMAIL >> .subscriber_details
 echo SUBSCRIBER_PASSWORD=$SUBSCRIBER_PASSWORD >> .subscriber_details
 echo DOCTOR_ACCOUNT_ID=$DOCTOR_ACCOUNT_ID >> .subscriber_details
 echo DOCTOR_EMAIL=$DOCTOR_EMAIL >> .subscriber_details

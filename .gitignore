@@ -7,3 +7,5 @@ node_modules
 
 samples/ehr-service/.ehr*
 samples/ehr-service/.subscriber_details
+.venv
+__pycache__
