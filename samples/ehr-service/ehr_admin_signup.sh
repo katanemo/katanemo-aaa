@@ -15,12 +15,14 @@ EHR_ADMIN_EMAIL=$1
 # katutil signup-service --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL | jq -r .accountId
 
 # signup ehr admin
+log katutil signup-service --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL
 EHR_ADMIN_ACCOUNT_ID=$(katutil signup-service --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL | jq -r .accountId)
 
-echo enter code sent to $EHR_ADMIN_EMAIL
+log enter code sent to $EHR_ADMIN_EMAIL
 read CODE
 
 # confirm and set its password
+log katutil confirm-and-set-password --code $CODE --service_id $KATANEMO_SERVICE_ID --account_id $EHR_ADMIN_ACCOUNT_ID --email $EHR_ADMIN_EMAIL --password xxxx
 katutil confirm-and-set-password --code $CODE --service_id $KATANEMO_SERVICE_ID --account_id $EHR_ADMIN_ACCOUNT_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD
 
 # create client keys to interact with katanemo api
