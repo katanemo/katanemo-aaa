@@ -43,7 +43,23 @@ $ export PATH=$PATH:$PWD/../../cli/bin
 
 - Signup EHR SaaS Service's admin to Katanemo
 ```
-➜  ehr-service git:(adil/remove_account_id) ✗ sh ehr_admin_signup.sh adil+ehr_admin3a@katanemo.com
+$ sh ehr_admin_signup.sh <ehr_admin_email>
+```
+
+Note: you would need to enter correct email address so you can receive confirmation codes.
+
+- Initialize EHR SaaS Service's OpenApi service with Katanemo
+```
+$ sh ehr_service_init.sh ehr.yaml
+```
+
+- Onboard AchmeHealth with EHR SaaS Service's patient record service
+```
+$ sh signup-subscriber.sh <ache_health_admin_email> <acme_health_doctor_email> <acme_health_receptionist_email>
+```
+## Detailed run of these three commands
+```
+➜  ehr-service git:(main) ✗ sh ehr_admin_signup.sh adil+ehr_admin3a@katanemo.com
 2023-05-06T16:18:32-0700  -  === signing up ehr admin to katanemo ===
 2023-05-06T16:18:32-0700  -  katutil signup-service --service_id gq9rmqgtf --email adil+ehr_admin3a@katanemo.com
 2023-05-06T16:18:35-0700  -  enter code sent to adil+ehr_admin3a@katanemo.com
@@ -51,12 +67,9 @@ $ export PATH=$PATH:$PWD/../../cli/bin
 2023-05-06T16:18:41-0700  -  katutil confirm-and-set-password --code 8hwomTMLOkxH --service_id gq9rmqgtf --account_id snt99bnb4 --email adil+ehr_admin3a@katanemo.com --password xxxx
 2023-05-06T16:18:45-0700  -  === ehr admin adil+ehr_admin3a@katanemo.com signed up to katanemo with accountId snt99bnb4 ===
 2023-05-06T16:18:45-0700  -  === clinet id (4gnccl17s4ia1pvlpt2nq7t9jl) and client secret (XXXX) created to interact with katanemo api ===
-```
 
-- Initialize EHR SaaS Service's OpenApi service with Katanemo
 
-```
-➜  ehr-service git:(adil/main) ✗ sh ehr_service_init.sh ehr.yaml
+➜  ehr-service git:(main) ✗ sh ehr_service_init.sh ehr.yaml
 2023-05-06T16:18:49-0700  -  === initializing service ===
 2023-05-06T16:18:49-0700  -  getting token for ehr admin
 2023-05-06T16:18:49-0700  -  katutil login-with-password --service_id gq9rmqgtf --email adil+ehr_admin3a@katanemo.com --password 7TOfroc9aab3$
@@ -69,11 +82,8 @@ $ export PATH=$PATH:$PWD/../../cli/bin
 2023-05-06 23:18:51,381 INFO - Katanemo's Console to manage your customers https://console.us-west-2.katanemo.dev/sign-up/3xA
 2023-05-06 23:18:51,381 INFO -
 2023-05-06T16:18:51-0700  -  === patients record service initialized with katanemo zn3kxjf9d ===
-```
 
-- Onboard AchmeHealth with EHR SaaS Service's patient record service
 
-```
 ➜  ehr-service git:(main) ✗ sh signup-subscriber.sh adil+acmehealth_admin@katanemo.com adil+acmehealth_doctor@katanemo.com adil+acmehealth_receptionist@katanemo.com
 2023-05-06T16:18:55-0700  -  === signing up subscriber to katanemo ===
 2023-05-06T16:18:55-0700  -  signing up subscriber adil+acmehealth_admin@katanemo.com to zn3kxjf9d
@@ -102,3 +112,4 @@ A8tjcTV0RrDS
 2023-05-06T16:19:32-0700  -  katutil assign-role --principal_id adil+acmehealth_receptionist@katanemo.com --role_id ct25jna3r --token xxxx
 2023-05-06T16:19:33-0700  -  === subscribed adil+acmehealth_admin@katanemo.com to zn3kxjf9d with accountId kgjh8d7fr ===
 2023-05-06T16:19:33-0700  -  === added doctor account adil+acmehealth_doctor@katanemo.com with roleId fen8zseww  ===```
+```
