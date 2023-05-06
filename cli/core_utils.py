@@ -16,6 +16,9 @@ log.basicConfig(
 API_ENDPOINT = os.getenv("API_ENDPOINT") or "https://api.us-west-2.katanemo.dev"
 AUTH_ENDPOINT = os.getenv("AUTH_ENDPOINT") or "https://auth.us-west-2.katanemo.dev"
 
+# API_ENDPOINT = 'http://localhost:8090'
+# AUTH_ENDPOINT = 'http://localhost:8081'
+
 
 def get_default_service():
     url = API_ENDPOINT + "/service/3xA"
@@ -186,16 +189,13 @@ def get_services(token):
     return services
 
 
-def login(service_id, email, password, account_id=None):
+def login(service_id, email, password):
     url = API_ENDPOINT + "/login/" + service_id
     payload = {
         "emailAddress": email,
         "password": password,
         "skipRedirect": True,
     }
-    # account_id is needed for users added later to the account
-    if account_id:
-        payload["accountId"] = account_id
     res = requests.post(url, json=payload)
     if res.status_code != 200:
         log.error("Login with status code: {}".format(res.status_code))
