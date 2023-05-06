@@ -1,4 +1,6 @@
 #!/bin/sh
+EXECUTABLE_PATH=`dirname $0`
+
 docker inspect katutil &> /dev/null
 if [ $? -ne 0 ]; then
   EXECUTABLE_PATH=`dirname $0`
@@ -8,3 +10,5 @@ if [ $? -ne 0 ]; then
 fi
 
 docker run -i -e API_ENDPOINT=$API_ENDPOINT -e AUTH_ENDPOINT=$AUTH_ENDPOINT -v `pwd`:`pwd` --network="host" --rm katutil "$@"
+# cd $EXECUTABLE_PATH/..
+# .venv/bin/python -m katutil "$@"

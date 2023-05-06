@@ -40,7 +40,6 @@ get_token_cmd = sub_parsers.add_parser("login-with-password", help="")
 get_token_cmd.add_argument("--service_id", type=str, help="service id", default=os.getenv("SERVICE_ID"))
 get_token_cmd.add_argument("--email", type=str, help="", required=True)
 get_token_cmd.add_argument("--password", type=str, help="", default="MyTestPassword")
-get_token_cmd.add_argument("--account_id", type=str, help="")
 
 get_token_cmd = sub_parsers.add_parser("get-token-client-key", help="")
 get_token_cmd.add_argument("--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
@@ -149,7 +148,7 @@ if args.sub_parser == "get-service":
 
 
 if args.sub_parser == "login-with-password":
-    res = core_utils.login(args.service_id, args.email, args.password, args.account_id)
+    res = core_utils.login(args.service_id, args.email, args.password)
     print(json.dumps(res))
 
 
