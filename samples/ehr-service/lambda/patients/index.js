@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 
-AWS.config.update({ region: 'us-west-1' });
+AWS.config.update({ region: process.env.AWS_REGION || 'us-west-1' });
 
 const dynamo = new AWS.DynamoDB.DocumentClient()
 const tableName = process.env.PATIENTS_TABLE_NAME || 'patient-records'
