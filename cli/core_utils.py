@@ -331,11 +331,6 @@ def get_tags_for_service(service_id, token):
     return res.json()
 
 
-def make_policy_content_from_policy_list(policy_list):
-    policy_content = {"version": 1, "type": "default", "policy": policy_list}
-    return json.dumps(policy_content)
-
-
 def create_role(account_id: str, service_id: str, role_name: str, policy_content: str, token: str):
     headers = {"Authorization": "Bearer {}".format(os.getenv("BEARER_TOKEN", token))}
     url = API_ENDPOINT + f"/org/{account_id}/role"
