@@ -331,7 +331,7 @@ def get_tags_for_service(service_id, token):
     return res.json()
 
 
-def create_role(account_id: str, service_id: str, role_name: str, policy_content: str, token: str):
+def create_role(account_id, service_id, role_name, policy_content, token):
     headers = {"Authorization": "Bearer {}".format(os.getenv("BEARER_TOKEN", token))}
     url = API_ENDPOINT + f"/org/{account_id}/role"
 
