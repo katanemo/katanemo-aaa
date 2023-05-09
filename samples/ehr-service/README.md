@@ -62,6 +62,10 @@ To find out name of your API gateway issue following command,
 $ aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r
 ```
 
+# Installation (Terraform)
+
+Please refer to [tf_infra/README.md](tf_infra/README.md) file
+
 # Testing
 
 - Signup EHR SaaS Service's admin to Katanemo
