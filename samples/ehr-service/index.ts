@@ -19,12 +19,12 @@ export class ApiLambdaEhrServiceStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY, // NOT recommended for production code
     });
 
-    const diagnosticTable = new Table(this, 'diagnostic', {
+    const diagnosticTable = new Table(this, 'diagnostic-records', {
       partitionKey: {
         name: 'diagnosticId',
         type: AttributeType.STRING
       },
-      tableName: 'diagnostic',
+      tableName: 'diagnostic-records',
 
       removalPolicy: RemovalPolicy.DESTROY, // NOT recommended for production code
     });
