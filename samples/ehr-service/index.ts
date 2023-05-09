@@ -1,13 +1,17 @@
 import { ApiKeySourceType, LambdaIntegration, RestApi, TokenAuthorizer } from 'aws-cdk-lib/aws-apigateway';
 import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
+import { App, Stack, RemovalPolicy, CfnParameter } from 'aws-cdk-lib';
 import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { join } from 'path'
+
 
 export class ApiLambdaEhrServiceStack extends Stack {
   constructor(app: App, id: string) {
     super(app, id);
+
+    const clientKey = new CfnParameter(this, 'clientKey');
+    const clientSecret = new CfnParameter(this, 'clientSecret');
 
     const patientRecordsTable = new Table(this, 'patient-records', {
       partitionKey: {
@@ -65,6 +69,10 @@ export class ApiLambdaEhrServiceStack extends Stack {
     const createPatientRecordLambda = new NodejsFunction(this, 'createPatientRecord', {
       entry: join(__dirname, 'lambda/patients', 'index.js'),
       depsLockFilePath: join(__dirname, 'lambda/patients', 'package-lock.json'),
+      environment: {
+        CLIENT_KEY: clientKey.valueAsString,
+        CLIENT_SECRET: clientSecret.valueAsString,
+      },
       ...nodeJsFunctionProps,
     });
     patientRecordsTable.grantReadWriteData(createPatientRecordLambda);
@@ -82,6 +90,10 @@ export class ApiLambdaEhrServiceStack extends Stack {
     const createDiagnosticRecordLambda = new NodejsFunction(this, 'createDiagnosticRecord', {
       entry: join(__dirname, 'lambda/diagnostic', 'index.js'),
       depsLockFilePath: join(__dirname, 'lambda/diagnostic', 'package-lock.json'),
+      environment: {
+        CLIENT_KEY: clientKey.valueAsString,
+        CLIENT_SECRET: clientSecret.valueAsString,
+      },
       ...nodeJsFunctionProps,
     });
     diagnosticTable.grantReadWriteData(createDiagnosticRecordLambda);
