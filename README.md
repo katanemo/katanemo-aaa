@@ -1,7 +1,10 @@
 # katanemo-aaa
 <b>Welcome to Katanemo!</b>
 
-<img src="https://github.com/katanemo/katanemo-aaa/blob/main/kataneno-how-it-works.png?raw=true" width="800">
+<p align="center">
+  <img src="https://github.com/katanemo/katanemo-aaa/blob/main/kataneno-how-it-works.png?raw=true" width="750">
+</p>
+
 
 The following repository contains: 
 
