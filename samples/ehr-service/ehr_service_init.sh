@@ -17,11 +17,11 @@ API_SPEC=`pwd`/$1
 
 log getting token for ehr admin
 log katutil login-with-password --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD
-EHR_ADMIN_TOKEN=$(katutil login-with-password --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD | jq -r .token)
+EHR_ADMIN_TOKEN=$($KATUTIL login-with-password --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD | jq -r .token)
 
 log registering service with api spec $1 to katanemo
 log katutil init-service --service_name 'patient records service' --api_spec $API_SPEC --redirect_uri www.google.com --print_output True --token XXXXX
-EHR_SERVICE_ID=$(katutil init-service --service_name 'patient records service' --api_spec $API_SPEC --redirect_uri www.google.com --print_output True --token $EHR_ADMIN_TOKEN | jq -r .serviceId)
+EHR_SERVICE_ID=$($KATUTIL init-service --service_name 'patient records service' --api_spec $API_SPEC --redirect_uri www.google.com --print_output True --token $EHR_ADMIN_TOKEN | jq -r .serviceId)
 
 echo EHR_SERVICE_ID=$EHR_SERVICE_ID > .ehr_service_details
 

@@ -205,7 +205,7 @@ if args.sub_parser == "create-role":
         args.account_id,
         args.service_id,
         args.role_name,
-        policiesJson,
+        json.dumps(policiesJson),
         args.token,
     )
 

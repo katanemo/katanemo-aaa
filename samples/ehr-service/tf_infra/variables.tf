@@ -1,12 +1,12 @@
 variable "patient_records_table_name" {
   description = "The name of the DynamoDB table for patient records"
   type        = string
-  default     = "patient-records"
+  default     = "patient-records-tf"
 }
 variable "diagnostic_table_name" {
   description = "The name of the DynamoDB table for diagnostic"
   type        = string
-  default     = "diagnostic"
+  default     = "diagnostic-records-tf"
 }
 variable "client_key" {
   description = "client key to access katanemo api"

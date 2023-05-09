@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 
-const authEndpoint = process.env.AUTH_ENDPOINT || 'http://localhost:8081'
+const authEndpoint = "https://auth.us-west-2.katanemo.dev"
 
 function extractTokenFromHeader(e) {
   if (e.authorizationToken && e.authorizationToken.split(' ')[0] === 'Bearer') {

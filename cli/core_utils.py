@@ -81,7 +81,6 @@ def set_password(service_id, user_email, session, new_password, account_id=None)
     }
     if account_id:
         payload["accountId"] = account_id
-    # print(payload)
     res = requests.post(url, json=payload)
     if res.status_code != 200:
         log.error("Setting Password Failed with status code: {}".format(res.status_code))
@@ -332,10 +331,15 @@ def get_tags_for_service(service_id, token):
     return res.json()
 
 
-def create_role(account_id, service_id, role_name, policies, token):
+def create_role(account_id, service_id, role_name, policy_content, token):
     headers = {"Authorization": "Bearer {}".format(os.getenv("BEARER_TOKEN", token))}
     url = API_ENDPOINT + f"/org/{account_id}/role"
-    payload = {"accountId": account_id, "serviceId": service_id, "rolename": role_name, "policies": policies}
+
+    policy = {
+        "policyContent": policy_content,
+    }
+
+    payload = {"accountId": account_id, "serviceId": service_id, "rolename": role_name, "policy": policy}
 
     res = requests.post(url, json=payload, headers=headers)
     if res.status_code != 200:
@@ -406,7 +410,6 @@ def get_client_keys(account_id, token):
 
 def delete_client_keys(account_id, client_key_id):
     url = "{}/clientkey/{}/{}".format(API_ENDPOINT, account_id, client_key_id)
-    print(url)
     res = requests.delete(url)
     if res.status_code != 200:
         log.error("Login with status code: {}".format(res.status_code))
