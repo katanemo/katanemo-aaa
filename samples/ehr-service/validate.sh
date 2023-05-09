@@ -1,9 +1,12 @@
+set -e
 . common.sh
 # cd infra
 # API_GATEWAY=$(terraform output katanemo_apigw_id | sed -e 's/\"//g')
 # cd -
 
-API_GATEWAY=https://2xunhocv2f.execute-api.us-west-2.amazonaws.com/prod/
+API_GATEWAY=$(aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
+
+echo "API_GATEWAY: $API_GATEWAY"
 
 log 'trying to create patient record using receptionint token'
 log curl -XPOST -d '{"name": "John Doe", "notes": "the perfect human being"}' $API_GATEWAY/patient -H "Authorization: Bearer xxxx"
