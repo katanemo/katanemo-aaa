@@ -1,14 +1,18 @@
 #!/bin/sh
 EXECUTABLE_PATH=`dirname $0`
 
-docker inspect katutil &> /dev/null
-if [ $? -ne 0 ]; then
-  EXECUTABLE_PATH=`dirname $0`
-  echo $EXECUTABLE_PATH
-  echo "katutil image not found, building ..."
-  docker build -f $EXECUTABLE_PATH/../Dockerfile $EXECUTABLE_PATH/.. -t katutil
-fi
+# if API_ENDPOINT var is not set then use docker to run katutil
 
-docker run -i -e API_ENDPOINT=$API_ENDPOINT -e AUTH_ENDPOINT=$AUTH_ENDPOINT -v `pwd`:`pwd` --network="host" --rm katutil "$@"
-# cd $EXECUTABLE_PATH/..
-# .venv/bin/python -m katutil "$@"
+if [[ -z "$API_ENDPOINT" ]]; then
+  docker inspect katutil &> /dev/null
+  if [ $? -ne 0 ]; then
+    EXECUTABLE_PATH=`dirname $0`
+    echo $EXECUTABLE_PATH
+    echo "katutil image not found, building ..."
+    docker build -f $EXECUTABLE_PATH/../Dockerfile $EXECUTABLE_PATH/.. -t katutil
+  fi
+  docker run -i -e API_ENDPOINT=$API_ENDPOINT -e AUTH_ENDPOINT=$AUTH_ENDPOINT -v `pwd`:`pwd` --network="host" --rm katutil "$@"
+else
+  cd $EXECUTABLE_PATH/..
+  .venv/bin/python -m katutil "$@"
+fi
