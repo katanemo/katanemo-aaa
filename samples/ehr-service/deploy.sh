@@ -7,6 +7,9 @@ if [[ -z "terraform" ]]; then
   log terraform apply -var="client_key=$EHR_CLIENT_ID" -var="client_secret=$EHR_CLIENT_SECRET"
   terraform apply -var="client_key=$EHR_CLIENT_ID" -var="client_secret=$EHR_CLIENT_SECRET"
 else
+  log npm run build
+  npm run build
+
   log cdk bootstrap
   cdk bootstrap
 
