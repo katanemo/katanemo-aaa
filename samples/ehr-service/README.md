@@ -22,24 +22,46 @@ TODO: Add more details
 
 This sample application uses lambda authorizer to authenticate calls to EHR service. Here is how different services are interacting with each other,
 
-
-
 <img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
-
 
 # Requirements
 
+- AWS CLI: version aws-cli/2.11.15
+- AWS Cloud Development Kit (CDK): version 2.78.0 (build 8e95c37)
 - Docker: version 20.10.23
-- Terraform: version v1.4.6
 - jq: v1.6
 - AWS Account
 
-# Setup
+# Installation
 
-- Add katanemo's katutil to path.
+Using following commands to install lambda authorizer that uses apigateay to install in your account,
+
+1. bootstrap CDK
+
 ```
-$ export PATH=$PATH:$PWD/../../cli/bin
+$ cdk bootstrap
 ```
+
+2. build and deploy lambda authorizer along with requried resources to default account
+
+```
+$ cdk deploy
+
+Note after deployment is complete you will see following new resources in AWS account,
+
+1. ddb tables for patient and diagnost records
+2. lambda authroizer
+3. lambda function to manage patient records
+4. lambda function to manage diagnostic records
+5. api gateway that uses lambda authorizer to protect patient and diagnostic REST API paths
+
+To find out name of your API gateway issue following command,
+
+```
+$ aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r
+```
+
+# Testing
 
 - Signup EHR SaaS Service's admin to Katanemo
 ```
@@ -57,6 +79,17 @@ $ sh ehr_service_init.sh ehr.yaml
 ```
 $ sh signup-subscriber.sh <ache_health_admin_email> <acme_health_doctor_email> <acme_health_receptionist_email>
 ```
+
+# Validation
+
+Run validate.sh script to ensure that,
+
+1. receptionist cannot create patient account
+2. doctor cannot create patient account
+3. acmehealth admin can create patient account
+4. receptionist cannot read patient account
+5. doctor can read patient account
+6. acmehealth admin can read patient account
 ## Detailed run of these three commands
 ```
 ➜  ehr-service git:(main) ✗ sh ehr_admin_signup.sh adil+ehr_admin3a@katanemo.com
