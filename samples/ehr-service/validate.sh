@@ -1,7 +1,8 @@
 set -e
 . common.sh
 
-if [[ $1 -eq "terraform" ]]; then
+if [[ "$1" == "terraform" ]]; then
+  echo "using terraform"
   cd infra
   API_GATEWAY=$(terraform output katanemo_apigw_id | sed -e 's/\"//g')
   cd -
