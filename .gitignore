@@ -11,3 +11,4 @@ samples/ehr-service/.subscriber_details
 __pycache__
 samples/ehr-service/cdk.out/
 samples/ehr-service/index.js
+arc-go/go-common-lib/pkg/core/antlr/.antlr

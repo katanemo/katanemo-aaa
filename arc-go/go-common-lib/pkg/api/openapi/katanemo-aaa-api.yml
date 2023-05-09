@@ -1,0 +1,2070 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+  description: Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.
+  termsOfService: https://swagger.io/terms/
+  contact:
+    name: Katanemo Labs Inc.
+    email: support@katanemo.com
+    url: https://api.katanemo.com
+servers:
+  - url: http://localhost:8090
+paths:
+  /service:
+    post:
+      summary: Create a Service object.
+      description: Create a Service in Katanemo. Once a service is created Katanemo powers rich enterprise identity and authorization capabilities on behalf of SaaS (API) Developers
+      operationId: createService
+      requestBody:
+        description: Details about th service, including the text-representation of the API surface area
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateServiceRequest'
+      responses:
+        '200':
+          description: Service Successfully Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: List services that belong to a particular developer. Requires bearer token authorization
+      description: List services that belong to a particular developer. Requires bearer token authorization
+      operationId: ListServicesByDeveloper
+      responses:
+        '200':
+          description: List all services belonging to a developer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceResponseObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /service/3xA:
+    get:
+      summary: Get details about Katanemo's AAA SaaS service. Katanemo is powered by Katanemo, and our 3xA service uses the same core identity and authorization capabilities that we offer SaaS (API) developers
+      description: Gets Katanemo AAA service object
+      operationId: GetDefaultService
+      responses:
+        '200':
+          description: service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /service/{serviceId}:
+    get:
+      summary: Gets a service with service ID
+      description: Gets a service. The principal token must be present in the bearer header to retrieve the service details, unless the service is public
+      operationId: getService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a Service. Requires bearer token authorization
+      description: Update Service. Requires bearer token authorization
+      operationId: updateService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Service object of the service being updated.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateServiceRequest'
+      responses:
+        '200':
+          description: Updated service object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletes a service with service ID. Note the delete operation is a "soft" delete where by organizations can't access your service. Requires bearer token authorization.
+      description: Deletes a service. Note the delete operation is a "soft" delete where by organizations can't access your service. Requires bearer token authorization.
+      operationId: deleteService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted service.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /service/{serviceId}/.well-known/jwks.json:
+    get:
+      summary: Gets public key that can be used to verify jwt token issued by Katanemo. This API does not require bearer authorizationn if service is public
+      description: Gets public key that can be used to verify jwt token issued by Katanemo. This API does not require bearer authorization
+      operationId: GetDeveloperPublicKeys
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of public keys for developer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  keys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OIDCPublicKey'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /sign-up/{serviceId}:
+    post:
+      summary: Onborad customers to a particular SaaS service managed by Katanemo
+      description: Onborad customers to a particular SaaS service managed by Katanemo. Generates email verification workflows and creates an organization for the customer subscribing to this particular service
+      operationId: serviceSignup
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Signup Info of the service developer or a service subscriber
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: Signup is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /confirmUser/{confirmationCode}:
+    get:
+      summary: Confirm that the user belongs to the organization (email) they signed-up with. Used by Katanemo to verify developers signing-up for its 3xA service and for service developers on-boarding their customers (subscribers)
+      description: Verify user in the signup flow (clicking email link), serviceId indicates user is being confirmed for.
+      operationId: confirmUser
+      parameters:
+        - in: path
+          name: confirmationCode
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The first user (email) has been subscribed to a particular service and an organization id has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserConfirmationResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /set-password/{serviceId}:
+    post:
+      summary: Set password after user verification.
+      description: Set password of user after verficiation for specific service.
+      operationId: setPassword
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Set password info
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetPasswordRequest'
+      responses:
+        '200':
+          description: Settting pasword for user is successful.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Gets the password policy (length, characters, etc), to help the user set the correct password
+      description: Gets the password policy (length, characters, etc), to help the user set the correct password
+      operationId: getPasswordPolicy
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "returns the password stregnth needed to successful set password"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordPolicy'
+
+  /login-init/{serviceId}:
+    post:
+      summary: Login-init helps developers determine if the user should be presented a SAML/SSO workflow or a user/password sign-in experience.
+      description: Login-init helps developers determine if the user should be presented a SAML/SSO workflow or a user/password sign-in experience.
+      operationId: loginInit
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Login info (email) of the user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitialLoginRequest'
+      responses:
+        '200':
+          description: This API is used to determine if the user should login via an email/password combination or if the UI should redirect the user to the Idp for SSO
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitialLoginResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # TODO: for login and login call methods, have to figure out how to pass the token to redirect URL, most likely that will be
+  # passed as a query parameter, but needs more understanding.
+  /login/{serviceId}:
+    post:
+      summary: Login to any katanemo service with email and password
+      description: Login to any katanemo service. serviceId indicates service user is logging in to.
+      operationId: login
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Login info of a user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginWithPasswordRequest'
+      responses:
+        302:
+          description: Redirect to default page for developer after succesful login.
+          headers:
+            Location:
+              description: URL of the dashboard page
+              schema:
+                type: string
+        200:
+          description: Returns login token in a response object if skipRedirect is set to true.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginToken'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /assignrole:
+    post:
+      summary: Assign role to an identity principal
+      description: Assign role to an identity principal
+      operationId: AssignRoleToPrincipal
+      requestBody:
+        description: Role assignment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRoleObj'
+      responses:
+        '200':
+          description: User account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /assumeRole:
+    post:
+      summary: Creates a token with requested roleId
+      description: Creates a token with requested roleId
+      operationId: AssumeRole
+      requestBody:
+        description: Role assignment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssumeRoleObj'
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org:
+    get:
+      summary: Returns an object with information regarding an account which is present in the token
+      description: Returns an object with information regarding an account which is present in the token
+      operationId: GetAccountOrganization
+      responses:
+        '200':
+          description: Organization of the acccount.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization' # TODO: implement separate Organization Request and Respone objects.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}:
+    get:
+      summary: Returns an object with information regarding an account
+      description: Returns an object with information regarding an account
+      operationId: GetAccountInfo
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/user:
+    get:
+      summary: Returns a list of all users belonging to provided account ID
+      description: Returns a list of all users belonging to provided account ID
+      operationId: GetUsersForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: users belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Creates a new User account tied to the specified organization
+      description: Creates a new User and triggers an email verification workflow, followed by set-password
+      operationId: createUserForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: User information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/user/{userId}:
+    get:
+      operationId: GetUser
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: user belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Updates a user
+      description: Updates a User account
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: User information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/role:
+    get:
+      summary: Returns a list of all roles belonging to provided account ID
+      description: Returns a list of all roles belonging to provided account ID
+      operationId: GetRolesForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: roles belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Creates a new Role
+      description: Creates a new Role
+      operationId: createRole
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Role to add to the system
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/role/{roleId}:
+    get: #TODO: add put, and delete HTTP operations
+      summary: Gets a role
+      description: Gets a role
+      operationId: GetRole
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Updates role
+      description: Update role
+      operationId: updateRole
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Role object that is being updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Updated service object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /org/{accountId}/keys:
+    post:
+      summary: Creates a new client key
+      description: Creates a new client key
+      operationId: createClientKey
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientKeyRequest'
+      responses:
+        '200':
+          description: Successful org keys.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientKeyResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Get list of all client keys
+      description: Get list of all client keys
+      operationId: getClientKeyList
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of all users successful.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientKeyObject'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/key/{keyId}:
+    get:
+      summary: Get details of client key
+      description: Get details of client key
+      operationId: getClientKey
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: keyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Getting client key successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientKeyObject'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: delete a client key
+      operationId: deleteClientKey
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: keyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful deletion of client key.
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/tags:
+    post:
+      summary: creates a resource with provided tags
+      description: creates a resource with provided tags
+      operationId: createTags
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Tags and resource id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tags'
+      responses:
+        '200':
+          description: User account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/org/{accountId}/tags/serviceId/{serviceId}/name/{name}/resource/{resourceId}": # I don't understand this. Please explain @Adil Hafeez
+    get:
+      summary: Gets tags for resource
+      description: Gets tags object associated with the resource
+      operationId: GetTagsForResource
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: resourceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/oauth/token: #i don't quite follow this. lets chat. oauth tokens are a very specific thing
+    post:
+      summary: get token for client id / secret
+      operationId: getOAuthToken
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthTokenRequest'
+      responses:
+        '200':
+          description: Getting token for client ID successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthTokenResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /org/{accountId}/sso-connections/oidc:
+    get:
+      summary: Returns a list of all OIDC connections belonging to provided account ID
+      description: Returns a list of all OIDC connections belonging to provided account ID
+      operationId: GetOIDCConnectionsForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OIDC connections belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OktaObj' #changeto OIDCObj
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Creates a new OIDC connection
+      description: Creates a new OIDC connection
+      operationId: createOIDCCOnnection
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ODIC connection attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OktaObj' #TODO: Reconcile with Anas on why we need something specific for Okta
+      responses:
+        '200':
+          description: OktaObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OktaObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/oidc/{connectionId}:
+    put:
+      summary: Updates a OIDC connection
+      description: Updates a OIDC connection
+      operationId: updateOIDCConnection
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: OIDC connection attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OktaObj'
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OktaObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Retrieves an OIDC connection
+      description: Retrieves an OIDC connection
+      operationId: getOIDCConnection #GetOKTAConnection
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OktaObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OktaObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Deletes an OIDC connection
+      description: Deletes an OIDC connection
+      operationId: deleteOIDCConnection
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deletion successful.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/oidc/{connectionId}/login-trigger: #TODO: accountId shouldn't be needed here.
+    get:
+      summary: Triggers okta signin flow
+      description: Triggers OIDC login for a particular connection. Account can have multiple OIDC connections. It redirects to the login URL corresponding to a particular connection.
+      operationId: OIDCLoginTrigger # . # OktaLoginHandler
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: accountId #TODO: account ID really not needed here.
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+      # No response, it actually redirects to the login URL corresponding to connection ID
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/oidc/{connectionId}/sso-callback:
+    get:
+      summary: Handle OIDC SSO login callback
+      description: Handles OIDC login callback
+      operationId: oidcSSOCallBack # OktaAuthorizeHandler deprecated.
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: query
+          description: Authorization code returned by the OIDC provider
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: Authorization code returned by the OIDC provider
+          required: true
+          schema:
+            type: string
+      # TODO: not required by OKTA which is the only provider we tested it for.
+      # may need this in future if needed.
+      # requestBody: # it may not be required for some IDPs.
+      #   content:
+      #     application/json:
+      #       schema:
+      #         type: object
+      #         properties:
+      #           id_token:
+      #             type: string
+      #             description: ID token returned by the OIDC provider
+      responses:
+        302: # TODO: do we really need this?
+          description: Redirect to default page for developer after succesful login.
+          headers:
+            Location:
+              description: Redirect URL of landing page after successful login.
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/saml:
+    get:
+      summary: Returns a list of all SAML connections belonging to provided account ID
+      description: Returns a list of all SAML connections belonging to provided account ID
+      operationId: GetSAMLConnectionsForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SAML connections belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Creates a new SAML connection
+      description: Creates a new SAML connection
+      operationId: createSAMLConnection
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: SAML connection attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SAMLObj'
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/saml/{connectionId}:
+    put:
+      summary: Updates a SAML connection
+      description: Updates a SAML connection
+      operationId: updateSAMLConnection
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: SAML connection attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SAMLObj'
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Retreive a SAML connection
+      description: Retreive a SAML connection
+      operationId: GetSAMLConnection
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/saml/{connectionId}/mapAttributeToRoles:
+    post:
+      summary: Creates a new attribute mapping for a SAML connection
+      description: Creates a new attribute mapping for a SAML connection
+      operationId: createSAMLConnectionMapping
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: SAML user attributes to role mapping
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttributeRoleMapping'
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/saml/{connectionId}/login-trigger: #TODO: accountId shouldn't be needed here.
+    get:
+      summary: Triggers SAML SSO signin flow
+      description: Triggers SAML login for a particular connection. Account can have multiple SAML connections. It redirects to the login URL corresponding to a particular connection.
+      operationId: SAMLLoginTrigger # . # OktaSAMLLoginHandler
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: accountId #TODO: account ID really not needed here.
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+      # No response, it actually redirects to the login URL corresponding to connection ID
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /org/{accountId}/sso-connections/saml/{connectionId}/sso-callback/saml/acs:
+  # TODO: check if saml/acs should always be part of the callback URL
+    post:
+      summary: Handle SAML login callback with SAML assertion. It can be passed as query parameter or payload.
+      description: Handle SAML login callback with SAML assertion. It can be passed as query parameter or payload.
+      operationId: samlSSOCallBack # OktaSAMLAuthorizeHandler
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: SAMLResponse
+          in: query
+          description: SAML response returned by the SAML IDP
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                SAMLResponse:
+                  type: string
+                  description: SAML response returned by the SAML IDP
+      responses:
+        302: # TODO: check if this is needed to be specified here.
+          description: Redirect to default page for developer after succesful login.
+          headers:
+            Location:
+              description: Redirect URL of landing page after successful login.
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /arc/{serviceId}/role:
+    get:
+      operationId: GetRolesForService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /arc/{serviceId}/tags:
+    get:
+      operationId: GetTagsForService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tags'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /arc/{serviceId}/init:
+    get:
+      operationId: InitArcClient
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InitArcResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /healthz:
+    get:
+      summary: Returns service health
+      operationId: GetHealthz
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+  /audit-logs/service/{serviceId}/account/{accountId}:
+    get:
+      summary: Returns list of log entries for a service and account
+      operationId: GetAuditLogs
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: startTime
+          in: query
+          description: Start time of log entries
+          required: true
+          schema:
+            type: string
+        - name: endTime
+          in: query
+          description: End time of log entries
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of log entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditLogEntry'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    InitArcResponse:
+      properties:
+        queueUrl:
+          type: string
+        keyId:
+          type: string
+        keySecret:
+          type: string
+        sessionToken:
+          type: string
+        expiration:
+          type: integer
+    SignupRequest:
+      required:
+        - emailAddress
+      properties:
+        emailAddress:
+          type: string
+          description: Email address of user signing up for the service.
+    SignupResponse:
+      required:
+        - accountId
+      properties:
+        accountId:
+          type: string
+          description: Account ID of developer signed up.
+    UserConfirmationResponse:
+      required:
+        - session
+        - accountId
+        - emailAddress
+        - serviceId
+      properties:
+        session:
+          type: string
+          description: Session info in response to confirm user. This session can be used to set password.
+        accountId:
+          type: string
+          description: returns the account id for the organization that subscribed to the service.
+        emailAddress:
+          type: string
+          description: returns the email address of the user signing up.
+        serviceId:
+          type: string
+          description: returns the service id for which user subscribed to.
+    SetPasswordRequest:
+      required:
+        - emailAddress
+        - session
+        - password
+      properties:
+        emailAddress:
+          type: string
+          description: Email address of the user.
+        session:
+          type: string
+          description: Session information of the user from confirm user respoonse.
+        password:
+          type: string
+          description: Password of the user for the user to be used in future.
+    InitialLoginRequest:
+      required:
+        - emailAddress
+      properties:
+        emailAddress:
+          type: string
+          description: Email address of the developer account's user
+    InitialLoginResponse:
+      required:
+        - ssoEnabled
+      properties:
+        ssoEnabled:
+          type: boolean
+          description: Determines if sso is enabled or not
+        ssoRedirectUrl:
+          type: string
+          description: If sso is enabled then have to make call to sso endpoint for authentication
+          # TODO: also check with other parameters are needed for sso login
+          # TODO: can sso login for a user possible without having account?
+    LoginWithPasswordRequest:
+      required:
+        - emailAddress
+        - password
+      properties:
+        emailAddress:
+          type: string
+          description: Email address of the developer account's user
+        password:
+          type: string
+          description: Password of the user
+        skipRedirect:
+          type: boolean
+          description: By default login will redirect to service redirect URL, if this parameter is set as true then response will be returned.
+    LoginToken:
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: Login Token
+    CreateServiceRequest:
+      type: object
+      required:
+        - name
+        - description
+        - apiSpecFile
+        - redirectUrl
+      properties:
+        name:
+          type: string
+          description: Service Name
+        description:
+          type: string
+          description: Service Description
+        redirectUrl:
+          type: string
+          description: Redirect URL after a successful login.
+        apiSpecFile:
+          type: string
+          format: binary
+          description: openapi service json or yaml file
+        displayName:
+          type: string
+          description: Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages
+        logoUrl:
+          type: string
+          description: The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages
+        termsUrl:
+          type: string
+          description: The URL for the terms of the service
+        privacyUrl:
+          type: string
+          description: The URL for the privacy of the service
+        docsUrl:
+          type: string
+          description: The URL for the documentatio of the service
+    UpdateServiceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Service Name
+        description:
+          type: string
+          description: Service Description
+        redirectUrl:
+          type: string
+          description: Redirect URL after a successful login.
+        apiSpecFile:
+          type: string
+          format: binary
+          description: openapi service json or yaml file
+        displayName:
+          type: string
+          description: Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages
+        logoUrl:
+          type: string
+          description: The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages
+        termsUrl:
+          type: string
+          description: The URL for the terms of the service
+        privacyUrl:
+          type: string
+          description: The URL for the privacy of the service
+        docsUrl:
+          type: string
+          description: The URL for the documentatio of the service
+    ServiceResponseObj:
+      required:
+        - serviceId
+        - serviceName
+        - description
+        - onboardURL
+        - redirectUrl
+        - apiSpecFileContents # should return whole file contents, and have separate api for operations and paths /service/{service-id}/apis
+        - apis
+      properties:
+        accountId:
+          type: string
+          description: Account ID of service creator
+        serviceId:
+          type: string
+          description: ID of the service
+        serviceName:
+          type: string
+          description: Name of the service
+        description:
+          type: string
+          description: Description of service
+        onboardURL:
+          type: string
+          description: Pretty onboarding URL for the service generated by Katanemo
+        redirectUrl:
+          type: string
+          description: redirect url
+        apiSpecFileContents:
+          type: string
+          description: S3 url of open api spec (Json or yaml) file contents
+        apis:
+          type: array
+          items:
+            type: string
+          description: List of paths exposed by the service
+        version:
+          type: integer
+        updatedAt:
+          type: integer
+          format: int64
+        createdAt:
+          type: integer
+          format: int64
+        displayName:
+          type: string
+          description: Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages
+        logoUrl:
+          type: string
+          description: The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages
+        termsUrl:
+          type: string
+          description: The URL for the terms of the service
+        privacyUrl:
+          type: string
+          description: The URL for the privacy of the service
+        docsUrl:
+          type: string
+          description: The URL for the documentatio of the service
+    OIDCPublicKey:
+      properties:
+        kid:
+          type: string
+          description: key id
+        alg:
+          type: string
+          description: Key algorithm
+        e:
+          type: string
+          description: RSA exponent
+        n:
+          type: string
+          description: RSA modulus
+        use:
+          type: string
+          description: key usage
+        kty:
+          type: string
+          description: key type
+    Organization:
+      required:
+        - accountId
+        - name
+        - adminAccount
+      properties:
+        accountId:
+          type: string
+        name:
+          type: string
+        adminAccount:
+          type: string
+        usersCount:
+          type: integer
+        rolesCount:
+          type: integer
+        oidcConnectionsCount:
+          type: integer
+        samlConnectionsCount:
+          type: integer
+        launchedServices:
+          type: array
+          items:
+            type: string
+        subscribedServices:
+          type: array
+          items:
+            type: string
+        subscribers:
+          type: array
+          items:
+            type: string
+    User:
+      required:
+        - accountId
+      properties:
+        accountId:
+          type: string
+          description: Tenant name
+        serviceId:
+          type: string
+          description: Service ID which this account subscribed to
+        userId:
+          type: string
+          description: User name (email)
+        isAdmin:
+          type: boolean
+          description: is the user an admin?
+        isActive:
+          type: boolean
+          description: Is the user active yet?
+        token:
+          type: string
+          description: User token
+        tags:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["roleId1", "roleId2", "roleId3"]
+    AssignRoleObj:
+      required:
+        - principalId
+        - roleId
+      properties:
+        principalId:
+          type: string
+        roleId:
+          type: string
+    AssumeRoleObj:
+      required:
+        - principalId
+        - roleId
+      properties:
+        principalId:
+          type: string
+        roleId:
+          type: string
+    Role:
+      properties:
+        accountId:
+          type: string
+          description: AccountId
+        roleId:
+          type: string
+          description: Role Id
+        rolename:
+          type: string
+          description: Role name
+        serviceId:
+          type: string
+          description: ID of the service
+        policy:
+          $ref: "#/components/schemas/Policy"
+        version:
+          type: integer
+        updatedAt:
+          type: integer
+          format: int64
+        createdAt:
+          type: integer
+          format: int64
+    Policy:
+      required:
+        - policyContent
+      properties:
+        policyContent:
+          type: string
+          description: Policy rules for allowing API paths, it can be defined as json or yaml format.
+        # # Sample yaml policy
+        # version: '1.0'
+        # type: 'default'
+        # policy:
+        # - allow:
+        #   - PUT:/cluster/{clusterId}
+        #   - GET:/cluster/{clusterId}
+        #   where: "$resourceTags:clustertag = 'dev'"
+        # - allow:
+        #   - GET:/cluster/{clusterId}
+        #   where: "$resourceTags:clustertag IN ('staging', 'production')"
+        # # Sample json policy
+        # {
+        #   "version": "1.0",
+        #   "type": "default",
+        #   "policy": [
+        #     {
+        #       "allow": [
+        #         "PUT:/cluster/{clusterId}",
+        #         "GET:/cluster/{clusterId}"
+        #       ],
+        #       "where": "$resourceTags:clustertag = 'dev'"
+        #     },
+        #     {
+        #       "allow": [
+        #         "GET:/cluster/{clusterId}"
+        #       ],
+        #       "where": "$resourceTags:clustertag IN ('staging', 'production')"
+        #     }
+        #   ]
+        # }
+
+    OktaObj:
+      required:
+        - orgName
+        - clientId
+        - clientSecret
+      properties:
+        orgName:
+          description: Okta organization name
+          type: string
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+        nonce:
+          type: string
+        state:
+          type: string
+        accountId:
+          type: string
+        serviceId:
+          type: string
+        authorizationEndpoint:
+          type: string
+        tokenEndpoint:
+          type: string
+        userInfoEndpoint:
+          type: string
+        issuerEndpoint:
+          type: string
+        connectionId:
+          type: string
+    SAMLObj:
+      required:
+        - accountId
+        - serviceId
+        - defaultRoleId
+        - idProvider
+      properties:
+        connectionId:
+          type: string
+        idProvider:
+          type: string
+        defaultRoleId:
+          type: string
+        loginLink:
+          type: string
+        metadataLink:
+          type: string
+        acsLink:
+          type: string
+        audienceLink:
+          type: string
+        attributeRoleMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeRoleMapping'
+        rootURL:
+          type: string
+        accountId:
+          type: string
+        serviceId:
+          type: string
+    ClientKeyRequest:
+      required:
+        - defaultRoleId
+        - clientName
+      properties:
+        defaultRoleId:
+          type: string
+        clientName:
+          type: string
+    ClientKeyResponse:
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    ClientKeyObject:
+      properties:
+        accountId:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["roleId1", "roleId2", "roleId3"]
+        clientName:
+          type: string
+        clientKeyId:
+          type: string
+        serviceId:
+          type: string
+        isActive:
+          type: boolean
+    Tags:
+      required:
+        - serviceId
+        - name
+        - resourceId
+        - token
+        - tags
+      properties:
+        serviceIdPath:
+          type: string
+        serviceId:
+          type: string
+        name:
+          type: string
+        resourceId:
+          type: string
+        accountId:
+          type: string
+        token:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    AttributeRoleMapping:
+      required:
+        - attribute
+        - value
+        - roleId
+      properties:
+        attribute:
+          type: string
+        value:
+          type: string
+        roleId:
+          type: string
+    OAuthTokenRequest:
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    OAuthTokenResponse:
+      properties:
+        accessToken:
+          type: string
+        expiresIn:
+          type: integer
+        tokenType:
+          type: string
+    PasswordPolicy:
+      required:
+        - minimumLegnth
+        - requiredNumbers
+        - requireSymbols
+        - requireUpperCase
+        - requireLowerCase
+      properties:
+        minimumLegnth:
+          type: integer
+          format: int32
+          description: The minimum length of the password in the policy that you have set. This value can't be less than 6.
+        requiredNumbers:
+          type: boolean
+          description: In the password policy that you have set, refers to whether you have required users to use at least one number in their password.
+        requireSymbols:
+          type: boolean
+          description: In the password policy that you have set, refers to whether you have required users to use at least one symbol in their password.
+        requireUpperCase:
+          type: boolean
+          description: In the password policy that you have set, refers to whether you have required users to use at least one uppercase letter in their password.
+        requireLowerCase:
+          type: boolean
+          description: In the password policy that you have set, refers to whether you have required users to use at least one lowercase letter in their password.
+    # Note: any change in schema of AuditLogEntry should also refect in corresponding object in ARCOS's spec
+    AuditLogEntry:
+      required:
+        - accountId
+        - serviceId
+        - path
+        - operation
+        - authenticationCode
+        - authorizationCode
+        - principal
+      properties:
+        accountId:
+          type: string
+        serviceId:
+          type: string
+        path:
+          type: string
+        operation:
+          type: string
+        principal:
+          type: string
+        authenticationCode:
+          type: integer
+        authorizationCode:
+          type: integer
+
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message

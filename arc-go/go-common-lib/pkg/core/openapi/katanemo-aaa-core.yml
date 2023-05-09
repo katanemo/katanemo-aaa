@@ -1,0 +1,1773 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Katanemo AAA Core
+  description: Katanemo core service for AAA
+  termsOfService: https://swagger.io/terms/
+  contact:
+    name: Katanemo Labs Inc.
+    email: info@katanemo.com
+    url: https://katanemo.com
+servers:
+  - url: http://localhost:8080
+paths:
+  # signup API already implemented.
+  "/developer/service/{serviceId}":
+    post:
+      summary: Creates a new Developer account against the requested service
+      description: Creates a new Developer account
+      operationId: createDeveloper
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Developer account to add to the system
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Developer'
+      responses:
+        '200':
+          description: Developer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Developer'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # shouldn't migrate if not needed. should delete it.
+  "/developer/service/{serviceId}/user/{userId}":
+    get:
+      summary: Gets a developer corresponding to a service and user (email).
+      description: Gets a developer corresponding to a service and user (email).
+      operationId: getDeveloperByServiceAndEmail
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Developer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Developer'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # should be deleted as well, and it should be part of org.
+  "/developer/{accountId}":
+    get:
+      summary: Gets a developer object
+      description: Gets a developer object
+      operationId: GetDeveloper
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      responses:
+        '200':
+          description: Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Developer'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # already implemented in API
+  "/{serviceId}/.well-known/jwks.json":
+    get:
+      summary: Gets public keys for token verification
+      description: Gets public key that can be used to verify jwt token issued by katanemo
+      operationId: GetServicePublicKeys
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      responses:
+        '200':
+          description: List of public keys for service
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  keys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OIDCPublicKey'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/user":
+    post:
+      summary: Creates a new User account tied to the specified organization
+      description: Creates a new User account
+      operationId: createUserForDeveloper # TODO: rename to createUserForAccount or createUserForOrganization
+      requestBody:
+        description: User information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # this api should be in org/user
+  "/user/{userId}":
+    get:
+      summary: Gets a User object
+      description: Gets a user object
+      operationId: GetUserWithoutDeveloper
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      responses:
+        '200':
+          description: Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Updates a user
+      description: Updates a User account
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: User information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # already implemented in signup flow in API
+  "/user/confirm":
+    post:
+      summary: Confirms a user account
+      description: Confirms a user account
+      operationId: confirmUser
+      requestBody:
+        description: User account confirmation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserConfirmation'
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserConfirmation'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # already implemented in signup flow in API
+  "/user/setpassword":
+    post:
+      summary: Set password
+      description: Set password
+      operationId: setUserPassword
+      requestBody:
+        description: User info, password and session
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserConfirmation'
+      responses:
+        '200':
+          description: User account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # already implemented in signup flow in API
+  /user/login:
+    post:
+      summary: User login
+      description: User login
+      operationId: loginUser
+      requestBody:
+        description: User login
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserObj'
+      responses:
+        '200':
+          description: User account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # see how to implement as part of login.
+  "/user/okta/saml/login/connection/{connectionId}":
+    get:
+      summary: Triggers okta signin flow
+      description: Okta sign in
+      operationId: OktaSAMLLoginHandler
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  # to implement in api as well
+  "/user/okta/login/connection/{connectionId}":
+    get:
+      summary: Triggers okta signin flow
+      description: Okta sign in
+      operationId: OktaLoginHandler
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # need to implement as part of login flow
+  "/user/okta/callback":
+    get:
+      summary: Receives the callback from Okta
+      description: Okta Call back
+      operationId: OktaAuthorizeHandler
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # need to implement as part of login flow
+  "/user/okta/connection/{connectionId}/saml/acs":
+    post:
+      summary: Receives the callback from Okta SAML
+      description: Okta Call back
+      operationId: OktaSAMLAuthorizeHandler
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # it should be moved to org as well
+  /user/assignrole:
+    post:
+      summary: Assign role to user
+      description: Assign role to user
+      operationId: AssignRoleToUser
+      requestBody:
+        description: Role assignment
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRoleObj'
+
+      responses:
+        '200':
+          description: User account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tags:
+    post:
+      summary: creates a resource with provided tags
+      description: creates a resource with provided tags
+      operationId: createTags
+      requestBody:
+        description: Tags and resource id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tags'
+      responses:
+        '200':
+          description: User account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # should be moved to org as well
+  "/tags/service/{serviceId}/developer/{accountId}/name/{name}/resource/{resourceId}":
+    get:
+      summary: Gets tags for resource
+      description: Gets tags object associated with the resource
+      operationId: GetTagsForResource
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: resourceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: tags
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # already implemented in API
+  /service:
+    post:
+      summary: Creates a new service
+      description: Creates a new service
+      operationId: createService
+      requestBody:
+        description: Service description
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+      responses:
+        '200':
+          description: Service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # already implemented in api
+  /service/{serviceId}:
+    get:
+      summary: Gets a service
+      description: Gets a service
+      operationId: GetService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+
+      responses:
+        '200':
+          description: service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # should be implemented in API
+  "/service/default":
+    get:
+      summary: Gets Katanemo service object
+      description: Gets Katanemo service object
+      operationId: GetDefaultService
+
+      responses:
+        '200':
+          description: service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # already implemented as part of new service creation (no separate API for upload only)
+  /service/openapi/service/{serviceId}:
+    post:
+      summary: Adds an openapi spec to a service
+      description: Adds an openapi spec to a service
+      operationId: AddSpecForService
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9\-]{3,128}$
+      requestBody:
+        content:
+          schema:
+            multipart/form-data:
+              openApiFile:
+                type: string
+                format: binary
+      responses:
+        '200':
+          description: service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # should be moved to org
+  /role:
+    post:
+      summary: Creates a new Role
+      description: Creates a new Role
+      operationId: createRole
+      requestBody:
+        description: Role to add to the system
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # should be implemented in API as well
+  /healthz:
+    get:
+      summary: Returns service health
+      operationId: GetHealthz
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+
+  # should be part of org?
+  "/role/assume/{accountId}/{roleId}":
+    get:
+      summary: Creates a token with requested roleId
+      description: Creates a token with requested roleId
+      operationId: AssumeRole
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # where do connection APIs go? are those part of org or not? Probably yes
+  /connections/okta/connection/{connectionId}:
+    get:
+      summary: Return existing connection
+      operationId: GetOKTAConnection
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OktaObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OktaObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # where do connection APIs go? are those part of org or not? Probably yes
+  /connections/okta:
+    post:
+      summary: Creates a new OKTA connection
+      description: Creates a new OKTA connection
+      operationId: createOKTAConnection
+      requestBody:
+        description: OKTA connection attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OktaObj'
+      responses:
+        '200':
+          description: OktaObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OktaObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # where do connection APIs go? are those part of org or not? Probably yes
+  /connections/saml:
+    post:
+      summary: Creates a new SAML connection
+      description: Creates a new SAML connection
+      operationId: createSAMLConnection
+      requestBody:
+        description: SAML connection attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SAMLObj'
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # where do connection APIs go? are those part of org or not? Probably yes
+  "/connections/saml/connection/{connectionId}":
+    put:
+      summary: Updates a SAML connection
+      description: Updates a SAML connection
+      operationId: updateSAMLConnection
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: SAML connection attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SAMLObj'
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # where do connection APIs go? are those part of org or not? Probably yes
+  "/connections/saml/mapping/connection/{connectionId}":
+    post:
+      summary: Creates a new attribute mapping for a SAML connection
+      description: Creates a new attribute mapping for a SAML connection
+      operationId: createSAMLConnectionMapping
+      parameters:
+        - name: connectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: SAML connection mapping
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttributeRoleMapping'
+      responses:
+        '200':
+          description: SAMLObj
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  "/org":
+    get:
+      summary: Returns an object with information regarding an account which is present in the token
+      description: Returns an object with information regarding an account which is present in the token
+      operationId: GetOwnAccountInfo
+      responses:
+        '200':
+          description: Organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  "/org/{accountId}":
+    get:
+      summary: Returns an object with information regarding an account
+      description: Returns an object with information regarding an account
+      operationId: GetAccountInfo
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  "/org/{accountId}/user":
+    get:
+      summary: Returns a list of all users belonging to provided account ID
+      description: Returns a list of all users belonging to provided account ID
+      operationId: GetUsersForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: users belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/org/{accountId}/user/{userId}":
+    get:
+      operationId: GetUser
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: user belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  "/org/{accountId}/role":
+    get:
+      summary: Returns a list of all roles belonging to provided account ID
+      description: Returns a list of all roles belonging to provided account ID
+      operationId: GetRolesForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: roles belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/org/{accountId}/role/{roleId}":
+    get:
+      summary: Gets a role
+      description: Gets a role
+      operationId: GetRole
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/org/{accountId}/connections/oidc":
+    get:
+      summary: Returns a list of all OIDC connections belonging to provided account ID
+      description: Returns a list of all OIDC connections belonging to provided account ID
+      operationId: GetOIDCConnectionsForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OIDC connections belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OktaObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  "/org/{accountId}/connections/saml":
+    get:
+      summary: Returns a list of all SAML connections belonging to provided account ID
+      description: Returns a list of all SAML connections belonging to provided account ID
+      operationId: GetSAMLConnectionsForAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SAML connections belonging to provided account ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SAMLObj'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # I think this should just be moved to API as is, and not part of org
+  /oauth/{accountId}/token:
+    post:
+      summary: get token for client id / secret
+      operationId: getOAuthToken
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthTokenRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthTokenResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  # are client keys part of org or not?
+  /clientkey/{accountId}:
+    post:
+      summary: Creates a new client key
+      description: Creates a new client key
+      operationId: createClientKey
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientKeyRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientKeyResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Get list of all client keys
+      description: Get list of all client keys
+      operationId: getClientKeyList
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientKeyObject'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /clientkey/{accountId}/{clientId}:
+    get:
+      summary: Get details of client key
+      description: Get details of client key
+      operationId: getClientKey
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientKeyObject'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: delete a client key
+      operationId: deleteClientKey
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      required:
+        - accountId
+      properties:
+        accountId:
+          type: string
+          description: Tenant name
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId, hash"
+        serviceId:
+          type: string
+          description: Service ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceId, hash"
+        userId:
+          type: string
+          description: User name (email)
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "userId,hash"
+        isAdmin:
+          type: boolean
+          description: is the user an admin?
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "isAdmin"
+        isActive:
+          type: boolean
+          description: Is the user active yet?
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "isactive"
+        token:
+          type: string
+          description: User token
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "token"
+        tags:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "tags"
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["roleId1", "roleId2", "roleId3"]
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "roles"
+
+    Developer:
+      properties:
+        developer:
+          type: string
+          description: Developer name
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "developer"
+        accountId:
+          type: string
+          description: account ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId, hash"
+        admin:
+          type: string
+          description: admin email address of creator [rename this to creator]
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "email"
+        userPool:
+          type: string
+          description: Cognito User Pool ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "userPool"
+        userPoolClient:
+          type: string
+          description: Cognito User Pool Client ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "userPoolClient"
+        isActive:
+          type: boolean
+          description: Is the Developer active yet?
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "isactive"
+        launchedServices:
+          type: array
+          items:
+            type: string
+          example: ["str1", "str2", "str3"]
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "launchedServices"
+        subscribedServices:
+          type: array
+          items:
+            type: string
+          example: ["str1", "str2", "str3"]
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "subscribedServices"
+        version:
+          type: integer
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "version"
+        updatedAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "updatedAt"
+        createdAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "createdAt"
+    UserConfirmation:
+      required:
+        - userId
+        - accountId
+      properties:
+        accountId:
+          type: string
+          description: AccountId
+        userId:
+          type: string
+          description: User id
+        confirmationCode:
+          type: string
+          description: confirmation code sent
+        newPassword:
+          type: string
+          description: New password
+        session:
+          type: string
+          description: session
+
+    Role:
+      properties:
+        accountId:
+          type: string
+          description: AccountId
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId"
+        roleId:
+          type: string
+          description: Role Id
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "roleId,hash"
+        rolename:
+          type: string
+          description: Role name
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "rolename"
+        serviceId:
+          type: string
+          description: ID of the service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceId"
+        # TODO: encasulate policyVersion, policyType and policies in a new type
+        policyVersion:
+          type: integer
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "policyVersion"
+        policyType:
+          type: string
+          description: policy type, e.g. "default", "open api 3.1", "graph ql etc"
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "policyType"
+        policyContent:
+          type: string
+          description: policy content blob either in json or yaml format (look in apispec for format of this blob.)
+        policies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Policy"
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "policies"
+        version:
+          type: integer
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "version"
+        updatedAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "updatedAt"
+        createdAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "createdAt"
+    Policy:
+      properties:
+        allow:
+          type: array
+          items:
+            type: string
+          example: ["str1", "str2", "str3"]
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "allow"
+        where:
+          type: string
+          description: Where clause
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "where"
+
+    Service:
+      properties:
+        accountId:
+          type: string
+          description: Account ID
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId"
+        serviceId:
+          type: string
+          description: ID of the service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceId, hash"
+        servicename:
+          type: string
+          description: Name of the service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceName"
+        description:
+          type: string
+          description: Description of service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "description"
+        onboardURL:
+          type: string
+          description: Pretty onboarding URL for the service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "onboardURL"
+        redirectURL:
+          type: string
+          description: Redirect URL where subscriber is redirected upon successful authenticatio
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "redirectURL"
+        apis:
+          type: array
+          items:
+            type: string
+          description: "List of paths exposed by the service"
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "apiPaths"
+        displayName:
+          type: string
+          description: Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "displayName"
+        logoUrl:
+          type: string
+          description: The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "logoUrl"
+        termsofServiceUrl:
+          type: string
+          description: The URL for the terms of the service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "termsUrl"
+        privacyUrl:
+          type: string
+          description: The URL for the privacy of the service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "privacyUrl"
+        documentationUrl:
+          type: string
+          description: The URL for the documentatio of the service
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "docsUrl"
+        keyId:
+          type: string
+          description: key id to sign jwt tokens
+        version:
+          type: integer
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "version"
+        updatedAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "updatedAt"
+        createdAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "createdAt"
+    OapiSpec:
+      required:
+        - filename
+        - s3path
+      properties:
+        filename:
+          type: string
+          description: File name
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "filename"
+        s3path:
+          type: string
+          description: Path to S3
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "s3path"
+
+    OIDCPublicKey:
+      properties:
+        kid:
+          type: string
+          description: key id
+        alg:
+          type: string
+          description: Key algorithm
+        e:
+          type: string
+          description: RSA exponent
+        n:
+          type: string
+          description: RSA moduluses
+        use:
+          type: string
+          description: key usage
+        kty:
+          type: string
+          description: key type
+    AssignRoleObj:
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+        accountId:
+          type: string
+        roleId:
+          type: string
+
+    LoginUserObj:
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+        accountId:
+          type: string
+        serviceId:
+          type: string
+        password:
+          type: string
+
+    OktaObj:
+      required:
+        - orgName
+        - clientId
+        - clientSecret
+      properties:
+        connectionId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "connectionId, hash"
+        orgName:
+          description: Okta organization name
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "orgName"
+        clientId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "clientId"
+        clientSecret:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "clientSecret"
+        nonce:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "nonce"
+        state:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "state"
+        accountId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId"
+        serviceId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceId"
+        authorizationEndpoint:
+          type: string
+        tokenEndpoint:
+          type: string
+        userInfoEndpoint:
+          type: string
+        issuerEndpoint:
+          type: string
+
+    AttributeRoleMapping:
+      required:
+        - attribute
+        - value
+        - roleId
+      properties:
+        attribute:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "attribute"
+        value:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "value"
+        roleId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "roleId"
+    OAuthTokenRequest:
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    OAuthTokenResponse:
+      properties:
+        accessToken:
+          type: string
+        expiresIn:
+          type: integer
+        tokenType:
+          type: string
+    ClientKeyObject:
+      properties:
+        accountId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId"
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["roleId1", "roleId2", "roleId3"]
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "roles"
+        clientName:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "clientName"
+        clientKeyId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "clientKeyId"
+        serviceId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceId"
+        isActive:
+          type: boolean
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "isActive"
+    ClientKeyRequest:
+      required:
+        - defaultRoleId
+        - clientName
+      properties:
+        defaultRoleId:
+          type: string
+        clientName:
+          type: string
+    ClientKeyResponse:
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    SAMLObj:
+      required:
+        - accountId
+        - serviceId
+        - defaultRoleId
+        - idProvider
+      properties:
+        connectionId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "connectionId, hash"
+        idProvider:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "idProvider"
+        defaultRoleId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "defaultRoleId"
+        loginLink:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "loginLink"
+        metadataLink:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "metadataLink"
+        acsLink:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "acsLink"
+        audienceLink:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "audienceLink"
+        attributeRoleMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeRoleMapping'
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "attributeRoleMappings"
+        rootURL:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "rootURL"
+        accountId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId"
+        serviceId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceId"
+
+    Tags:
+      required:
+        - serviceId
+        - name
+        - resourceId
+        - token
+        - tags
+      properties:
+        serviceIdPath:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceIdPath, hash"
+        serviceId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "serviceId"
+        name:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "name"
+        resourceId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "resourceId, hash"
+        accountId:
+          type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "accountId"
+        token:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "tags"
+        version:
+          type: integer
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "version"
+        updatedAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "updatedAt"
+        createdAt:
+          type: integer
+          format: int64
+          x-oapi-codegen-extra-tags:
+            dynamodbav: "createdAt"
+    Organization:
+      required:
+        - accountId
+        - name
+        - adminAccount
+      properties:
+        accountId:
+          type: string
+        name:
+          type: string
+        adminAccount:
+          type: string
+        usersCount:
+          type: integer
+        rolesCount:
+          type: integer
+        oidcConnectionsCount:
+          type: integer
+        samlConnectionsCount:
+          type: integer
+        launchedServices:
+          type: array
+          items:
+            type: string
+        subscribedServices:
+          type: array
+          items:
+            type: string
+        subscribers:
+          type: array
+          items:
+            type: string
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message

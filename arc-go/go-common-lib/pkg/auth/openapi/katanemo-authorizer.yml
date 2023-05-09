@@ -1,0 +1,130 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Katanemo Authorizer
+  description: Katanemo authorizer service for AAA
+  termsOfService: https://swagger.io/terms/
+  contact:
+    name: Katanemo Labs Inc.
+    email: info@katanemo.com
+    url: https://katanemo.com
+servers:
+  - url: http://localhost:8081
+paths:
+  /authorize:
+    post:
+      summary: Authorize a request
+      description: Authorize a request
+      operationId: authorizeRequest
+      requestBody:
+        description: Authorization request information.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizationRequest'
+      responses:
+        '200':
+          description: Successful authorization
+        '401':
+          description: Invalid Token.
+        '403':
+          description: Unauthorized call.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /access-logs:
+    post:
+      summary: Add access-logs from ARC.
+      description: Add access-logs from ARC.
+      operationId: addAccessLogs
+      requestBody:
+        description: List of access logs.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AuditLogEntry'
+      responses:
+        '200':
+          description: Added logs successfully.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /healthz:
+    get:
+      summary: Returns service health
+      operationId: GetHealthz
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  schemas:
+    AuthorizationRequest:
+      required:
+        - token
+        - path
+        - httpMethod
+      properties:
+        token:
+          type: string
+          description: Authorization Token
+        path:
+          type: string
+          description: Authorization path
+        httpMethod:
+          type: string
+          description: Authorization HTTP Method (GET, POST, PUT, PATCH, DELETE)
+        requestBody:
+          type: string
+          description: Requst body in json format
+    # Note: any change in schema of AuditLogEntry should also refect in corresponding object in API's spec
+    AuditLogEntry:
+      required:
+        - accountId
+        - serviceId
+        - path
+        - operation
+        - authenticationCode
+        - authorizationCode
+        - principal
+      properties:
+        accountId:
+          type: string
+        serviceId:
+          type: string
+        path:
+          type: string
+        operation:
+          type: string
+        principal:
+          type: string
+        authenticationCode:
+          type: integer
+        authorizationCode:
+          type: integer
+
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
