@@ -1,7 +1,9 @@
 . common.sh
-cd infra
-API_GATEWAY=$(terraform output katanemo_apigw_id | sed -e 's/\"//g')
-cd -
+# cd infra
+# API_GATEWAY=$(terraform output katanemo_apigw_id | sed -e 's/\"//g')
+# cd -
+
+API_GATEWAY=https://zq2lam3i96.execute-api.us-west-2.amazonaws.com/prod/
 
 log 'trying to create patient record using receptionint token'
 log curl -XPOST -d '{"name": "John Doe", "notes": "the perfect human being"}' $API_GATEWAY/patient -H "Authorization: Bearer xxxx"

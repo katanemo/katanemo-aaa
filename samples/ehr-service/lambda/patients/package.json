@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1370.0"
+    "aws-sdk": "^2.1374.0"
   },
   "type": "module"
 }
