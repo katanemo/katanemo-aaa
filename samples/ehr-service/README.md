@@ -46,6 +46,7 @@ $ cdk bootstrap
 
 ```
 $ cdk deploy
+```
 
 Note after deployment is complete you will see following new resources in AWS account,
 
