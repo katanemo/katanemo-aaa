@@ -20,7 +20,6 @@ function authorizeRequest(token, path, method, methodArn, callback) {
   fetch(authEndpoint + '/authorize', {
     method: 'POST',
     headers: {
-      "Authentication": "Bearer " + token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body)
