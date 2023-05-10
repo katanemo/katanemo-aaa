@@ -12,6 +12,7 @@ export class ApiLambdaEhrServiceStack extends Stack {
 
     const clientKey = new CfnParameter(this, 'clientKey');
     const clientSecret = new CfnParameter(this, 'clientSecret');
+    const apiEndpoint = new CfnParameter(this, 'apiEndpoint');
 
     const patientRecordsTable = new Table(this, 'patient-records', {
       partitionKey: {
@@ -56,6 +57,9 @@ export class ApiLambdaEhrServiceStack extends Stack {
         ],
       },
       runtime: Runtime.NODEJS_14_X,
+      environment: {
+        API_ENDPOINT: apiEndpoint.valueAsString,
+      }
     }
 
     // patient record lambda methods

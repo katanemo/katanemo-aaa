@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 
-const authEndpoint = "https://auth.us-west-2.katanemo.dev"
+const authEndpoint = process.env.API_ENDPOINT
 
 function extractTokenFromHeader(e) {
   if (e.authorizationToken && e.authorizationToken.split(' ')[0] === 'Bearer') {
