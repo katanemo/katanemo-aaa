@@ -11,6 +11,7 @@ if [[ -z "$ADMIN_ACCOUNT_ID" ]] || \
   exit 1
 fi
 
+npm install
 npm run build
 
 cdk deploy --parameters accountId=$ADMIN_ACCOUNT_ID \
