@@ -37,4 +37,8 @@ curl $API_GATEWAY/patient/$PATIENT_ID -H "Authorization: Bearer `sh get_acmeheal
 
 log 'trying to get patient record using acme health admin token'
 log curl $API_GATEWAY/patient/$PATIENT_ID -H "Authorization: Bearer xxxx"
-curl $API_GATEWAY/patient/$PATIENT_ID -H "Authorization: Bearer `sh get_acmehealth_admin_token.sh`" 2> /dev/null | jq .
+ACMEHEALTH_ADMIN_TOKEN=$(sh get_acmehealth_admin_token.sh)
+curl $API_GATEWAY/patient/$PATIENT_ID -H "Authorization: Bearer $ACMEHEALTH_ADMIN_TOKEN" 2> /dev/null | jq .
+
+log 2nd try to get patient record using acme health admin token
+curl $API_GATEWAY/patient/$PATIENT_ID -H "Authorization: Bearer $ACMEHEALTH_ADMIN_TOKEN" 2> /dev/null | jq .
