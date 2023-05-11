@@ -22,4 +22,5 @@ cdk bootstrap
 
 
 log cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="https://api.us-west-2.katanemo.dev" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
+# cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="https://api.us-west-2.katanemo.dev" --parameters authEndpoint="https://auth.us-west-2.katanemo.dev"
 cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="https://api.us-west-2.katanemo.dev" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
