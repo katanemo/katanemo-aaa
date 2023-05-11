@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 
-const authEndpoint = "https://auth.us-west-2.katanemo.dev"
+const authEndpoint = process.env.AUTH_ENDPOINT
 
 function extractTokenFromHeader(e) {
   if (e.authorizationToken && e.authorizationToken.split(' ')[0] === 'Bearer') {
@@ -17,6 +17,7 @@ function authorizeRequest(token, path, method, methodArn, callback) {
     "Path": path,
     "HttpMethod": method,
   }
+  var now = new Date().getTime();
   fetch(authEndpoint + '/authorize', {
     method: 'POST',
     headers: {
@@ -25,9 +26,11 @@ function authorizeRequest(token, path, method, methodArn, callback) {
     },
     body: JSON.stringify(body)
   }).then((resp) => {
+    const latency = new Date().getTime() - now
+    console.log('auth service response time - auth public endpoint: ' + latency + 'ms')
     if (resp.status == 200) {
       let decoded = jwt.decode(token)
-      callback(null, generatePolicy(decoded.sub, 'Allow', methodArn, decoded.accountId))
+      callback(null, generatePolicy(decoded.sub, 'Allow', methodArn, decoded.accountId, latency))
     } else {
       callback('Unauthorized')
     }
@@ -49,7 +52,7 @@ export function handler(event, _context, callback) {
 }
 
 // Help function to generate an IAM policy
-var generatePolicy = function (principalId, effect, resource, tenantId) {
+var generatePolicy = function (principalId, effect, resource, tenantId, latency) {
   var authResponse = {};
 
   authResponse.principalId = principalId;
@@ -67,6 +70,7 @@ var generatePolicy = function (principalId, effect, resource, tenantId) {
 
   authResponse.context = {
       "tenantId": tenantId,
+      "authLatency": latency
   };
   return authResponse;
 }

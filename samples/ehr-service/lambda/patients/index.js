@@ -16,6 +16,7 @@ export async function handler(event, context) {
 
   try {
     let tenantId = getTenantId(event)
+    let latency = getLatency(event)
     switch (event.httpMethod) {
       case 'DELETE': {
         await deletePatient(event['pathParameters']['patientId']);
@@ -23,6 +24,7 @@ export async function handler(event, context) {
       }
       case 'GET':
         body = await getPatient(event['pathParameters']['patientId']);
+        body['latency'] = latency
         if (body.Item == null) {
           statusCode = '404'
           body = 'patient not found'
@@ -97,6 +99,10 @@ async function getPatient(patientId) {
       }
     }
   ).promise();
+}
+
+function getLatency(event) {
+  return ((event['requestContext'] ?? {})['authorizer'] ?? {})['authLatency'] ?? null
 }
 
 function getTenantId(event) {
