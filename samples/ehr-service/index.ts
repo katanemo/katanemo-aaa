@@ -13,6 +13,7 @@ export class ApiLambdaEhrServiceStack extends Stack {
     const clientKey = new CfnParameter(this, 'clientKey');
     const clientSecret = new CfnParameter(this, 'clientSecret');
     const apiEndpoint = new CfnParameter(this, 'apiEndpoint');
+    const authEndpoint = new CfnParameter(this, 'authEndpoint');
 
     const patientRecordsTable = new Table(this, 'patient-records', {
       partitionKey: {
@@ -43,6 +44,9 @@ export class ApiLambdaEhrServiceStack extends Stack {
         ],
       },
       runtime: Runtime.NODEJS_18_X,
+      environment: {
+        AUTH_ENDPOINT: authEndpoint.valueAsString,
+      },
     });
 
     const katanemoTokenAuthorizer = new TokenAuthorizer(this, 'KatanemoTokenAutorizer', {

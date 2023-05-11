@@ -7,7 +7,7 @@ if [[ "$1" == "terraform" ]]; then
   API_GATEWAY=$(terraform output katanemo_apigw_id | sed -e 's/\"//g')
   cd -
 else
-  API_GATEWAY=$(aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
+  API_GATEWAY=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
 fi
 
 echo "API_GATEWAY: $API_GATEWAY"
