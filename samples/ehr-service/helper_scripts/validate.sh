@@ -1,14 +1,7 @@
 set -e
-. common.sh
-
-if [[ "$1" == "terraform" ]]; then
-  echo "using terraform"
-  cd infra
-  API_GATEWAY=$(terraform output katanemo_apigw_id | sed -e 's/\"//g')
-  cd -
-else
-  API_GATEWAY=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
-fi
+KATUTIL=../../../cli/bin/katutil
+. ../common.sh
+API_GATEWAY=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
 
 echo "API_GATEWAY: $API_GATEWAY"
 
