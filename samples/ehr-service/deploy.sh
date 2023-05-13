@@ -40,3 +40,7 @@ cdk bootstrap
 
 log cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters authEndpoint="$AUTH_ENDPOINT"
 cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters authEndpoint="$AUTH_ENDPOINT"
+
+API_GATEWAY=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
+
+log API Gateway setup with with lambda authorizer $API_GATEWAY
