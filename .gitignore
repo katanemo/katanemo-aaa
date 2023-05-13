@@ -5,10 +5,14 @@ terraform.tfstate.backup
 samples/ehr-service/tf_infra/builds/
 node_modules
 
-samples/ehr-service/.ehr*
-samples/ehr-service/.subscriber_details
 .venv
 __pycache__
 samples/ehr-service/cdk.out/
 samples/ehr-service/index.js
 cdk.out
+.ehr_admin_details
+.ehr_service_details
+.subscriber_details
+arc-ecs/index.d.ts
+arc-ecs/index.js
+arc-ecs/lib/arc-stack.js

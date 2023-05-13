@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e -o errexit -o pipefail
-
+KATUTIL=../../../cli/bin/katutil
 . ./common.sh
 . .ehr_admin_details
 . .ehr_service_details
