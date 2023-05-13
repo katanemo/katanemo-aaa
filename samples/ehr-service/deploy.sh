@@ -4,11 +4,9 @@ set -e
 KATUTIL=../../cli/bin/katutil
 AUTH_ENDPOINT=https://auth.us-west-2.katanemo.dev
 KATANEMO_ACCOUNT_EMAIL=$1
-KATANEMO_ACCOUNT_ID=$2
 
-if [[ -z "$KATANEMO_ACCOUNT_EMAIL" ]]  || \
-   [[ -z "$KATANEMO_ACCOUNT_ID" ]]; then
-  echo "usage $0 <katanemo-account-email> <katanemo-account_id>"
+if [[ -z "$KATANEMO_ACCOUNT_EMAIL" ]]; then
+  echo "usage $0 <katanemo-account-email>"
   exit 1
 fi
 
@@ -20,9 +18,12 @@ source common.sh
 KATANEMO_SERVICE_ID=$($KATUTIL get-default-service | jq -r .serviceId)
 
 # get ehr admin token to create client key
-EHR_ADMIN_TOKEN=$($KATUTIL login-with-password --service_id $KATANEMO_SERVICE_ID --email $KATANEMO_ACCOUNT_EMAIL --password $EHR_ADMIN_PASSWORD | jq -r .token)
+LOGIN_RESP=$($KATUTIL login-with-password --service_id $KATANEMO_SERVICE_ID --email $KATANEMO_ACCOUNT_EMAIL --password $EHR_ADMIN_PASSWORD)
+EHR_ADMIN_TOKEN=$(echo $LOGIN_RESP | jq -r .token)
 
-log successfully logged in as $KATANEMO_ACCOUNT_EMAIL with katanemo
+KATANEMO_ACCOUNT_ID=$(echo $EHR_ADMIN_TOKEN | jq -R 'split(".") | .[1] | @base64d | fromjson | .accountId' -r)
+
+log successfully logged in as $KATANEMO_ACCOUNT_EMAIL with katanemo $KATANEMO_ACCOUNT_ID
 
 # get admin role id to be used with client key
 EHR_ADMIN_ROLE_ID=`$KATUTIL get-roles --account_id $KATANEMO_ACCOUNT_ID --token $EHR_ADMIN_TOKEN | jq -r '.[] | select(.rolename | test("admin") ) | .roleId'`
