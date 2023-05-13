@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+source common.sh
+
 KATUTIL=../../cli/bin/katutil
 AUTH_ENDPOINT=https://auth.us-west-2.katanemo.dev
 KATANEMO_ACCOUNT_EMAIL=$1
@@ -13,7 +15,7 @@ fi
 echo Enter password for $KATANEMO_ACCOUNT_EMAIL
 read EHR_ADMIN_PASSWORD
 
-source common.sh
+
 
 KATANEMO_SERVICE_ID=$($KATUTIL get-default-service | jq -r .serviceId)
 
