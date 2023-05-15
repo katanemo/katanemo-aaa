@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e -o errexit -o pipefail
 
-. ./common.sh
+. ../common.sh
 
 log '=== signing up ehr admin to katanemo ==='
 
@@ -12,11 +12,12 @@ fi
 
 EHR_ADMIN_EMAIL=$1
 
-# katutil signup-service --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL | jq -r .accountId
+
+KATANEMO_SERVICE_ID=$(katutil get-default-service | jq -r .serviceId)
 
 # signup ehr admin
 log katutil signup-service --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL
-EHR_ADMIN_ACCOUNT_ID=$($KATUTIL signup-service --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL | jq -r .accountId)
+EHR_ADMIN_ACCOUNT_ID=$(katutil signup-service --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL | jq -r .accountId)
 
 log enter code sent to $EHR_ADMIN_EMAIL
 read CODE
@@ -27,12 +28,12 @@ fi
 
 # confirm and set its password
 log katutil confirm-and-set-password --code $CODE --service_id $KATANEMO_SERVICE_ID --account_id $EHR_ADMIN_ACCOUNT_ID --email $EHR_ADMIN_EMAIL --password xxxx
-$KATUTIL confirm-and-set-password --code $CODE --service_id $KATANEMO_SERVICE_ID --account_id $EHR_ADMIN_ACCOUNT_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD
+katutil confirm-and-set-password --code $CODE --service_id $KATANEMO_SERVICE_ID --account_id $EHR_ADMIN_ACCOUNT_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD
 
 # create client keys to interact with katanemo api
-EHR_ADMIN_TOKEN=$($KATUTIL login-with-password --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD | jq -r .token)
-EHR_ADMIN_ROLE_ID=`$KATUTIL get-roles --account_id $EHR_ADMIN_ACCOUNT_ID --token $EHR_ADMIN_TOKEN | jq -r '.[] | select(.rolename | test("admin") ) | .roleId'`
-EHR_CLIENT_KEY=`$KATUTIL create-client-key --account_id $EHR_ADMIN_ACCOUNT_ID --client_name 'ehr client key' --role_id $EHR_ADMIN_ROLE_ID --token $EHR_ADMIN_TOKEN`
+EHR_ADMIN_TOKEN=$(katutil login-with-password --service_id $KATANEMO_SERVICE_ID --email $EHR_ADMIN_EMAIL --password $EHR_ADMIN_PASSWORD | jq -r .token)
+EHR_ADMIN_ROLE_ID=`katutil get-roles --account_id $EHR_ADMIN_ACCOUNT_ID --token $EHR_ADMIN_TOKEN | jq -r '.[] | select(.rolename | test("admin") ) | .roleId'`
+EHR_CLIENT_KEY=`katutil create-client-key --account_id $EHR_ADMIN_ACCOUNT_ID --client_name 'ehr client key' --role_id $EHR_ADMIN_ROLE_ID --token $EHR_ADMIN_TOKEN`
 
 EHR_CLIENT_ID=$(echo $EHR_CLIENT_KEY | jq -r .clientId)
 EHR_CLIENT_SECRET=$(echo $EHR_CLIENT_KEY | jq -r .clientSecret)
