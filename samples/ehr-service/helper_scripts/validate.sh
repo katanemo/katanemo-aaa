@@ -1,5 +1,4 @@
 set -e
-KATUTIL=../../../cli/bin/katutil
 . ../common.sh
 API_GATEWAY=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
 

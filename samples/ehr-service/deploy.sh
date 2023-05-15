@@ -63,5 +63,5 @@ cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_
 
 API_GATEWAY=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
 
-log Katanemo ARC Endpoint: $API_GATEWAY
+log Katanemo ARC Endpoint: $ARC_AUTH_ENDPOINT
 log API Gateway configured with katanemo lambda authorizer $API_GATEWAY
