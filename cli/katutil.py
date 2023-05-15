@@ -25,9 +25,9 @@ create_service_cmd.add_argument("--name", type=str, help="", required=True)
 create_service_cmd.add_argument("--description", type=str, help="service description", default="")
 create_service_cmd.add_argument("--openapi_spec", type=str, help="open api spec for service", required=True)
 create_service_cmd.add_argument("--redirect_url", type=str, help="redirect url service", required=True)
-create_service_cmd.add_argument("--service_id", type=str, help="service id", default=os.getenv("SERVICE_ID"))
+create_service_cmd.add_argument("--service_id", type=str, help="service id", required=True)
 create_service_cmd.add_argument("--email", type=str, help="", required=True)
-create_service_cmd.add_argument("--password", type=str, help="", default="test123")
+create_service_cmd.add_argument("--password", type=str, help="", required=True)
 
 get_service_cmd = sub_parsers.add_parser("get-service", help="get service details")
 get_service_cmd.add_argument("--subscribed_service_id", type=str, help="service id", required=True)
@@ -37,12 +37,12 @@ get_service_cmd.add_argument("--password", type=str, help="", default="test123")
 
 
 get_token_cmd = sub_parsers.add_parser("login-with-password", help="")
-get_token_cmd.add_argument("--service_id", type=str, help="service id", default=os.getenv("SERVICE_ID"))
+get_token_cmd.add_argument("--service_id", type=str, help="service id", required=True)
 get_token_cmd.add_argument("--email", type=str, help="", required=True)
-get_token_cmd.add_argument("--password", type=str, help="", default="MyTestPassword")
+get_token_cmd.add_argument("--password", type=str, help="", required=True)
 
 get_token_cmd = sub_parsers.add_parser("get-token-client-key", help="")
-get_token_cmd.add_argument("--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
+get_token_cmd.add_argument("--account_id", type=str, help="", required=True)
 get_token_cmd.add_argument("--client_key_id", type=str, help="", required=True)
 get_token_cmd.add_argument("--client_key_secret", type=str, help="", required=True)
 
