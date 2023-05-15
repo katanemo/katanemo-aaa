@@ -51,7 +51,7 @@ After deployment is complete you will see following new resources in your AWS ac
 3. Lambda function to manage patient records
 4. Lambda function to manage diagnostic records
 5. Katanemo's ARC deployed as ECS service
-6. API G that uses lambda authorizer to protect patient and diagnostic REST API paths
+6. API Gateway that uses lambda authorizer to protect patient and diagnostic REST API paths
 
 To find out name of your API gateway issue following command,
 ```
