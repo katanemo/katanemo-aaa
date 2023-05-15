@@ -20,43 +20,40 @@ Following are main components in this sample application,
 
 # Requirements
 
-- AWS CLI: version aws-cli/2.11.15
-- AWS Cloud Development Kit (CDK): version 2.78.0 (build 8e95c37)
-- Docker: version 20.10.23
-- jq: v1.6
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html): version aws-cli/2.11.15
+- [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html): version 2.78.0 (build 8e95c37)
+- [Docker](https://docs.docker.com/get-docker/): version 20.10.23
+- [jq](https://stedolan.github.io/jq/download/): v1.6
 - AWS Account
 
 # Installation
 
-Using following commands to install lambda authorizer that uses apigateay to install in your account,
+Using following steps to install lambda authorizer that uses apigateay to authorize calls to EHR service,
 
 1. Add katutil to path
-```
-$ export PATH=$PATH:`pwd`/../../cli/bin
-```
-
-Ensure that katutil is working by typing in following
-```
-$ katutil get-default-service | jq -r .serviceId
-```
-
+    ```
+    $ export PATH=$PATH:`pwd`/../../cli/bin
+    ```
+    Ensure that katutil is working by typing in following
+    > you may see `broken pipe` error which is due to docker, rerun should work fine
+    ```
+    $ katutil get-default-service | jq -r .serviceId
+    ```
 2. Deploy ARC and Katanemo using CDK
+    ```
+    $ sh deploy.sh <katanemo-account-email> <service-id>
+    ```
 
-```
-$ sh deploy.sh <katanemo-account-email> <service-id>
-```
+After deployment is complete you will see following new resources in your AWS account,
 
-Note after deployment is complete you will see following new resources in AWS account,
-
-1. ddb tables for patient and diagnost records
-2. lambda authroizer
-3. lambda function to manage patient records
-4. lambda function to manage diagnostic records
-5. api gateway that uses lambda authorizer to protect patient and diagnostic REST API paths
-6. ARC deployed as ecs service
+1. DynamoDb tables for patient and diagnost records
+2. Lambda authroizer
+3. Lambda function to manage patient records
+4. Lambda function to manage diagnostic records
+5. Katanemo's ARC deployed as ECS service
+6. API G that uses lambda authorizer to protect patient and diagnostic REST API paths
 
 To find out name of your API gateway issue following command,
-
 ```
 $ aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r
 ```
