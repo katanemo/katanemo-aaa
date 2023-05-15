@@ -66,3 +66,10 @@ To find out name of Katanemo's ARC Endpoint address use following command,
 ```
 $ aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("KatanemoArcServiceURL")) | .OutputValue' -r
 ```
+
+# Cleanup
+
+To remove all resources configured during this sample application issue following command,
+```
+$ sh cleanup.sh
+```
