@@ -13,9 +13,9 @@ if [[ -z "$1" ]]; then
 fi
 
 # ensure that api spec file has full path and can work with docker
+# for katutil running as docker container its important to make sure that spec file is in current folder
 
 ARG_API_SPEC=$1
-
 API_SPEC_BASENAME=$(basename $ARG_API_SPEC)
 API_SPEC=$PWD/$API_SPEC_BASENAME
 
