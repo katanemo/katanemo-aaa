@@ -40,11 +40,10 @@ Using following commands to install lambda authorizer that uses apigateay to ins
 ```
 $ export PATH=$PATH:`pwd`/../../cli/bin
 ```
-Ensure that katutil is working by typing in following,
+Ensure that katutil is working by typing in following
 ```
 $ katutil get-default-service | jq -r .serviceId
 ```
-$ export PATH=$PATH:../../cli/bin
 
 2. Deploy ARC and Katanemo using CDK
 
@@ -67,37 +66,8 @@ To find out name of your API gateway issue following command,
 $ aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r
 ```
 
-# Testing (using provided helper scripts)
+To find out name of Katanemo's ARC Endpoint address use following command,
 
-- navigate to helper_scripts folder
 ```
-$ cd helper_scripts
+$ aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("KatanemoArcServiceURL")) | .OutputValue' -r
 ```
-
-- Signup EHR SaaS Service's admin to Katanemo
-```
-$ sh ehr_admin_signup.sh <ehr_admin_email>
-```
-
-Note: you would need to enter correct email address so you can receive confirmation codes.
-
-- Initialize EHR SaaS Service's OpenApi service with Katanemo
-```
-$ sh ehr_service_init.sh ../ehr.yaml
-```
-
-- Onboard AchmeHealth with EHR SaaS Service's patient record service
-```
-$ sh signup-subscriber.sh <ache_health_admin_email> <acme_health_doctor_email> <acme_health_receptionist_email>
-```
-
-# Validation
-
-Run validate.sh script to ensure that,
-
-1. receptionist cannot create patient account
-2. doctor cannot create patient account
-3. acmehealth admin can create patient account
-4. receptionist cannot read patient account
-5. doctor can read patient account
-6. acmehealth admin can read patient account
