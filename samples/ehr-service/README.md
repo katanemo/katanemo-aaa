@@ -1,7 +1,9 @@
 # Overview
-Sample EHR application that uses katanemo's aaa stack to provide seamless authentication, authorization and attestation service.
+Sample EHR application that uses katanemo's aaa stack to provide seamless authentication, authorization and attestation service. This sample application uses lambda authorizer to authenticate calls to EHR service. Here is how different services are interacting with each other,
 
-Following are main applications and their roles in this sample code,
+<img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
+
+Following are main components in this sample application,
 
 `EHR SaaS Service`: An OpenAPI based services that manages patiend records. It exposes following endpoints,
 
@@ -14,15 +16,7 @@ Following are main applications and their roles in this sample code,
 
 `AcmeHealth.io`: A health provider that uses EHR SaaS Service to store patient records.
 
-EHR SaaS Service uses Katanemo's AAA stack to allow its subscribers (e.g. AcmeHealth.io) to onboard seamlessly.
-
-TODO: Add more details
-
-## Architecture
-
-This sample application uses lambda authorizer to authenticate calls to EHR service. Here is how different services are interacting with each other,
-
-<img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
+- EHR SaaS Service uses Katanemo's AAA stack to allow its subscribers (e.g. AcmeHealth.io) to onboard seamlessly.
 
 # Requirements
 
@@ -40,6 +34,7 @@ Using following commands to install lambda authorizer that uses apigateay to ins
 ```
 $ export PATH=$PATH:`pwd`/../../cli/bin
 ```
+
 Ensure that katutil is working by typing in following
 ```
 $ katutil get-default-service | jq -r .serviceId
