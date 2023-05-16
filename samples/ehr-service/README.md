@@ -28,7 +28,7 @@ Following are main components in this sample application,
 
 # Installation
 
-Use following steps to install lambda authorizer that uses apigateay to authorize calls to EHR service,
+Use following steps to install lambda authorizer that uses apigateway to authorize calls to EHR service,
 
 
 1. Clone [katanemo/katanemo-aaa](https://github.com/katanemo/katanemo-aaa) repo and navigate to samples/ehr_service
