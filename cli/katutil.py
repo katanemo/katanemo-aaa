@@ -20,15 +20,6 @@ init_service_cmd.add_argument("--redirect_uri", type=str, help="redirect url ser
 init_service_cmd.add_argument("--token", type=str, help="access token", required=True)
 init_service_cmd.add_argument("--print_output", type=bool, help="print response from server", default=False)
 
-create_service_cmd = sub_parsers.add_parser("create-service", help="registers service with katanemo")
-create_service_cmd.add_argument("--name", type=str, help="", required=True)
-create_service_cmd.add_argument("--description", type=str, help="service description", default="")
-create_service_cmd.add_argument("--openapi_spec", type=str, help="open api spec for service", required=True)
-create_service_cmd.add_argument("--redirect_url", type=str, help="redirect url service", required=True)
-create_service_cmd.add_argument("--service_id", type=str, help="service id", required=True)
-create_service_cmd.add_argument("--email", type=str, help="", required=True)
-create_service_cmd.add_argument("--password", type=str, help="", required=True)
-
 get_service_cmd = sub_parsers.add_parser("get-service", help="get service details")
 get_service_cmd.add_argument("--subscribed_service_id", type=str, help="service id", required=True)
 get_service_cmd.add_argument("--service_id", type=str, help="service id", required=True)
@@ -36,68 +27,70 @@ get_service_cmd.add_argument("--email", type=str, help="", required=True)
 get_service_cmd.add_argument("--password", type=str, help="", default="test123")
 
 
-get_token_cmd = sub_parsers.add_parser("login-with-password", help="")
+get_token_cmd = sub_parsers.add_parser("login-with-password", help="get token for service")
 get_token_cmd.add_argument("--service_id", type=str, help="service id", required=True)
 get_token_cmd.add_argument("--email", type=str, help="", required=True)
 get_token_cmd.add_argument("--password", type=str, help="", required=True)
 
-get_token_cmd = sub_parsers.add_parser("get-token-client-key", help="")
+get_token_cmd = sub_parsers.add_parser("get-token-client-key", help="exchange client key for token")
 get_token_cmd.add_argument("--account_id", type=str, help="", required=True)
 get_token_cmd.add_argument("--client_key_id", type=str, help="", required=True)
 get_token_cmd.add_argument("--client_key_secret", type=str, help="", required=True)
 
-signup_service_cmd = sub_parsers.add_parser("signup-service", help="")
+signup_service_cmd = sub_parsers.add_parser("signup-service", help="sign up for service")
 signup_service_cmd.add_argument("--service_id", type=str, help="", required=True)
 signup_service_cmd.add_argument("--email", type=str, help="", required=True)
 
-add_user_cmd = sub_parsers.add_parser("add-user", help="")
+add_user_cmd = sub_parsers.add_parser("add-user", help="add user to an organization")
 add_user_cmd.add_argument("--account_id", type=str, help="", required=True)
 add_user_cmd.add_argument("--email", type=str, help="", required=True)
 add_user_cmd.add_argument("--tags", type=str, help="", default=None)
 add_user_cmd.add_argument("--token", type=str, help="", required=True)
 
-get_auth_service_cmd = sub_parsers.add_parser("get-default-service", help="")
+get_auth_service_cmd = sub_parsers.add_parser("get-default-service", help="get katanemo auth service")
 
-confirm_set_password_cmd = sub_parsers.add_parser("confirm-and-set-password", help="")
+confirm_set_password_cmd = sub_parsers.add_parser("confirm-and-set-password", help="confirm and set password")
 confirm_set_password_cmd.add_argument("--code", type=str, help="", default="")
 confirm_set_password_cmd.add_argument("--service_id", type=str, help="", required=True)
 confirm_set_password_cmd.add_argument("--account_id", type=str, help="", default="")
 confirm_set_password_cmd.add_argument("--email", type=str, help="", required=True)
 confirm_set_password_cmd.add_argument("--password", type=str, help="", required=True)
 
-get_password_policy = sub_parsers.add_parser("get-password-policy", help="")
+get_password_policy = sub_parsers.add_parser("get-password-policy", help="gets passport policy for service")
 get_password_policy.add_argument("--service_id", type=str, help="", required=True)
 
-create_client_key_cmd = sub_parsers.add_parser("create-client-key", help="")
+create_client_key_cmd = sub_parsers.add_parser(
+    "create-client-key", help="creates client key and secret with specified role"
+)
 create_client_key_cmd.add_argument("--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
 create_client_key_cmd.add_argument("--role_id", type=str, help="", required=True)
 create_client_key_cmd.add_argument("--client_name", type=str, help="", required=True)
 create_client_key_cmd.add_argument("--token", type=str, help="", default=os.getenv("TOKEN"))
 
-get_client_key_cmd = sub_parsers.add_parser("get-client-key", help="")
+get_client_key_cmd = sub_parsers.add_parser("get-client-key", help="get details of client key")
 get_client_key_cmd.add_argument("--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
 get_client_key_cmd.add_argument("--client_key_id", type=str, help="", required=True)
 
-get_client_keys_cmd = sub_parsers.add_parser("get-client-keys", help="")
+get_client_keys_cmd = sub_parsers.add_parser("get-client-keys", help="gets list of client keys for account")
 get_client_keys_cmd.add_argument("--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
 
-delete_client_key_cmd = sub_parsers.add_parser("delete-client-key", help="")
+delete_client_key_cmd = sub_parsers.add_parser("delete-client-key", help="deletes a client key")
 delete_client_key_cmd.add_argument("--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
 delete_client_key_cmd.add_argument("--client_key_id", type=str, help="", required=True)
 
-create_and_assign_role_cmd = sub_parsers.add_parser("create-role", help="")
+create_and_assign_role_cmd = sub_parsers.add_parser("create-role", help="create a role")
 create_and_assign_role_cmd.add_argument("--account_id", type=str, required=True)
 create_and_assign_role_cmd.add_argument("--service_id", type=str, required=True)
 create_and_assign_role_cmd.add_argument("--role_name", type=str, required=True)
 create_and_assign_role_cmd.add_argument("--policies", type=str, required=True)
 create_and_assign_role_cmd.add_argument("--token", type=str, required=True)
 
-assign_role_cmd = sub_parsers.add_parser("assign-role", help="")
+assign_role_cmd = sub_parsers.add_parser("assign-role", help="assign role to a principal")
 assign_role_cmd.add_argument("--principal_id", type=str, required=True)
 assign_role_cmd.add_argument("--role_id", type=str, required=True)
 assign_role_cmd.add_argument("--token", type=str, required=True)
 
-get_roles_cmd = sub_parsers.add_parser("get-roles", help="")
+get_roles_cmd = sub_parsers.add_parser("get-roles", help="get roles for an account")
 get_roles_cmd.add_argument("--account_id", type=str, required=True)
 get_roles_cmd.add_argument("--token", type=str, required=True)
 
