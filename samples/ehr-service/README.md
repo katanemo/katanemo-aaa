@@ -1,24 +1,16 @@
 # Overview
-Sample EHR application that uses katanemo's aaa stack to provide seamless authentication, authorization and attestation service. This sample application uses lambda authorizer to authenticate calls to EHR service. Here is how different services are interacting with each other,
+The follwing is a sample Serverless EHR SaaS service that uses Katanemo's rich identity and fine-grained authorization service to build privacy and safe collobration features.  The high-level architecture below captures the different inrastructure pieces of the sample EHR SaaS application and Katanemo's authorization components that deployed alongside our application resources in our AWS VPC.
 
 <img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
 
-Following are main components in this sample application,
+# Key Components and Actors 
 
-`EHR SaaS Service`: An OpenAPI based services that manages patiend records. It exposes following endpoints,
+`EHR SaaS Service`: An OpenAPI based SaaS services that manages Patient and Diagnostic records via separate API-based microservices.
+`AcmeHealth.io`: A provider facility that uses the EHR SaaS Service to store and manage patient records.
 
-- POST:/patient
-- PUT:/patient/{patientId}
-- GET:/patient/{patientId}
-- POST:/diagnostic
-- PUT:/diagnostic/{diagnosticId}
-- GET:/diagnostic/{diagnosticId}
+- The EHR SaaS service uses Katanemo to seamlessly onboard customers (e.g. AcmeHealth.io), and empowers its customers to define modern safety and privacy controls via self-service identity and access management tools offered by Katanemo.
 
-`AcmeHealth.io`: A health provider that uses EHR SaaS Service to store patient records.
-
-- EHR SaaS Service uses Katanemo's AAA stack to allow its subscribers (e.g. AcmeHealth.io) to onboard seamlessly.
-
-# Requirements
+# Pre-Requisites To Deploy EHR SaaS
 
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html): version aws-cli/2.11.15
 - [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html): version 2.78.0 (build 8e95c37)
