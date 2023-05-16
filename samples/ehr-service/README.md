@@ -28,9 +28,15 @@ Following are main components in this sample application,
 
 # Installation
 
-Using following steps to install lambda authorizer that uses apigateay to authorize calls to EHR service,
+Use following steps to install lambda authorizer that uses apigateay to authorize calls to EHR service,
 
-1. Add katutil to path
+
+1. Close this repo and navigate to samples/ehr_service
+    ```
+    $ git clone git@github.com:katanemo/katanemo-aaa.git
+    $ cd katanemo-aaa/samples/ehr-service
+    ```
+2. Add katutil to path
     ```
     $ export PATH=$PATH:`pwd`/../../cli/bin
     ```
@@ -39,14 +45,15 @@ Using following steps to install lambda authorizer that uses apigateay to author
     ```
     $ katutil get-default-service | jq -r .serviceId
     ```
-2. Deploy ARC and Katanemo using CDK
+3. Deploy ARC and Katanemo using CD
+   > Use account-email that you used when onboarding with katanemo. And complete service registration step to get service-id
     ```
     $ sh deploy.sh <katanemo-account-email> <service-id>
     ```
 
 After deployment is complete you will see following new resources in your AWS account,
 
-1. DynamoDb tables for patient and diagnost records
+1. DynamoDb tables for patient and diagnostic records
 2. Lambda authroizer
 3. Lambda function to manage patient records
 4. Lambda function to manage diagnostic records
