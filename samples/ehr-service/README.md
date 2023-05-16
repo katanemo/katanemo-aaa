@@ -45,7 +45,7 @@ Use following steps to install lambda authorizer that uses apigateway to authori
     ```
     $ katutil get-default-service | jq -r .serviceId
     ```
-3. Deploy ARC and Katanemo using CD
+3. Deploy Katanemo's Authentication Runtime Client (ARC), Lambda Authorizer, API Gateway and EHR SaaS Service using CDK
    > Use account-email that you used when onboarding with katanemo. And complete service registration step to get service-id
     ```
     $ sh deploy.sh <katanemo-account-email> <service-id>
