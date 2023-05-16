@@ -41,7 +41,7 @@ Use following steps to install lambda authorizer that uses apigateway to authori
     $ export PATH=$PATH:`pwd`/../../cli/bin
     ```
     Ensure that katutil is working by typing in following
-    > you may see `broken pipe` error which is due to docker, rerun should work fine
+    > on first run katutil will attempt to build docker container for katutil
     ```
     $ katutil get-default-service | jq -r .serviceId
     ```

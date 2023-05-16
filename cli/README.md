@@ -4,7 +4,9 @@ katutil is command line utility to interact with Katanemo's REST based API endpo
 
 ## Installation
 
-katutil is written in python and can be installed by just adding katutil from bin to path. For example,
+katutil is written in python and can be installed by just adding katutil from bin to path. katutil uses [docker](https://docs.docker.com/get-docker/) to build and run its binary. Please ensure that you have docker >= 20.10.23 before proceeding further.
+
+For example,
 
 ```
 $ cd cli
