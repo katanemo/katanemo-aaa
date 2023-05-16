@@ -1,14 +1,16 @@
 # Overview
-The follwing is a sample Serverless EHR SaaS service that uses Katanemo's rich identity and fine-grained authorization service to build privacy and safe collobration features.  The high-level architecture below captures the different inrastructure pieces of the sample EHR SaaS application and Katanemo's authorization components that deployed alongside our application resources in our AWS VPC.
+The follwing project contains a sample Serverless EHR SaaS service that uses Katanemo's rich identity and fine-grained authorization service to build privacy and safe collobration features.
+The high-level architecture below captures AWS infrastructure resources, and Katanemo's authorization components  deployed alongside our application resources.
 
 <img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
 
 # Key Components and Actors 
 
 `EHR SaaS Service`: An OpenAPI based SaaS services that manages Patient and Diagnostic records via separate API-based microservices.
+
 `AcmeHealth.io`: A provider facility that uses the EHR SaaS Service to store and manage patient records.
 
-- The EHR SaaS service uses Katanemo to seamlessly onboard customers (e.g. AcmeHealth.io), and empowers its customers to define modern safety and privacy controls via self-service identity and access management tools offered by Katanemo.
+- The EHR SaaS service uses Katanemo to seamlessly onboard customers (e.g. AcmeHealth.io), and empowers its customers to define modern safety and privacy controls against its service, via self-service identity and access management tools offered by Katanemo.
 
 # Pre-Requisites To Deploy EHR SaaS
 
@@ -20,8 +22,7 @@ The follwing is a sample Serverless EHR SaaS service that uses Katanemo's rich i
 
 # Installation
 
-Use following steps to install lambda authorizer that uses apigateway to authorize calls to EHR service,
-
+Use following steps to install lambda authorizer that uses apigateway to authorize calls to EHR service
 
 1. Clone [katanemo/katanemo-aaa](https://github.com/katanemo/katanemo-aaa) repo and navigate to samples/ehr-service
     ```
