@@ -1,4 +1,4 @@
-# Helper scripts to test ehr service
+# Helper scripts to test EHR SaaS Service
 
 Helper scripts to test and validate EHR service follow these steps,
 
