@@ -36,3 +36,5 @@ EHR_SERVICE_ID=$(katutil init-service --service_name 'patient records service' -
 echo EHR_SERVICE_ID=$EHR_SERVICE_ID > .ehr_service_details
 
 log "=== patients record service initialized with katanemo $EHR_SERVICE_ID ==="
+
+rm -f $API_SPEC
