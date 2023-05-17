@@ -11,9 +11,9 @@ function extractTokenFromHeader(e) {
   }
 }
 
-function authorizeRequest(token, path, method, methodArn, callback) {
+function authorizeRequest(userToken, serviceToken, path, method, methodArn, callback) {
   let body = {
-    "Token": token,
+    "Token": userToken,
     "Path": path,
     "HttpMethod": method,
   }
@@ -21,18 +21,18 @@ function authorizeRequest(token, path, method, methodArn, callback) {
   fetch(authEndpoint + '/authorize', {
     method: 'POST',
     headers: {
-      "Authentication": "Bearer " + token,
+      "Authentication": "Bearer " + serviceToken,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body)
   }).then((resp) => {
     const latency = new Date().getTime() - now
     console.log('auth service response time - auth public endpoint: ' + latency + 'ms')
+    let decoded = jwt.decode(userToken)
     if (resp.status == 200) {
-      let decoded = jwt.decode(token)
       callback(null, generatePolicy(decoded.sub, 'Allow', methodArn, decoded.accountId, latency))
     } else {
-      callback('Unauthorized')
+      callback(null, generatePolicy(decoded.sub, 'Deny', methodArn, decoded.accountId, latency))
     }
   }).catch((e) => {
     console.log(e)
@@ -41,14 +41,15 @@ function authorizeRequest(token, path, method, methodArn, callback) {
 }
 
 export function handler(event, _context, callback) {
-  let token = extractTokenFromHeader(event) || '';
+  let userToken = extractTokenFromHeader(event) || '';
+  let serviceToken = userToken
   let methodArn = event.methodArn
   let apiPath = methodArn.split(':')[5]
   let apiPathTokens = apiPath.split('/')
   let method = apiPathTokens[2]
   let path = '/' + apiPathTokens.slice(3).join('/')
   method = apiPathTokens[2]
-  authorizeRequest(token, path, method, methodArn, callback);
+  authorizeRequest(userToken, serviceToken, path, method, methodArn, callback);
 }
 
 // Help function to generate an IAM policy
