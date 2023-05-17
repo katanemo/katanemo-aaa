@@ -102,8 +102,11 @@ args = parser.parse_args()
 
 
 def get_api_client():
+    api_endpoint = os.getenv("API_ENDPOINT")
+    if api_endpoint is None or api_endpoint == "":
+        api_endpoint = DEFAULT_API_ENDPOINT
     configuration = katanemo_sdk.Configuration(
-        host=os.getenv("API_ENDPOINT", DEFAULT_API_ENDPOINT),
+        host=api_endpoint
     )
     api_client = katanemo_sdk.ApiClient(configuration)
     if hasattr(args, 'token') and args.token:
