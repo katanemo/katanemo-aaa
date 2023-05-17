@@ -2,10 +2,11 @@ FROM python:3
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY cli cli
+COPY python-sdk python-sdk
+RUN cd cli && pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+WORKDIR /usr/src/app/cli
 
 ENTRYPOINT [ "python", "-m", "katutil"]
 CMD ["--help"]
