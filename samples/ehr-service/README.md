@@ -1,6 +1,7 @@
 # Overview
-The follwing project contains a sample Serverless EHR SaaS service that uses Katanemo's rich identity and fine-grained authorization service to build privacy and safe collobration features.
-The high-level architecture below captures AWS infrastructure resources, and Katanemo's authorization components  deployed alongside our application resources.
+The follwing project contains a sample Serverless EHR SaaS service that uses Katanemo's fully featured identity and fine-grained authorization service for privacy and collobration features.
+
+The high-level architecture below captures AWS infrastructure resources of our service, and Katanemo's authorization components deployed alongside our application.
 
 <img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
 
@@ -8,7 +9,7 @@ The high-level architecture below captures AWS infrastructure resources, and Kat
 
 `EHR SaaS Service`: An OpenAPI based SaaS services that manages Patient and Diagnostic records via separate API-based microservices.
 
-`AcmeHealth.io`: A provider facility that uses the EHR SaaS Service to store and manage patient records.
+`Adonis.io`: A provider facility that uses the EHR SaaS Service to store and manage patient records.
 
 - The EHR SaaS service uses Katanemo to seamlessly onboard customers (e.g. AcmeHealth.io), and empowers its customers to define modern safety and privacy controls against its service, via self-service identity and access management tools offered by Katanemo.
 
