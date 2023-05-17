@@ -30,15 +30,15 @@ init_service_cmd.add_argument(
 init_service_cmd.add_argument(
     "--print_output", type=bool, help="print response from server", default=False)
 
-get_service_cmd = sub_parsers.add_parser(
-    "get-service", help="get service details")
-get_service_cmd.add_argument(
-    "--subscribed_service_id", type=str, help="service id", required=True)
-get_service_cmd.add_argument(
-    "--service_id", type=str, help="service id", required=True)
-get_service_cmd.add_argument("--email", type=str, help="", required=True)
-get_service_cmd.add_argument(
-    "--password", type=str, help="", default="test123")
+# get_service_cmd = sub_parsers.add_parser(
+#     "get-service", help="get service details")
+# get_service_cmd.add_argument(
+#     "--subscribed_service_id", type=str, help="service id", required=True)
+# get_service_cmd.add_argument(
+#     "--service_id", type=str, help="service id", required=True)
+# get_service_cmd.add_argument("--email", type=str, help="", required=True)
+# get_service_cmd.add_argument(
+#     "--password", type=str, help="", default="test123")
 
 get_token_cmd = sub_parsers.add_parser(
     "login-with-password", help="get token for service")
@@ -46,13 +46,6 @@ get_token_cmd.add_argument("--service_id", type=str,
                            help="service id", required=True)
 get_token_cmd.add_argument("--email", type=str, help="", required=True)
 get_token_cmd.add_argument("--password", type=str, help="", required=True)
-
-get_token_cmd = sub_parsers.add_parser(
-    "get-token-client-key", help="exchange client key for token")
-get_token_cmd.add_argument("--account_id", type=str, help="", required=True)
-get_token_cmd.add_argument("--client_key_id", type=str, help="", required=True)
-get_token_cmd.add_argument("--client_key_secret",
-                           type=str, help="", required=True)
 
 signup_service_cmd = sub_parsers.add_parser(
     "signup-service", help="sign up for service")
@@ -82,11 +75,6 @@ confirm_set_password_cmd.add_argument(
 confirm_set_password_cmd.add_argument(
     "--password", type=str, help="", required=True)
 
-get_password_policy = sub_parsers.add_parser(
-    "get-password-policy", help="gets passport policy for service")
-get_password_policy.add_argument(
-    "--service_id", type=str, help="", required=True)
-
 create_client_key_cmd = sub_parsers.add_parser(
     "create-client-key", help="creates client key and secret with specified role"
 )
@@ -98,25 +86,6 @@ create_client_key_cmd.add_argument(
     "--client_name", type=str, help="", required=True)
 create_client_key_cmd.add_argument(
     "--token", type=str, help="", default=os.getenv("TOKEN"))
-
-get_client_key_cmd = sub_parsers.add_parser(
-    "get-client-key", help="get details of client key")
-get_client_key_cmd.add_argument(
-    "--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
-get_client_key_cmd.add_argument(
-    "--client_key_id", type=str, help="", required=True)
-
-get_client_keys_cmd = sub_parsers.add_parser(
-    "get-client-keys", help="gets list of client keys for account")
-get_client_keys_cmd.add_argument(
-    "--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
-
-delete_client_key_cmd = sub_parsers.add_parser(
-    "delete-client-key", help="deletes a client key")
-delete_client_key_cmd.add_argument(
-    "--account_id", type=str, help="", default=os.getenv("ACCOUNT_ID"))
-delete_client_key_cmd.add_argument(
-    "--client_key_id", type=str, help="", required=True)
 
 create_and_assign_role_cmd = sub_parsers.add_parser(
     "create-role", help="create a role")
@@ -142,18 +111,18 @@ get_roles_cmd.add_argument("--token", type=str, required=True)
 args = parser.parse_args()
 
 
-def get_api_client(token=None):
+def get_api_client():
     configuration = katanemo_sdk.Configuration(
         host=os.getenv("API_ENDPOINT", DEFAULT_API_ENDPOINT),
     )
     api_client = katanemo_sdk.ApiClient(configuration)
-    if token:
-        api_client.default_headers["Authorization"] = "Bearer " + token
+    if hasattr(args, 'token') and args.token:
+        api_client.default_headers["Authorization"] = "Bearer " + args.token
     return katanemo_sdk.DefaultApi(api_client)
 
 
 if args.sub_parser == "init-service":
-    resp = get_api_client(args.token).create_service(
+    resp = get_api_client().create_service(
         args.service_name, args.service_description, args.redirect_uri, args.api_spec)
     print(resp.json(by_alias=True))
 
@@ -170,14 +139,14 @@ if args.sub_parser == "init-service":
     log.info("")
 
 
-if args.sub_parser == "get-service":
-    log.info("getting login credentials")
-    login_details = core_utils.login(
-        args.subscribed_service_id, args.email, args.password)
-    log.info("login successful")
+# if args.sub_parser == "get-service":
+#     log.info("getting login credentials")
+#     login_details = core_utils.login(
+#         args.subscribed_service_id, args.email, args.password)
+#     log.info("login successful")
 
-    resp = core_utils.get_service(args.service_id, login_details["token"])
-    print(json.dumps(resp))
+#     resp = core_utils.get_service(args.service_id, login_details["token"])
+#     print(json.dumps(resp))
 
 
 if args.sub_parser == "login-with-password":
@@ -214,69 +183,38 @@ if args.sub_parser == "confirm-and-set-password":
                             ))
 
 
-if args.sub_parser == "get-password-policy":
-    password_policy = core_utils.get_password_policy(args.service_id)
-
-
 if args.sub_parser == "create-client-key":
-    resp = core_utils.create_client_key(
-        args.account_id, args.role_id, args.client_name, args.token)
-    print(json.dumps(resp))
-
-
-if args.sub_parser == "get-token-client-key":
-    resp = core_utils.get_token_client_key(
-        args.account_id, args.client_key_id, args.client_key_secret)
-    print(json.dumps(resp))
-
-
-if args.sub_parser == "get-client-key":
-    resp = core_utils.get_client_key(args.account_id, args.client_key_id)
-    print(json.dumps(resp))
-
-
-if args.sub_parser == "get-client-keys":
-    resp = core_utils.get_client_keys(args.account_id)
-    print(json.dumps(resp))
-
-
-if args.sub_parser == "delete-client-key":
-    resp = core_utils.delete_client_keys(args.account_id, args.client_key_id)
-    print(json.dumps(resp))
+    client_key_req = katanemo_sdk.ClientKeyRequest(defaultRoleId=args.role_id, clientName=args.client_name)
+    resp = get_api_client().create_client_key(args.account_id, client_key_req)
+    print(resp.json(by_alias=True))
 
 
 if args.sub_parser == "create-role":
     policiesJson = json.loads(args.policies)
-    roles = core_utils.create_role(
-        args.account_id,
-        args.service_id,
-        args.role_name,
-        json.dumps(policiesJson),
-        args.token,
-    )
+    policy = {
+        "policyContent": json.dumps(policiesJson),
+    }
 
-    print(json.dumps(roles))
+    role = katanemo_sdk.Role(accountId=args.account_id, serviceId=args.service_id, rolename=args.role_name, policy=policy)
+    resp = get_api_client().create_role(args.account_id, role)
+    print(resp.json(by_alias=True))
+
 
 if args.sub_parser == "assign-role":
-    resp = core_utils.assign_role(
-        args.principal_id,
-        args.role_id,
-        args.token,
+    assignRoleReq = katanemo_sdk.AssignRoleObj(
+        principal_id=args.principal_id,
+        role_id = args.role_id,
     )
-
-    print(json.dumps(resp))
+    resp = get_api_client().assign_role_to_principal(assignRoleReq)
+    print(resp.json(by_alias=True))
 
 
 if args.sub_parser == "get-roles":
-    api_response = get_api_client(
-        args.token).get_roles_for_account(args.account_id)
+    api_response = get_api_client().get_roles_for_account(args.account_id)
     print('[' + ','.join([role.json(by_alias=True)
           for role in api_response]) + ']')
 
 
 if args.sub_parser == "add-user":
-    api_response = get_api_client(
-        args.token).create_user_for_account(args.account_id, katanemo_sdk.User(account_id=args.account_id, user_id=args.email, tags=json.loads(args.tags)))
-
+    api_response = get_api_client().create_user_for_account(args.account_id, katanemo_sdk.User(account_id=args.account_id, user_id=args.email, tags=json.loads(args.tags)))
     print(api_response.json(by_alias=True))
-    
