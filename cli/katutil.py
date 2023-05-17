@@ -10,7 +10,7 @@ log.basicConfig(level=log.INFO, format="%(message)s")
 DEFAULT_API_ENDPOINT = "https://api.us-west-2.katanemo.dev"
 
 
-parser = argparse.ArgumentParser(prog="PROG")
+parser = argparse.ArgumentParser(prog="katutil")
 
 # create sub-parser
 sub_parsers = parser.add_subparsers(help="sub-command help", dest="sub_parser")
@@ -29,16 +29,6 @@ init_service_cmd.add_argument(
     "--token", type=str, help="access token", required=True)
 init_service_cmd.add_argument(
     "--print_output", type=bool, help="print response from server", default=False)
-
-# get_service_cmd = sub_parsers.add_parser(
-#     "get-service", help="get service details")
-# get_service_cmd.add_argument(
-#     "--subscribed_service_id", type=str, help="service id", required=True)
-# get_service_cmd.add_argument(
-#     "--service_id", type=str, help="service id", required=True)
-# get_service_cmd.add_argument("--email", type=str, help="", required=True)
-# get_service_cmd.add_argument(
-#     "--password", type=str, help="", default="test123")
 
 get_token_cmd = sub_parsers.add_parser(
     "login-with-password", help="get token for service")
@@ -137,16 +127,6 @@ if args.sub_parser == "init-service":
     log.info("Katanemo's Console to manage your customers % s" %
               "https://console.us-west-2.katanemo.dev/sign-up/3xA")
     log.info("")
-
-
-# if args.sub_parser == "get-service":
-#     log.info("getting login credentials")
-#     login_details = core_utils.login(
-#         args.subscribed_service_id, args.email, args.password)
-#     log.info("login successful")
-
-#     resp = core_utils.get_service(args.service_id, login_details["token"])
-#     print(json.dumps(resp))
 
 
 if args.sub_parser == "login-with-password":
