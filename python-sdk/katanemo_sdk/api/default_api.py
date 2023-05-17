@@ -40,7 +40,7 @@ from katanemo_sdk.models.login_token import LoginToken
 from katanemo_sdk.models.login_with_password_request import LoginWithPasswordRequest
 from katanemo_sdk.models.o_auth_token_request import OAuthTokenRequest
 from katanemo_sdk.models.o_auth_token_response import OAuthTokenResponse
-from katanemo_sdk.models.okta_obj import OktaObj
+from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.models.organization import Organization
 from katanemo_sdk.models.password_policy import PasswordPolicy
 from katanemo_sdk.models.role import Role
@@ -50,6 +50,8 @@ from katanemo_sdk.models.set_password_request import SetPasswordRequest
 from katanemo_sdk.models.signup_request import SignupRequest
 from katanemo_sdk.models.signup_response import SignupResponse
 from katanemo_sdk.models.tags import Tags
+from katanemo_sdk.models.token_request import TokenRequest
+from katanemo_sdk.models.token_response import TokenResponse
 from katanemo_sdk.models.user import User
 from katanemo_sdk.models.user_confirmation_response import UserConfirmationResponse
 
@@ -659,20 +661,20 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_oidcc_onnection(self, account_id : StrictStr, okta_obj : Annotated[OktaObj, Field(..., description="ODIC connection attributes")], **kwargs) -> OktaObj:  # noqa: E501
+    def create_oidcc_onnection(self, account_id : StrictStr, oidc_obj : Annotated[OIDCObj, Field(..., description="ODIC connection attributes")], **kwargs) -> OIDCObj:  # noqa: E501
         """Creates a new OIDC connection  # noqa: E501
 
         Creates a new OIDC connection  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_oidcc_onnection(account_id, okta_obj, async_req=True)
+        >>> thread = api.create_oidcc_onnection(account_id, oidc_obj, async_req=True)
         >>> result = thread.get()
 
         :param account_id: (required)
         :type account_id: str
-        :param okta_obj: ODIC connection attributes (required)
-        :type okta_obj: OktaObj
+        :param oidc_obj: ODIC connection attributes (required)
+        :type oidc_obj: OIDCObj
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -682,28 +684,28 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: OktaObj
+        :rtype: OIDCObj
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_oidcc_onnection_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_oidcc_onnection_with_http_info(account_id, okta_obj, **kwargs)  # noqa: E501
+        return self.create_oidcc_onnection_with_http_info(account_id, oidc_obj, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_oidcc_onnection_with_http_info(self, account_id : StrictStr, okta_obj : Annotated[OktaObj, Field(..., description="ODIC connection attributes")], **kwargs) -> ApiResponse:  # noqa: E501
+    def create_oidcc_onnection_with_http_info(self, account_id : StrictStr, oidc_obj : Annotated[OIDCObj, Field(..., description="ODIC connection attributes")], **kwargs) -> ApiResponse:  # noqa: E501
         """Creates a new OIDC connection  # noqa: E501
 
         Creates a new OIDC connection  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_oidcc_onnection_with_http_info(account_id, okta_obj, async_req=True)
+        >>> thread = api.create_oidcc_onnection_with_http_info(account_id, oidc_obj, async_req=True)
         >>> result = thread.get()
 
         :param account_id: (required)
         :type account_id: str
-        :param okta_obj: ODIC connection attributes (required)
-        :type okta_obj: OktaObj
+        :param oidc_obj: ODIC connection attributes (required)
+        :type oidc_obj: OIDCObj
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -726,14 +728,14 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(OktaObj, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(OIDCObj, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
 
         _all_params = [
             'account_id',
-            'okta_obj'
+            'oidc_obj'
         ]
         _all_params.extend(
             [
@@ -774,8 +776,8 @@ class DefaultApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['okta_obj'] is not None:
-            _body_params = _params['okta_obj']
+        if _params['oidc_obj'] is not None:
+            _body_params = _params['oidc_obj']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -792,7 +794,7 @@ class DefaultApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "OktaObj",
+            '200': "OIDCObj",
         }
 
         return self.api_client.call_api(
@@ -3344,17 +3346,15 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_o_auth_token(self, account_id : StrictStr, o_auth_token_request : OAuthTokenRequest, **kwargs) -> OAuthTokenResponse:  # noqa: E501
-        """get token for client id / secret  # noqa: E501
+    def get_o_auth_token(self, o_auth_token_request : OAuthTokenRequest, **kwargs) -> OAuthTokenResponse:  # noqa: E501
+        """get token for client id / secret / code  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_o_auth_token(account_id, o_auth_token_request, async_req=True)
+        >>> thread = api.get_o_auth_token(o_auth_token_request, async_req=True)
         >>> result = thread.get()
 
-        :param account_id: (required)
-        :type account_id: str
         :param o_auth_token_request: (required)
         :type o_auth_token_request: OAuthTokenRequest
         :param async_req: Whether to execute the request asynchronously.
@@ -3371,20 +3371,18 @@ class DefaultApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_o_auth_token_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_o_auth_token_with_http_info(account_id, o_auth_token_request, **kwargs)  # noqa: E501
+        return self.get_o_auth_token_with_http_info(o_auth_token_request, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_o_auth_token_with_http_info(self, account_id : StrictStr, o_auth_token_request : OAuthTokenRequest, **kwargs) -> ApiResponse:  # noqa: E501
-        """get token for client id / secret  # noqa: E501
+    def get_o_auth_token_with_http_info(self, o_auth_token_request : OAuthTokenRequest, **kwargs) -> ApiResponse:  # noqa: E501
+        """get token for client id / secret / code  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_o_auth_token_with_http_info(account_id, o_auth_token_request, async_req=True)
+        >>> thread = api.get_o_auth_token_with_http_info(o_auth_token_request, async_req=True)
         >>> result = thread.get()
 
-        :param account_id: (required)
-        :type account_id: str
         :param o_auth_token_request: (required)
         :type o_auth_token_request: OAuthTokenRequest
         :param async_req: Whether to execute the request asynchronously.
@@ -3415,7 +3413,6 @@ class DefaultApi(object):
         _params = locals()
 
         _all_params = [
-            'account_id',
             'o_auth_token_request'
         ]
         _all_params.extend(
@@ -3444,9 +3441,6 @@ class DefaultApi(object):
 
         # process the path parameters
         _path_params = {}
-        if _params['account_id']:
-            _path_params['accountId'] = _params['account_id']
-
 
         # process the query parameters
         _query_params = []
@@ -3479,7 +3473,7 @@ class DefaultApi(object):
         }
 
         return self.api_client.call_api(
-            '/org/{accountId}/oauth/token', 'POST',
+            '/oauth/token', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -3496,7 +3490,7 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_oidc_connection(self, account_id : StrictStr, connection_id : StrictStr, **kwargs) -> OktaObj:  # noqa: E501
+    def get_oidc_connection(self, account_id : StrictStr, connection_id : StrictStr, **kwargs) -> OIDCObj:  # noqa: E501
         """Retrieves an OIDC connection  # noqa: E501
 
         Retrieves an OIDC connection  # noqa: E501
@@ -3519,7 +3513,7 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: OktaObj
+        :rtype: OIDCObj
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -3563,7 +3557,7 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(OktaObj, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(OIDCObj, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -3622,7 +3616,7 @@ class DefaultApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "OktaObj",
+            '200': "OIDCObj",
         }
 
         return self.api_client.call_api(
@@ -3643,7 +3637,7 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_oidc_connections_for_account(self, account_id : StrictStr, **kwargs) -> List[OktaObj]:  # noqa: E501
+    def get_oidc_connections_for_account(self, account_id : StrictStr, **kwargs) -> List[OIDCObj]:  # noqa: E501
         """Returns a list of all OIDC connections belonging to provided account ID  # noqa: E501
 
         Returns a list of all OIDC connections belonging to provided account ID  # noqa: E501
@@ -3664,7 +3658,7 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: List[OktaObj]
+        :rtype: List[OIDCObj]
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -3706,7 +3700,7 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(List[OktaObj], status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(List[OIDCObj], status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -3761,7 +3755,7 @@ class DefaultApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[OktaObj]",
+            '200': "List[OIDCObj]",
         }
 
         return self.api_client.call_api(
@@ -4761,6 +4755,155 @@ class DefaultApi(object):
 
         return self.api_client.call_api(
             '/service/{serviceId}', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def get_short_term_token(self, token_request : TokenRequest, **kwargs) -> TokenResponse:  # noqa: E501
+        """Returns a short-lived token for client key/secret pair. Tokens contain claims that identify what a principal can or cannot do.  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_short_term_token(token_request, async_req=True)
+        >>> result = thread.get()
+
+        :param token_request: (required)
+        :type token_request: TokenRequest
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: TokenResponse
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the get_short_term_token_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.get_short_term_token_with_http_info(token_request, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def get_short_term_token_with_http_info(self, token_request : TokenRequest, **kwargs) -> ApiResponse:  # noqa: E501
+        """Returns a short-lived token for client key/secret pair. Tokens contain claims that identify what a principal can or cannot do.  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_short_term_token_with_http_info(token_request, async_req=True)
+        >>> result = thread.get()
+
+        :param token_request: (required)
+        :type token_request: TokenRequest
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(TokenResponse, status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'token_request'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_short_term_token" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        if _params['token_request'] is not None:
+            _body_params = _params['token_request']
+
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
+
+        # authentication setting
+        _auth_settings = []  # noqa: E501
+
+        _response_types_map = {
+            '200': "TokenResponse",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
+        }
+
+        return self.api_client.call_api(
+            '/token', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -6877,22 +7020,22 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def update_oidc_connection(self, account_id : StrictStr, connection_id : StrictStr, okta_obj : Annotated[OktaObj, Field(..., description="OIDC connection attributes")], **kwargs) -> OktaObj:  # noqa: E501
+    def update_oidc_connection(self, account_id : StrictStr, connection_id : StrictStr, oidc_obj : Annotated[OIDCObj, Field(..., description="OIDC connection attributes")], **kwargs) -> OIDCObj:  # noqa: E501
         """Updates a OIDC connection  # noqa: E501
 
         Updates a OIDC connection  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.update_oidc_connection(account_id, connection_id, okta_obj, async_req=True)
+        >>> thread = api.update_oidc_connection(account_id, connection_id, oidc_obj, async_req=True)
         >>> result = thread.get()
 
         :param account_id: (required)
         :type account_id: str
         :param connection_id: (required)
         :type connection_id: str
-        :param okta_obj: OIDC connection attributes (required)
-        :type okta_obj: OktaObj
+        :param oidc_obj: OIDC connection attributes (required)
+        :type oidc_obj: OIDCObj
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -6902,30 +7045,30 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: OktaObj
+        :rtype: OIDCObj
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the update_oidc_connection_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.update_oidc_connection_with_http_info(account_id, connection_id, okta_obj, **kwargs)  # noqa: E501
+        return self.update_oidc_connection_with_http_info(account_id, connection_id, oidc_obj, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def update_oidc_connection_with_http_info(self, account_id : StrictStr, connection_id : StrictStr, okta_obj : Annotated[OktaObj, Field(..., description="OIDC connection attributes")], **kwargs) -> ApiResponse:  # noqa: E501
+    def update_oidc_connection_with_http_info(self, account_id : StrictStr, connection_id : StrictStr, oidc_obj : Annotated[OIDCObj, Field(..., description="OIDC connection attributes")], **kwargs) -> ApiResponse:  # noqa: E501
         """Updates a OIDC connection  # noqa: E501
 
         Updates a OIDC connection  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.update_oidc_connection_with_http_info(account_id, connection_id, okta_obj, async_req=True)
+        >>> thread = api.update_oidc_connection_with_http_info(account_id, connection_id, oidc_obj, async_req=True)
         >>> result = thread.get()
 
         :param account_id: (required)
         :type account_id: str
         :param connection_id: (required)
         :type connection_id: str
-        :param okta_obj: OIDC connection attributes (required)
-        :type okta_obj: OktaObj
+        :param oidc_obj: OIDC connection attributes (required)
+        :type oidc_obj: OIDCObj
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -6948,7 +7091,7 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(OktaObj, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(OIDCObj, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -6956,7 +7099,7 @@ class DefaultApi(object):
         _all_params = [
             'account_id',
             'connection_id',
-            'okta_obj'
+            'oidc_obj'
         ]
         _all_params.extend(
             [
@@ -7000,8 +7143,8 @@ class DefaultApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['okta_obj'] is not None:
-            _body_params = _params['okta_obj']
+        if _params['oidc_obj'] is not None:
+            _body_params = _params['oidc_obj']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -7018,7 +7161,7 @@ class DefaultApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "OktaObj",
+            '200': "OIDCObj",
         }
 
         return self.api_client.call_api(

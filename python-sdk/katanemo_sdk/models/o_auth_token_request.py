@@ -26,9 +26,10 @@ class OAuthTokenRequest(BaseModel):
     """
     OAuthTokenRequest
     """
+    code: Optional[StrictStr] = None
     client_id: Optional[StrictStr] = Field(None, alias="clientId")
     client_secret: Optional[StrictStr] = Field(None, alias="clientSecret")
-    __properties = ["clientId", "clientSecret"]
+    __properties = ["code", "clientId", "clientSecret"]
 
     class Config:
         """Pydantic configuration"""
@@ -66,6 +67,7 @@ class OAuthTokenRequest(BaseModel):
             return OAuthTokenRequest.parse_obj(obj)
 
         _obj = OAuthTokenRequest.parse_obj({
+            "code": obj.get("code"),
             "client_id": obj.get("clientId"),
             "client_secret": obj.get("clientSecret")
         })
