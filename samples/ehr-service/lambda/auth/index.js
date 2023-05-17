@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 
-const authEndpoint = process.env.AUTH_ENDPOINT
+const arcEndpoint = process.env.AUTH_ENDPOINT
 
 function extractTokenFromHeader(e) {
   if (e.authorizationToken && e.authorizationToken.split(' ')[0] === 'Bearer') {
@@ -18,7 +18,7 @@ function authorizeRequest(userToken, serviceToken, path, method, methodArn, call
     "HttpMethod": method,
   }
   var now = new Date().getTime();
-  fetch(authEndpoint + '/authorize', {
+  fetch(arcEndpoint + '/authorize', {
     method: 'POST',
     headers: {
       "Authentication": "Bearer " + serviceToken,
