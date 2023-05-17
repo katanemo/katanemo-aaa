@@ -1,5 +1,5 @@
 # Overview
-The follwing project contains a sample Serverless EHR SaaS service that uses Katanemo's fully featured identity and fine-grained authorization service for privacy and collobration features.
+The follwing project contains a sample Serverless EHR SaaS service that uses Katanemo's fully featured identity and fine-grained authorization service for privacy and collaboration features.
 
 The high-level architecture below captures AWS infrastructure resources of our service, and Katanemo's authorization components deployed alongside our application.
 
