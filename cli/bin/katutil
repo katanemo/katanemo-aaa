@@ -11,7 +11,7 @@ if [[ -z "$API_ENDPOINT" ]]; then
     EXECUTABLE_PATH=`dirname $0`
     log $EXECUTABLE_PATH
     log "katutil image not found, building ..."
-    docker build -f $EXECUTABLE_PATH/../Dockerfile $EXECUTABLE_PATH/.. -t katutil
+    docker build -f $EXECUTABLE_PATH/../Dockerfile $EXECUTABLE_PATH/../.. -t katutil
   fi
   docker run -i -e API_ENDPOINT=$API_ENDPOINT -e AUTH_ENDPOINT=$AUTH_ENDPOINT -v `pwd`:`pwd` --network="host" --rm katutil "$@"
 else
