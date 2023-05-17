@@ -9,7 +9,7 @@ The high-level architecture below captures AWS infrastructure resources of our s
 
 `EHR SaaS Service`: An OpenAPI based SaaS services that manages Patient and Diagnostic records via separate API-based microservices.
 
-`Adonis.io`: A provider facility that uses the EHR SaaS Service to store and manage patient records.
+`AcmeHealth.io`: A provider facility that uses the EHR SaaS Service to store and manage patient records.
 
 - The EHR SaaS service uses Katanemo to seamlessly onboard customers (e.g. AcmeHealth.io), and empowers its customers to define modern safety and privacy controls against its service, via self-service identity and access management tools offered by Katanemo.
 
