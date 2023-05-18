@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+set -x
 
 source common.sh
 
@@ -23,7 +24,7 @@ KATANEMO_SERVICE_ID=$($KATUTIL get-default-service | jq -r .serviceId)
 LOGIN_RESP=$($KATUTIL login-with-password --service_id $KATANEMO_SERVICE_ID --email $KATANEMO_ACCOUNT_EMAIL --password $EHR_ADMIN_PASSWORD)
 EHR_ADMIN_TOKEN=$(echo $LOGIN_RESP | jq -r .token)
 
-KATANEMO_ACCOUNT_ID=$(echo $EHR_ADMIN_TOKEN | jq -R 'split(".") | .[1] | @base64d | fromjson | .accountId' -r)
+KATANEMO_ACCOUNT_ID=$(jwtp $EHR_ADMIN_TOKEN | jq '.accountId' -r)
 
 log successfully logged in as $KATANEMO_ACCOUNT_EMAIL with katanemo $KATANEMO_ACCOUNT_ID
 

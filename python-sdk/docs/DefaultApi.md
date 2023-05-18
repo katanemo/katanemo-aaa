@@ -26,7 +26,7 @@ Method | HTTP request | Description
 [**get_default_service**](DefaultApi.md#get_default_service) | **GET** /service/3xA | Get details about Katanemo&#39;s AAA SaaS service. Katanemo is powered by Katanemo, and our 3xA service uses the same core identity and authorization capabilities that we offer SaaS (API) developers
 [**get_developer_public_keys**](DefaultApi.md#get_developer_public_keys) | **GET** /service/{serviceId}/.well-known/jwks.json | Gets public key that can be used to verify jwt token issued by Katanemo. This API does not require bearer authorizationn if service is public
 [**get_healthz**](DefaultApi.md#get_healthz) | **GET** /healthz | Returns service health
-[**get_o_auth_token**](DefaultApi.md#get_o_auth_token) | **POST** /org/{accountId}/oauth/token | get token for client id / secret
+[**get_o_auth_token**](DefaultApi.md#get_o_auth_token) | **POST** /oauth/token | get token for client id / secret / code
 [**get_oidc_connection**](DefaultApi.md#get_oidc_connection) | **GET** /org/{accountId}/sso-connections/oidc/{connectionId} | Retrieves an OIDC connection
 [**get_oidc_connections_for_account**](DefaultApi.md#get_oidc_connections_for_account) | **GET** /org/{accountId}/sso-connections/oidc | Returns a list of all OIDC connections belonging to provided account ID
 [**get_password_policy**](DefaultApi.md#get_password_policy) | **GET** /set-password/{serviceId} | Gets the password policy (length, characters, etc), to help the user set the correct password
@@ -36,6 +36,7 @@ Method | HTTP request | Description
 [**get_saml_connection**](DefaultApi.md#get_saml_connection) | **GET** /org/{accountId}/sso-connections/saml/{connectionId} | Retreive a SAML connection
 [**get_saml_connections_for_account**](DefaultApi.md#get_saml_connections_for_account) | **GET** /org/{accountId}/sso-connections/saml | Returns a list of all SAML connections belonging to provided account ID
 [**get_service**](DefaultApi.md#get_service) | **GET** /service/{serviceId} | Gets a service with service ID
+[**get_short_term_token**](DefaultApi.md#get_short_term_token) | **POST** /token | Returns a short-lived token for client key/secret pair. Tokens contain claims that identify what a principal can or cannot do.
 [**get_tags_for_resource**](DefaultApi.md#get_tags_for_resource) | **GET** /org/{accountId}/tags/serviceId/{serviceId}/name/{name}/resource/{resourceId} | Gets tags for resource
 [**get_tags_for_service**](DefaultApi.md#get_tags_for_service) | **GET** /arc/{serviceId}/tags | 
 [**get_user**](DefaultApi.md#get_user) | **GET** /org/{accountId}/user/{userId} | 
@@ -330,7 +331,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_oidcc_onnection**
-> OktaObj create_oidcc_onnection(account_id, okta_obj)
+> OIDCObj create_oidcc_onnection(account_id, oidc_obj)
 
 Creates a new OIDC connection
 
@@ -342,7 +343,7 @@ Creates a new OIDC connection
 import time
 import os
 import katanemo_sdk
-from katanemo_sdk.models.okta_obj import OktaObj
+from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
@@ -358,11 +359,11 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = katanemo_sdk.DefaultApi(api_client)
     account_id = 'account_id_example' # str | 
-    okta_obj = katanemo_sdk.OktaObj() # OktaObj | ODIC connection attributes
+    oidc_obj = katanemo_sdk.OIDCObj() # OIDCObj | ODIC connection attributes
 
     try:
         # Creates a new OIDC connection
-        api_response = api_instance.create_oidcc_onnection(account_id, okta_obj)
+        api_response = api_instance.create_oidcc_onnection(account_id, oidc_obj)
         print("The response of DefaultApi->create_oidcc_onnection:\n")
         pprint(api_response)
     except Exception as e:
@@ -375,11 +376,11 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **account_id** | **str**|  | 
- **okta_obj** | [**OktaObj**](OktaObj.md)| ODIC connection attributes | 
+ **oidc_obj** | [**OIDCObj**](OIDCObj.md)| ODIC connection attributes | 
 
 ### Return type
 
-[**OktaObj**](OktaObj.md)
+[**OIDCObj**](OIDCObj.md)
 
 ### Authorization
 
@@ -393,7 +394,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | OktaObj |  -  |
+**200** | OIDCObj |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -609,7 +610,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_service**
-> ServiceResponseObj create_service(name, description, redirect_url, api_spec_file, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
+> ServiceResponseObj create_service(name, redirect_url, api_spec_file, description=description, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
 
 Create a Service object.
 
@@ -637,9 +638,9 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = katanemo_sdk.DefaultApi(api_client)
     name = 'name_example' # str | Service Name
-    description = 'description_example' # str | Service Description
     redirect_url = 'redirect_url_example' # str | Redirect URL after a successful login.
     api_spec_file = None # bytearray | openapi service json or yaml file
+    description = 'description_example' # str | Service Description (optional)
     display_name = 'display_name_example' # str | Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages (optional)
     logo_url = 'logo_url_example' # str | The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages (optional)
     terms_url = 'terms_url_example' # str | The URL for the terms of the service (optional)
@@ -648,7 +649,7 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
 
     try:
         # Create a Service object.
-        api_response = api_instance.create_service(name, description, redirect_url, api_spec_file, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
+        api_response = api_instance.create_service(name, redirect_url, api_spec_file, description=description, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
         print("The response of DefaultApi->create_service:\n")
         pprint(api_response)
     except Exception as e:
@@ -661,9 +662,9 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **str**| Service Name | 
- **description** | **str**| Service Description | 
  **redirect_url** | **str**| Redirect URL after a successful login. | 
  **api_spec_file** | **bytearray**| openapi service json or yaml file | 
+ **description** | **str**| Service Description | [optional] 
  **display_name** | **str**| Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages | [optional] 
  **logo_url** | **str**| The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages | [optional] 
  **terms_url** | **str**| The URL for the terms of the service | [optional] 
@@ -1183,8 +1184,8 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
     api_instance = katanemo_sdk.DefaultApi(api_client)
     service_id = 'service_id_example' # str | 
     account_id = 'account_id_example' # str | 
-    start_time = 'start_time_example' # str | Start time of log entries
-    end_time = 'end_time_example' # str | End time of log entries
+    start_time = 'start_time_example' # str | Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)
+    end_time = 'end_time_example' # str | End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)
 
     try:
         # Returns list of log entries for a service and account
@@ -1202,8 +1203,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **service_id** | **str**|  | 
  **account_id** | **str**|  | 
- **start_time** | **str**| Start time of log entries | 
- **end_time** | **str**| End time of log entries | 
+ **start_time** | **str**| Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) | 
+ **end_time** | **str**| End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) | 
 
 ### Return type
 
@@ -1552,9 +1553,9 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_o_auth_token**
-> OAuthTokenResponse get_o_auth_token(account_id, o_auth_token_request)
+> OAuthTokenResponse get_o_auth_token(o_auth_token_request)
 
-get token for client id / secret
+get token for client id / secret / code
 
 ### Example
 
@@ -1578,12 +1579,11 @@ configuration = katanemo_sdk.Configuration(
 with katanemo_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = katanemo_sdk.DefaultApi(api_client)
-    account_id = 'account_id_example' # str | 
     o_auth_token_request = katanemo_sdk.OAuthTokenRequest() # OAuthTokenRequest | 
 
     try:
-        # get token for client id / secret
-        api_response = api_instance.get_o_auth_token(account_id, o_auth_token_request)
+        # get token for client id / secret / code
+        api_response = api_instance.get_o_auth_token(o_auth_token_request)
         print("The response of DefaultApi->get_o_auth_token:\n")
         pprint(api_response)
     except Exception as e:
@@ -1595,7 +1595,6 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account_id** | **str**|  | 
  **o_auth_token_request** | [**OAuthTokenRequest**](OAuthTokenRequest.md)|  | 
 
 ### Return type
@@ -1620,7 +1619,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_oidc_connection**
-> OktaObj get_oidc_connection(account_id, connection_id)
+> OIDCObj get_oidc_connection(account_id, connection_id)
 
 Retrieves an OIDC connection
 
@@ -1632,7 +1631,7 @@ Retrieves an OIDC connection
 import time
 import os
 import katanemo_sdk
-from katanemo_sdk.models.okta_obj import OktaObj
+from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
@@ -1669,7 +1668,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OktaObj**](OktaObj.md)
+[**OIDCObj**](OIDCObj.md)
 
 ### Authorization
 
@@ -1683,13 +1682,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | OktaObj |  -  |
+**200** | OIDCObj |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_oidc_connections_for_account**
-> List[OktaObj] get_oidc_connections_for_account(account_id)
+> List[OIDCObj] get_oidc_connections_for_account(account_id)
 
 Returns a list of all OIDC connections belonging to provided account ID
 
@@ -1701,7 +1700,7 @@ Returns a list of all OIDC connections belonging to provided account ID
 import time
 import os
 import katanemo_sdk
-from katanemo_sdk.models.okta_obj import OktaObj
+from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
@@ -1736,7 +1735,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List[OktaObj]**](OktaObj.md)
+[**List[OIDCObj]**](OIDCObj.md)
 
 ### Authorization
 
@@ -2222,6 +2221,77 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | service |  -  |
+**0** | unexpected error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_short_term_token**
+> TokenResponse get_short_term_token(token_request)
+
+Returns a short-lived token for client key/secret pair. Tokens contain claims that identify what a principal can or cannot do.
+
+### Example
+
+```python
+import time
+import os
+import katanemo_sdk
+from katanemo_sdk.models.token_request import TokenRequest
+from katanemo_sdk.models.token_response import TokenResponse
+from katanemo_sdk.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8090
+# See configuration.py for a list of all supported configuration parameters.
+configuration = katanemo_sdk.Configuration(
+    host = "http://localhost:8090"
+)
+
+
+# Enter a context with an instance of the API client
+with katanemo_sdk.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = katanemo_sdk.DefaultApi(api_client)
+    token_request = katanemo_sdk.TokenRequest() # TokenRequest | 
+
+    try:
+        # Returns a short-lived token for client key/secret pair. Tokens contain claims that identify what a principal can or cannot do.
+        api_response = api_instance.get_short_term_token(token_request)
+        print("The response of DefaultApi->get_short_term_token:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->get_short_term_token: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token_request** | [**TokenRequest**](TokenRequest.md)|  | 
+
+### Return type
+
+[**TokenResponse**](TokenResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Generate Token for an authentication principal |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -3186,7 +3256,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **update_oidc_connection**
-> OktaObj update_oidc_connection(account_id, connection_id, okta_obj)
+> OIDCObj update_oidc_connection(account_id, connection_id, oidc_obj)
 
 Updates a OIDC connection
 
@@ -3198,7 +3268,7 @@ Updates a OIDC connection
 import time
 import os
 import katanemo_sdk
-from katanemo_sdk.models.okta_obj import OktaObj
+from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
@@ -3215,11 +3285,11 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
     api_instance = katanemo_sdk.DefaultApi(api_client)
     account_id = 'account_id_example' # str | 
     connection_id = 'connection_id_example' # str | 
-    okta_obj = katanemo_sdk.OktaObj() # OktaObj | OIDC connection attributes
+    oidc_obj = katanemo_sdk.OIDCObj() # OIDCObj | OIDC connection attributes
 
     try:
         # Updates a OIDC connection
-        api_response = api_instance.update_oidc_connection(account_id, connection_id, okta_obj)
+        api_response = api_instance.update_oidc_connection(account_id, connection_id, oidc_obj)
         print("The response of DefaultApi->update_oidc_connection:\n")
         pprint(api_response)
     except Exception as e:
@@ -3233,11 +3303,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **account_id** | **str**|  | 
  **connection_id** | **str**|  | 
- **okta_obj** | [**OktaObj**](OktaObj.md)| OIDC connection attributes | 
+ **oidc_obj** | [**OIDCObj**](OIDCObj.md)| OIDC connection attributes | 
 
 ### Return type
 
-[**OktaObj**](OktaObj.md)
+[**OIDCObj**](OIDCObj.md)
 
 ### Authorization
 

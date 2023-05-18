@@ -20,7 +20,7 @@ init_service_cmd = sub_parsers.add_parser(
 init_service_cmd.add_argument(
     "--service_name", type=str, help="service name", required=True)
 init_service_cmd.add_argument(
-    "--service_description", type=str, help="service description", required=True)
+    "--service_description", type=str, help="service description")
 init_service_cmd.add_argument(
     "--api_spec", type=str, help="open api spec for service", required=True)
 init_service_cmd.add_argument(
@@ -116,7 +116,7 @@ def get_api_client():
 
 if args.sub_parser == "init-service":
     resp = get_api_client().create_service(
-        args.service_name, args.service_description, args.redirect_uri, args.api_spec)
+        name=args.service_name, redirect_url=args.redirect_uri, api_spec_file=args.api_spec, description=args.service_description)
     print(resp.json(by_alias=True))
 
     service_id = resp.service_id

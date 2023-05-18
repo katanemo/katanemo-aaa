@@ -22,14 +22,13 @@ import json
 from typing import Optional
 from pydantic import BaseModel, Field, StrictStr
 
-class OAuthTokenRequest(BaseModel):
+class ConflictException(BaseModel):
     """
-    OAuthTokenRequest
+    ConflictException
     """
-    code: Optional[StrictStr] = None
-    client_id: Optional[StrictStr] = Field(None, alias="clientId")
-    client_secret: Optional[StrictStr] = Field(None, alias="clientSecret")
-    __properties = ["code", "clientId", "clientSecret"]
+    message: Optional[StrictStr] = None
+    error_code: Optional[StrictStr] = Field(None, alias="errorCode")
+    __properties = ["message", "errorCode"]
 
     class Config:
         """Pydantic configuration"""
@@ -45,8 +44,8 @@ class OAuthTokenRequest(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> OAuthTokenRequest:
-        """Create an instance of OAuthTokenRequest from a JSON string"""
+    def from_json(cls, json_str: str) -> ConflictException:
+        """Create an instance of ConflictException from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -58,18 +57,17 @@ class OAuthTokenRequest(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> OAuthTokenRequest:
-        """Create an instance of OAuthTokenRequest from a dict"""
+    def from_dict(cls, obj: dict) -> ConflictException:
+        """Create an instance of ConflictException from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return OAuthTokenRequest.parse_obj(obj)
+            return ConflictException.parse_obj(obj)
 
-        _obj = OAuthTokenRequest.parse_obj({
-            "code": obj.get("code"),
-            "client_id": obj.get("clientId"),
-            "client_secret": obj.get("clientSecret")
+        _obj = ConflictException.parse_obj({
+            "message": obj.get("message"),
+            "error_code": obj.get("errorCode")
         })
         return _obj
 

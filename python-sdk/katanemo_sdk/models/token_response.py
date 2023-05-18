@@ -22,14 +22,12 @@ import json
 from typing import Optional
 from pydantic import BaseModel, Field, StrictStr
 
-class OAuthTokenRequest(BaseModel):
+class TokenResponse(BaseModel):
     """
-    OAuthTokenRequest
+    TokenResponse
     """
-    code: Optional[StrictStr] = None
-    client_id: Optional[StrictStr] = Field(None, alias="clientId")
-    client_secret: Optional[StrictStr] = Field(None, alias="clientSecret")
-    __properties = ["code", "clientId", "clientSecret"]
+    access_token: Optional[StrictStr] = Field(None, alias="accessToken")
+    __properties = ["accessToken"]
 
     class Config:
         """Pydantic configuration"""
@@ -45,8 +43,8 @@ class OAuthTokenRequest(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> OAuthTokenRequest:
-        """Create an instance of OAuthTokenRequest from a JSON string"""
+    def from_json(cls, json_str: str) -> TokenResponse:
+        """Create an instance of TokenResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -58,18 +56,16 @@ class OAuthTokenRequest(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> OAuthTokenRequest:
-        """Create an instance of OAuthTokenRequest from a dict"""
+    def from_dict(cls, obj: dict) -> TokenResponse:
+        """Create an instance of TokenResponse from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return OAuthTokenRequest.parse_obj(obj)
+            return TokenResponse.parse_obj(obj)
 
-        _obj = OAuthTokenRequest.parse_obj({
-            "code": obj.get("code"),
-            "client_id": obj.get("clientId"),
-            "client_secret": obj.get("clientSecret")
+        _obj = TokenResponse.parse_obj({
+            "access_token": obj.get("accessToken")
         })
         return _obj
 
