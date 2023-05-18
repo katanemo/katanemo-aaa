@@ -4,6 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**id_token** | **str** |  | [optional] 
 **access_token** | **str** |  | [optional] 
 **expires_in** | **int** |  | [optional] 
 **token_type** | **str** |  | [optional] 

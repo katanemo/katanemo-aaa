@@ -26,10 +26,11 @@ class OAuthTokenResponse(BaseModel):
     """
     OAuthTokenResponse
     """
+    id_token: Optional[StrictStr] = Field(None, alias="idToken")
     access_token: Optional[StrictStr] = Field(None, alias="accessToken")
     expires_in: Optional[StrictInt] = Field(None, alias="expiresIn")
     token_type: Optional[StrictStr] = Field(None, alias="tokenType")
-    __properties = ["accessToken", "expiresIn", "tokenType"]
+    __properties = ["idToken", "accessToken", "expiresIn", "tokenType"]
 
     class Config:
         """Pydantic configuration"""
@@ -67,6 +68,7 @@ class OAuthTokenResponse(BaseModel):
             return OAuthTokenResponse.parse_obj(obj)
 
         _obj = OAuthTokenResponse.parse_obj({
+            "id_token": obj.get("idToken"),
             "access_token": obj.get("accessToken"),
             "expires_in": obj.get("expiresIn"),
             "token_type": obj.get("tokenType")

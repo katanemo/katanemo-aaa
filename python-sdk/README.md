@@ -108,7 +108,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**get_default_service**](docs/DefaultApi.md#get_default_service) | **GET** /service/3xA | Get details about Katanemo&#39;s AAA SaaS service. Katanemo is powered by Katanemo, and our 3xA service uses the same core identity and authorization capabilities that we offer SaaS (API) developers
 *DefaultApi* | [**get_developer_public_keys**](docs/DefaultApi.md#get_developer_public_keys) | **GET** /service/{serviceId}/.well-known/jwks.json | Gets public key that can be used to verify jwt token issued by Katanemo. This API does not require bearer authorizationn if service is public
 *DefaultApi* | [**get_healthz**](docs/DefaultApi.md#get_healthz) | **GET** /healthz | Returns service health
-*DefaultApi* | [**get_o_auth_token**](docs/DefaultApi.md#get_o_auth_token) | **POST** /org/{accountId}/oauth/token | get token for client id / secret
+*DefaultApi* | [**get_o_auth_token**](docs/DefaultApi.md#get_o_auth_token) | **POST** /oauth/token | get token for client id / secret / code
 *DefaultApi* | [**get_oidc_connection**](docs/DefaultApi.md#get_oidc_connection) | **GET** /org/{accountId}/sso-connections/oidc/{connectionId} | Retrieves an OIDC connection
 *DefaultApi* | [**get_oidc_connections_for_account**](docs/DefaultApi.md#get_oidc_connections_for_account) | **GET** /org/{accountId}/sso-connections/oidc | Returns a list of all OIDC connections belonging to provided account ID
 *DefaultApi* | [**get_password_policy**](docs/DefaultApi.md#get_password_policy) | **GET** /set-password/{serviceId} | Gets the password policy (length, characters, etc), to help the user set the correct password
@@ -118,6 +118,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**get_saml_connection**](docs/DefaultApi.md#get_saml_connection) | **GET** /org/{accountId}/sso-connections/saml/{connectionId} | Retreive a SAML connection
 *DefaultApi* | [**get_saml_connections_for_account**](docs/DefaultApi.md#get_saml_connections_for_account) | **GET** /org/{accountId}/sso-connections/saml | Returns a list of all SAML connections belonging to provided account ID
 *DefaultApi* | [**get_service**](docs/DefaultApi.md#get_service) | **GET** /service/{serviceId} | Gets a service with service ID
+*DefaultApi* | [**get_short_term_token**](docs/DefaultApi.md#get_short_term_token) | **POST** /token | Returns a short-lived token for client key/secret pair. Tokens contain claims that identify what a principal can or cannot do.
 *DefaultApi* | [**get_tags_for_resource**](docs/DefaultApi.md#get_tags_for_resource) | **GET** /org/{accountId}/tags/serviceId/{serviceId}/name/{name}/resource/{resourceId} | Gets tags for resource
 *DefaultApi* | [**get_tags_for_service**](docs/DefaultApi.md#get_tags_for_service) | **GET** /arc/{serviceId}/tags | 
 *DefaultApi* | [**get_user**](docs/DefaultApi.md#get_user) | **GET** /org/{accountId}/user/{userId} | 
@@ -145,20 +146,24 @@ Class | Method | HTTP request | Description
  - [AssumeRoleObj](docs/AssumeRoleObj.md)
  - [AttributeRoleMapping](docs/AttributeRoleMapping.md)
  - [AuditLogEntry](docs/AuditLogEntry.md)
+ - [BadRequestException](docs/BadRequestException.md)
  - [ClientKeyObject](docs/ClientKeyObject.md)
  - [ClientKeyRequest](docs/ClientKeyRequest.md)
  - [ClientKeyResponse](docs/ClientKeyResponse.md)
+ - [ConflictException](docs/ConflictException.md)
  - [Error](docs/Error.md)
  - [GetDeveloperPublicKeys200Response](docs/GetDeveloperPublicKeys200Response.md)
  - [InitArcResponse](docs/InitArcResponse.md)
  - [InitialLoginRequest](docs/InitialLoginRequest.md)
  - [InitialLoginResponse](docs/InitialLoginResponse.md)
+ - [InternalServerErrorException](docs/InternalServerErrorException.md)
  - [LoginToken](docs/LoginToken.md)
  - [LoginWithPasswordRequest](docs/LoginWithPasswordRequest.md)
+ - [NotFoundException](docs/NotFoundException.md)
  - [OAuthTokenRequest](docs/OAuthTokenRequest.md)
  - [OAuthTokenResponse](docs/OAuthTokenResponse.md)
+ - [OIDCObj](docs/OIDCObj.md)
  - [OIDCPublicKey](docs/OIDCPublicKey.md)
- - [OktaObj](docs/OktaObj.md)
  - [Organization](docs/Organization.md)
  - [PasswordPolicy](docs/PasswordPolicy.md)
  - [Policy](docs/Policy.md)
@@ -169,6 +174,10 @@ Class | Method | HTTP request | Description
  - [SignupRequest](docs/SignupRequest.md)
  - [SignupResponse](docs/SignupResponse.md)
  - [Tags](docs/Tags.md)
+ - [TokenRequest](docs/TokenRequest.md)
+ - [TokenResponse](docs/TokenResponse.md)
+ - [TooManyRequestsException](docs/TooManyRequestsException.md)
+ - [UnauthorizedException](docs/UnauthorizedException.md)
  - [User](docs/User.md)
  - [UserConfirmationResponse](docs/UserConfirmationResponse.md)
 
