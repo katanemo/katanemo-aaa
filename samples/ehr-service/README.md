@@ -18,7 +18,7 @@ The high-level architecture below captures AWS infrastructure resources of our s
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html): version aws-cli/2.11.15
 - [AWS Cloud Development Kit (CDK)](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html): version 2.78.0 (build 8e95c37)
 - [Docker](https://docs.docker.com/get-docker/): version 20.10.23
-- [jq](https://stedolan.github.io/jq/download/): v1.6
+- [jq](https://stedolan.github.io/jq/download/): v1.5
 - AWS Account
 
 # Installation
