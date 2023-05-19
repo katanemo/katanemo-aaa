@@ -98,6 +98,12 @@ get_roles_cmd = sub_parsers.add_parser(
 get_roles_cmd.add_argument("--account_id", type=str, required=True)
 get_roles_cmd.add_argument("--token", type=str, required=True)
 
+get_accound_id_from_token_cmd = sub_parsers.add_parser(
+    "get-account-id-from-token", help="get account id for an account from the token")
+get_accound_id_from_token_cmd.add_argument("--token", type=str, required=True)
+
+
+
 args = parser.parse_args()
 
 
@@ -201,3 +207,8 @@ if args.sub_parser == "get-roles":
 if args.sub_parser == "add-user":
     api_response = get_api_client().create_user_for_account(args.account_id, katanemo_sdk.User(account_id=args.account_id, user_id=args.email, tags=json.loads(args.tags)))
     print(api_response.json(by_alias=True))
+
+
+if args.sub_parser == "get-account-id-from-token":
+    account_id = core_utils.get_accound_id_from_token(token=args.token)
+    print(json.dumps({"accountId": account_id}))

@@ -24,7 +24,7 @@ KATANEMO_SERVICE_ID=$($KATUTIL get-default-service | jq -r .serviceId)
 LOGIN_RESP=$($KATUTIL login-with-password --service_id $KATANEMO_SERVICE_ID --email $KATANEMO_ACCOUNT_EMAIL --password $EHR_ADMIN_PASSWORD)
 EHR_ADMIN_TOKEN=$(echo $LOGIN_RESP | jq -r .token)
 
-KATANEMO_ACCOUNT_ID=$(jwtp $EHR_ADMIN_TOKEN | jq '.accountId' -r)
+KATANEMO_ACCOUNT_ID=`$KATUTIL get-account-id-from-token --token $EHR_ADMIN_TOKEN | jq -r '.accountId'`
 
 log successfully logged in as $KATANEMO_ACCOUNT_EMAIL with katanemo $KATANEMO_ACCOUNT_ID
 
