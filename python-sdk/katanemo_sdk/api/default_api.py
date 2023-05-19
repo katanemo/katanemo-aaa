@@ -33,6 +33,7 @@ from katanemo_sdk.models.client_key_request import ClientKeyRequest
 from katanemo_sdk.models.client_key_response import ClientKeyResponse
 from katanemo_sdk.models.error import Error
 from katanemo_sdk.models.get_developer_public_keys200_response import GetDeveloperPublicKeys200Response
+from katanemo_sdk.models.get_tags_request import GetTagsRequest
 from katanemo_sdk.models.init_arc_response import InitArcResponse
 from katanemo_sdk.models.initial_login_request import InitialLoginRequest
 from katanemo_sdk.models.initial_login_response import InitialLoginResponse
@@ -202,6 +203,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "User",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -348,6 +354,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "str",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -487,6 +498,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "UserConfirmationResponse",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -641,6 +657,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "ClientKeyResponse",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -795,6 +816,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "OIDCObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -949,6 +975,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "Role",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -1103,6 +1134,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "SAMLObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -1265,6 +1301,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "SAMLObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -1285,24 +1326,24 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_service(self, name : Annotated[StrictStr, Field(..., description="Service Name")], redirect_url : Annotated[StrictStr, Field(..., description="Redirect URL after a successful login.")], api_spec_file : Annotated[Union[StrictBytes, StrictStr], Field(..., description="openapi service json or yaml file")], description : Annotated[Optional[StrictStr], Field(description="Service Description")] = None, display_name : Annotated[Optional[StrictStr], Field(description="Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages")] = None, logo_url : Annotated[Optional[StrictStr], Field(description="The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages")] = None, terms_url : Annotated[Optional[StrictStr], Field(description="The URL for the terms of the service")] = None, privacy_url : Annotated[Optional[StrictStr], Field(description="The URL for the privacy of the service")] = None, docs_url : Annotated[Optional[StrictStr], Field(description="The URL for the documentatio of the service")] = None, **kwargs) -> ServiceResponseObj:  # noqa: E501
-        """Create a Service object.  # noqa: E501
+    def create_service(self, name : Annotated[StrictStr, Field(..., description="Service Name")], description : Annotated[StrictStr, Field(..., description="Service Description")], redirect_url : Annotated[StrictStr, Field(..., description="Redirect URL after a successful login.")], api_spec_file : Annotated[Union[StrictBytes, StrictStr], Field(..., description="openapi service json or yaml file")], display_name : Annotated[Optional[StrictStr], Field(description="Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages")] = None, logo_url : Annotated[Optional[StrictStr], Field(description="The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages")] = None, terms_url : Annotated[Optional[StrictStr], Field(description="The URL for the terms of the service")] = None, privacy_url : Annotated[Optional[StrictStr], Field(description="The URL for the privacy of the service")] = None, docs_url : Annotated[Optional[StrictStr], Field(description="The URL for the documentatio of the service")] = None, **kwargs) -> ServiceResponseObj:  # noqa: E501
+        """Create a Katanemo Service object.  # noqa: E501
 
         Create a Service in Katanemo. Once a service is created Katanemo powers rich enterprise identity and authorization capabilities on behalf of SaaS (API) Developers  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_service(name, redirect_url, api_spec_file, description, display_name, logo_url, terms_url, privacy_url, docs_url, async_req=True)
+        >>> thread = api.create_service(name, description, redirect_url, api_spec_file, display_name, logo_url, terms_url, privacy_url, docs_url, async_req=True)
         >>> result = thread.get()
 
         :param name: Service Name (required)
         :type name: str
+        :param description: Service Description (required)
+        :type description: str
         :param redirect_url: Redirect URL after a successful login. (required)
         :type redirect_url: str
         :param api_spec_file: openapi service json or yaml file (required)
         :type api_spec_file: bytearray
-        :param description: Service Description
-        :type description: str
         :param display_name: Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages
         :type display_name: str
         :param logo_url: The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages
@@ -1327,27 +1368,27 @@ class DefaultApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_service_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_service_with_http_info(name, redirect_url, api_spec_file, description, display_name, logo_url, terms_url, privacy_url, docs_url, **kwargs)  # noqa: E501
+        return self.create_service_with_http_info(name, description, redirect_url, api_spec_file, display_name, logo_url, terms_url, privacy_url, docs_url, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_service_with_http_info(self, name : Annotated[StrictStr, Field(..., description="Service Name")], redirect_url : Annotated[StrictStr, Field(..., description="Redirect URL after a successful login.")], api_spec_file : Annotated[Union[StrictBytes, StrictStr], Field(..., description="openapi service json or yaml file")], description : Annotated[Optional[StrictStr], Field(description="Service Description")] = None, display_name : Annotated[Optional[StrictStr], Field(description="Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages")] = None, logo_url : Annotated[Optional[StrictStr], Field(description="The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages")] = None, terms_url : Annotated[Optional[StrictStr], Field(description="The URL for the terms of the service")] = None, privacy_url : Annotated[Optional[StrictStr], Field(description="The URL for the privacy of the service")] = None, docs_url : Annotated[Optional[StrictStr], Field(description="The URL for the documentatio of the service")] = None, **kwargs) -> ApiResponse:  # noqa: E501
-        """Create a Service object.  # noqa: E501
+    def create_service_with_http_info(self, name : Annotated[StrictStr, Field(..., description="Service Name")], description : Annotated[StrictStr, Field(..., description="Service Description")], redirect_url : Annotated[StrictStr, Field(..., description="Redirect URL after a successful login.")], api_spec_file : Annotated[Union[StrictBytes, StrictStr], Field(..., description="openapi service json or yaml file")], display_name : Annotated[Optional[StrictStr], Field(description="Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages")] = None, logo_url : Annotated[Optional[StrictStr], Field(description="The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages")] = None, terms_url : Annotated[Optional[StrictStr], Field(description="The URL for the terms of the service")] = None, privacy_url : Annotated[Optional[StrictStr], Field(description="The URL for the privacy of the service")] = None, docs_url : Annotated[Optional[StrictStr], Field(description="The URL for the documentatio of the service")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Create a Katanemo Service object.  # noqa: E501
 
         Create a Service in Katanemo. Once a service is created Katanemo powers rich enterprise identity and authorization capabilities on behalf of SaaS (API) Developers  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_service_with_http_info(name, redirect_url, api_spec_file, description, display_name, logo_url, terms_url, privacy_url, docs_url, async_req=True)
+        >>> thread = api.create_service_with_http_info(name, description, redirect_url, api_spec_file, display_name, logo_url, terms_url, privacy_url, docs_url, async_req=True)
         >>> result = thread.get()
 
         :param name: Service Name (required)
         :type name: str
+        :param description: Service Description (required)
+        :type description: str
         :param redirect_url: Redirect URL after a successful login. (required)
         :type redirect_url: str
         :param api_spec_file: openapi service json or yaml file (required)
         :type api_spec_file: bytearray
-        :param description: Service Description
-        :type description: str
         :param display_name: Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages
         :type display_name: str
         :param logo_url: The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages
@@ -1387,9 +1428,9 @@ class DefaultApi(object):
 
         _all_params = [
             'name',
+            'description',
             'redirect_url',
             'api_spec_file',
-            'description',
             'display_name',
             'logo_url',
             'terms_url',
@@ -1475,6 +1516,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "ServiceResponseObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -1495,18 +1541,18 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_tags(self, account_id : StrictStr, tags : Annotated[Tags, Field(..., description="Tags and resource id")], **kwargs) -> Tags:  # noqa: E501
-        """creates a resource with provided tags  # noqa: E501
+    def create_tags(self, service_id : StrictStr, tags : Annotated[Tags, Field(..., description="Tags and resource id")], **kwargs) -> Tags:  # noqa: E501
+        """Add tags (key/value pair) to a particular resource that is created for a service against an organization account id  # noqa: E501
 
-        creates a resource with provided tags  # noqa: E501
+        Add tags (key/value pair) to a particular resource that is created for a service against an organization account id.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_tags(account_id, tags, async_req=True)
+        >>> thread = api.create_tags(service_id, tags, async_req=True)
         >>> result = thread.get()
 
-        :param account_id: (required)
-        :type account_id: str
+        :param service_id: (required)
+        :type service_id: str
         :param tags: Tags and resource id (required)
         :type tags: Tags
         :param async_req: Whether to execute the request asynchronously.
@@ -1523,21 +1569,21 @@ class DefaultApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_tags_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_tags_with_http_info(account_id, tags, **kwargs)  # noqa: E501
+        return self.create_tags_with_http_info(service_id, tags, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_tags_with_http_info(self, account_id : StrictStr, tags : Annotated[Tags, Field(..., description="Tags and resource id")], **kwargs) -> ApiResponse:  # noqa: E501
-        """creates a resource with provided tags  # noqa: E501
+    def create_tags_with_http_info(self, service_id : StrictStr, tags : Annotated[Tags, Field(..., description="Tags and resource id")], **kwargs) -> ApiResponse:  # noqa: E501
+        """Add tags (key/value pair) to a particular resource that is created for a service against an organization account id  # noqa: E501
 
-        creates a resource with provided tags  # noqa: E501
+        Add tags (key/value pair) to a particular resource that is created for a service against an organization account id.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_tags_with_http_info(account_id, tags, async_req=True)
+        >>> thread = api.create_tags_with_http_info(service_id, tags, async_req=True)
         >>> result = thread.get()
 
-        :param account_id: (required)
-        :type account_id: str
+        :param service_id: (required)
+        :type service_id: str
         :param tags: Tags and resource id (required)
         :type tags: Tags
         :param async_req: Whether to execute the request asynchronously.
@@ -1568,7 +1614,7 @@ class DefaultApi(object):
         _params = locals()
 
         _all_params = [
-            'account_id',
+            'service_id',
             'tags'
         ]
         _all_params.extend(
@@ -1597,8 +1643,8 @@ class DefaultApi(object):
 
         # process the path parameters
         _path_params = {}
-        if _params['account_id']:
-            _path_params['accountId'] = _params['account_id']
+        if _params['service_id']:
+            _path_params['serviceId'] = _params['service_id']
 
 
         # process the query parameters
@@ -1629,10 +1675,15 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "Tags",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
-            '/org/{accountId}/tags', 'POST',
+            '/service/{serviceId}/tags', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -1783,6 +1834,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "User",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -1928,6 +1984,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "str",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -2349,6 +2410,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "Organization",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -2480,6 +2546,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "Organization",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -2500,7 +2571,7 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_audit_logs(self, service_id : StrictStr, account_id : StrictStr, start_time : Annotated[StrictStr, Field(..., description="Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)")], end_time : Annotated[StrictStr, Field(..., description="End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)")], **kwargs) -> List[AuditLogEntry]:  # noqa: E501
+    def get_audit_logs(self, service_id : StrictStr, account_id : StrictStr, start_time : Annotated[StrictStr, Field(..., description="Start time of log entries")], end_time : Annotated[StrictStr, Field(..., description="End time of log entries")], **kwargs) -> List[AuditLogEntry]:  # noqa: E501
         """Returns list of log entries for a service and account  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -2513,9 +2584,9 @@ class DefaultApi(object):
         :type service_id: str
         :param account_id: (required)
         :type account_id: str
-        :param start_time: Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) (required)
+        :param start_time: Start time of log entries (required)
         :type start_time: str
-        :param end_time: End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) (required)
+        :param end_time: End time of log entries (required)
         :type end_time: str
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
@@ -2534,7 +2605,7 @@ class DefaultApi(object):
         return self.get_audit_logs_with_http_info(service_id, account_id, start_time, end_time, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_audit_logs_with_http_info(self, service_id : StrictStr, account_id : StrictStr, start_time : Annotated[StrictStr, Field(..., description="Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)")], end_time : Annotated[StrictStr, Field(..., description="End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)")], **kwargs) -> ApiResponse:  # noqa: E501
+    def get_audit_logs_with_http_info(self, service_id : StrictStr, account_id : StrictStr, start_time : Annotated[StrictStr, Field(..., description="Start time of log entries")], end_time : Annotated[StrictStr, Field(..., description="End time of log entries")], **kwargs) -> ApiResponse:  # noqa: E501
         """Returns list of log entries for a service and account  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -2547,9 +2618,9 @@ class DefaultApi(object):
         :type service_id: str
         :param account_id: (required)
         :type account_id: str
-        :param start_time: Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) (required)
+        :param start_time: Start time of log entries (required)
         :type start_time: str
-        :param end_time: End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) (required)
+        :param end_time: End time of log entries (required)
         :type end_time: str
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
@@ -2641,6 +2712,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[AuditLogEntry]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -2788,6 +2864,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "ClientKeyObject",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -2927,6 +3008,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[ClientKeyObject]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -3058,6 +3144,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "ServiceResponseObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -3197,6 +3288,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "GetDeveloperPublicKeys200Response",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -3470,6 +3566,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "OAuthTokenResponse",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -3617,6 +3718,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "OIDCObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -3756,6 +3862,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[OIDCObj]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -3895,6 +4006,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "PasswordPolicy",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -4042,6 +4158,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "Role",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -4181,6 +4302,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[Role]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -4326,6 +4452,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[Role]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -4473,6 +4604,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "SAMLObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -4612,6 +4748,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[SAMLObj]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -4751,6 +4892,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "ServiceResponseObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -4920,24 +5066,20 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_tags_for_resource(self, account_id : StrictStr, service_id : StrictStr, name : StrictStr, resource_id : StrictStr, **kwargs) -> Tags:  # noqa: E501
-        """Gets tags for resource  # noqa: E501
+    def get_tags_for_resource(self, service_id : StrictStr, get_tags_request : Annotated[GetTagsRequest, Field(..., description="Tags and resource id")], **kwargs) -> Tags:  # noqa: E501
+        """Gets tags for a particular resource  # noqa: E501
 
-        Gets tags object associated with the resource  # noqa: E501
+        Gets tags object associated with a resource  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_tags_for_resource(account_id, service_id, name, resource_id, async_req=True)
+        >>> thread = api.get_tags_for_resource(service_id, get_tags_request, async_req=True)
         >>> result = thread.get()
 
-        :param account_id: (required)
-        :type account_id: str
         :param service_id: (required)
         :type service_id: str
-        :param name: (required)
-        :type name: str
-        :param resource_id: (required)
-        :type resource_id: str
+        :param get_tags_request: Tags and resource id (required)
+        :type get_tags_request: GetTagsRequest
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -4952,27 +5094,23 @@ class DefaultApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_tags_for_resource_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_tags_for_resource_with_http_info(account_id, service_id, name, resource_id, **kwargs)  # noqa: E501
+        return self.get_tags_for_resource_with_http_info(service_id, get_tags_request, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_tags_for_resource_with_http_info(self, account_id : StrictStr, service_id : StrictStr, name : StrictStr, resource_id : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
-        """Gets tags for resource  # noqa: E501
+    def get_tags_for_resource_with_http_info(self, service_id : StrictStr, get_tags_request : Annotated[GetTagsRequest, Field(..., description="Tags and resource id")], **kwargs) -> ApiResponse:  # noqa: E501
+        """Gets tags for a particular resource  # noqa: E501
 
-        Gets tags object associated with the resource  # noqa: E501
+        Gets tags object associated with a resource  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_tags_for_resource_with_http_info(account_id, service_id, name, resource_id, async_req=True)
+        >>> thread = api.get_tags_for_resource_with_http_info(service_id, get_tags_request, async_req=True)
         >>> result = thread.get()
 
-        :param account_id: (required)
-        :type account_id: str
         :param service_id: (required)
         :type service_id: str
-        :param name: (required)
-        :type name: str
-        :param resource_id: (required)
-        :type resource_id: str
+        :param get_tags_request: Tags and resource id (required)
+        :type get_tags_request: GetTagsRequest
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -5001,10 +5139,8 @@ class DefaultApi(object):
         _params = locals()
 
         _all_params = [
-            'account_id',
             'service_id',
-            'name',
-            'resource_id'
+            'get_tags_request'
         ]
         _all_params.extend(
             [
@@ -5032,17 +5168,8 @@ class DefaultApi(object):
 
         # process the path parameters
         _path_params = {}
-        if _params['account_id']:
-            _path_params['accountId'] = _params['account_id']
-
         if _params['service_id']:
             _path_params['serviceId'] = _params['service_id']
-
-        if _params['name']:
-            _path_params['name'] = _params['name']
-
-        if _params['resource_id']:
-            _path_params['resourceId'] = _params['resource_id']
 
 
         # process the query parameters
@@ -5054,19 +5181,34 @@ class DefaultApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
+        if _params['get_tags_request'] is not None:
+            _body_params = _params['get_tags_request']
+
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
             ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
             '200': "Tags",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
-            '/org/{accountId}/tags/serviceId/{serviceId}/name/{name}/resource/{resourceId}', 'GET',
+            '/service/{serviceId}/tags', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -5208,6 +5350,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[Tags]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -5353,6 +5500,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "User",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -5492,6 +5644,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[User]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -5760,6 +5917,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "List[ServiceResponseObj]",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -5915,6 +6077,11 @@ class DefaultApi(object):
         _response_types_map = {
             '302': None,
             '200': "LoginToken",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -6069,6 +6236,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "InitialLoginResponse",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -6848,6 +7020,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "SignupResponse",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -7162,6 +7339,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "OIDCObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -7324,6 +7506,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "Role",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -7486,6 +7673,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "SAMLObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -7704,6 +7896,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "ServiceResponseObj",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(
@@ -7866,6 +8063,11 @@ class DefaultApi(object):
 
         _response_types_map = {
             '200': "User",
+            '400': "BadRequestException",
+            '401': "UnauthorizedException",
+            '409': "ConflictException",
+            '429': "TooManyRequestsException",
+            '500': "InternalServerErrorException",
         }
 
         return self.api_client.call_api(

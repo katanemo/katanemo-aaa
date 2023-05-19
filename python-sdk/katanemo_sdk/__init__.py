@@ -43,6 +43,7 @@ from katanemo_sdk.models.client_key_response import ClientKeyResponse
 from katanemo_sdk.models.conflict_exception import ConflictException
 from katanemo_sdk.models.error import Error
 from katanemo_sdk.models.get_developer_public_keys200_response import GetDeveloperPublicKeys200Response
+from katanemo_sdk.models.get_tags_request import GetTagsRequest
 from katanemo_sdk.models.init_arc_response import InitArcResponse
 from katanemo_sdk.models.initial_login_request import InitialLoginRequest
 from katanemo_sdk.models.initial_login_response import InitialLoginResponse

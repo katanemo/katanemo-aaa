@@ -1,6 +1,6 @@
 # katanemo_sdk.DefaultApi
 
-All URIs are relative to *http://localhost:8090*
+All URIs are relative to *https://api.us-west-2.katanemo.dev*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,8 +12,8 @@ Method | HTTP request | Description
 [**create_role**](DefaultApi.md#create_role) | **POST** /org/{accountId}/role | Creates a new Role
 [**create_saml_connection**](DefaultApi.md#create_saml_connection) | **POST** /org/{accountId}/sso-connections/saml | Creates a new SAML connection
 [**create_saml_connection_mapping**](DefaultApi.md#create_saml_connection_mapping) | **POST** /org/{accountId}/sso-connections/saml/{connectionId}/mapAttributeToRoles | Creates a new attribute mapping for a SAML connection
-[**create_service**](DefaultApi.md#create_service) | **POST** /service | Create a Service object.
-[**create_tags**](DefaultApi.md#create_tags) | **POST** /org/{accountId}/tags | creates a resource with provided tags
+[**create_service**](DefaultApi.md#create_service) | **POST** /service | Create a Katanemo Service object.
+[**create_tags**](DefaultApi.md#create_tags) | **POST** /service/{serviceId}/tags | Add tags (key/value pair) to a particular resource that is created for a service against an organization account id
 [**create_user_for_account**](DefaultApi.md#create_user_for_account) | **POST** /org/{accountId}/user | Creates a new User account tied to the specified organization
 [**delete_client_key**](DefaultApi.md#delete_client_key) | **DELETE** /org/{accountId}/key/{keyId} | delete a client key
 [**delete_oidc_connection**](DefaultApi.md#delete_oidc_connection) | **DELETE** /org/{accountId}/sso-connections/oidc/{connectionId} | Deletes an OIDC connection
@@ -37,7 +37,7 @@ Method | HTTP request | Description
 [**get_saml_connections_for_account**](DefaultApi.md#get_saml_connections_for_account) | **GET** /org/{accountId}/sso-connections/saml | Returns a list of all SAML connections belonging to provided account ID
 [**get_service**](DefaultApi.md#get_service) | **GET** /service/{serviceId} | Gets a service with service ID
 [**get_short_term_token**](DefaultApi.md#get_short_term_token) | **POST** /token | Returns a short-lived token for client key/secret pair. Tokens contain claims that identify what a principal can or cannot do.
-[**get_tags_for_resource**](DefaultApi.md#get_tags_for_resource) | **GET** /org/{accountId}/tags/serviceId/{serviceId}/name/{name}/resource/{resourceId} | Gets tags for resource
+[**get_tags_for_resource**](DefaultApi.md#get_tags_for_resource) | **GET** /service/{serviceId}/tags | Gets tags for a particular resource
 [**get_tags_for_service**](DefaultApi.md#get_tags_for_service) | **GET** /arc/{serviceId}/tags | 
 [**get_user**](DefaultApi.md#get_user) | **GET** /org/{accountId}/user/{userId} | 
 [**get_users_for_account**](DefaultApi.md#get_users_for_account) | **GET** /org/{accountId}/user | Returns a list of all users belonging to provided account ID
@@ -76,10 +76,10 @@ from katanemo_sdk.models.user import User
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -122,6 +122,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | User account |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -143,10 +148,10 @@ from katanemo_sdk.models.assume_role_obj import AssumeRoleObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -189,6 +194,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | token |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -210,10 +220,10 @@ from katanemo_sdk.models.user_confirmation_response import UserConfirmationRespo
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -256,6 +266,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | The first user (email) has been subscribed to a particular service and an organization id has been created |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -278,10 +293,10 @@ from katanemo_sdk.models.client_key_response import ClientKeyResponse
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -326,6 +341,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful org keys. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -347,10 +367,10 @@ from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -395,6 +415,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | OIDCObj |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -416,10 +441,10 @@ from katanemo_sdk.models.role import Role
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -464,6 +489,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Role |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -485,10 +515,10 @@ from katanemo_sdk.models.saml_obj import SAMLObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -533,6 +563,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | SAMLObj |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -555,10 +590,10 @@ from katanemo_sdk.models.saml_obj import SAMLObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -605,14 +640,19 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | SAMLObj |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_service**
-> ServiceResponseObj create_service(name, redirect_url, api_spec_file, description=description, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
+> ServiceResponseObj create_service(name, description, redirect_url, api_spec_file, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
 
-Create a Service object.
+Create a Katanemo Service object.
 
 Create a Service in Katanemo. Once a service is created Katanemo powers rich enterprise identity and authorization capabilities on behalf of SaaS (API) Developers
 
@@ -626,10 +666,10 @@ from katanemo_sdk.models.service_response_obj import ServiceResponseObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -638,9 +678,9 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = katanemo_sdk.DefaultApi(api_client)
     name = 'name_example' # str | Service Name
+    description = 'description_example' # str | Service Description
     redirect_url = 'redirect_url_example' # str | Redirect URL after a successful login.
     api_spec_file = None # bytearray | openapi service json or yaml file
-    description = 'description_example' # str | Service Description (optional)
     display_name = 'display_name_example' # str | Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages (optional)
     logo_url = 'logo_url_example' # str | The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages (optional)
     terms_url = 'terms_url_example' # str | The URL for the terms of the service (optional)
@@ -648,8 +688,8 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
     docs_url = 'docs_url_example' # str | The URL for the documentatio of the service (optional)
 
     try:
-        # Create a Service object.
-        api_response = api_instance.create_service(name, redirect_url, api_spec_file, description=description, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
+        # Create a Katanemo Service object.
+        api_response = api_instance.create_service(name, description, redirect_url, api_spec_file, display_name=display_name, logo_url=logo_url, terms_url=terms_url, privacy_url=privacy_url, docs_url=docs_url)
         print("The response of DefaultApi->create_service:\n")
         pprint(api_response)
     except Exception as e:
@@ -662,9 +702,9 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | **str**| Service Name | 
+ **description** | **str**| Service Description | 
  **redirect_url** | **str**| Redirect URL after a successful login. | 
  **api_spec_file** | **bytearray**| openapi service json or yaml file | 
- **description** | **str**| Service Description | [optional] 
  **display_name** | **str**| Display name of the service/company used in the Sign up, Login, Logout and other relevant branding pages | [optional] 
  **logo_url** | **str**| The URL for the service/company Logo used in the Sign up, Login, Logout and other relevant branding pages | [optional] 
  **terms_url** | **str**| The URL for the terms of the service | [optional] 
@@ -688,16 +728,21 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Service Successfully Created. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_tags**
-> Tags create_tags(account_id, tags)
+> Tags create_tags(service_id, tags)
 
-creates a resource with provided tags
+Add tags (key/value pair) to a particular resource that is created for a service against an organization account id
 
-creates a resource with provided tags
+Add tags (key/value pair) to a particular resource that is created for a service against an organization account id.
 
 ### Example
 
@@ -709,10 +754,10 @@ from katanemo_sdk.models.tags import Tags
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -720,12 +765,12 @@ configuration = katanemo_sdk.Configuration(
 with katanemo_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = katanemo_sdk.DefaultApi(api_client)
-    account_id = 'account_id_example' # str | 
+    service_id = 'service_id_example' # str | 
     tags = katanemo_sdk.Tags() # Tags | Tags and resource id
 
     try:
-        # creates a resource with provided tags
-        api_response = api_instance.create_tags(account_id, tags)
+        # Add tags (key/value pair) to a particular resource that is created for a service against an organization account id
+        api_response = api_instance.create_tags(service_id, tags)
         print("The response of DefaultApi->create_tags:\n")
         pprint(api_response)
     except Exception as e:
@@ -737,7 +782,7 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account_id** | **str**|  | 
+ **service_id** | **str**|  | 
  **tags** | [**Tags**](Tags.md)| Tags and resource id | 
 
 ### Return type
@@ -757,6 +802,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | User account |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -778,10 +828,10 @@ from katanemo_sdk.models.user import User
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -826,6 +876,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | User |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -844,10 +899,10 @@ import katanemo_sdk
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -892,6 +947,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful deletion of client key. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -912,10 +972,10 @@ import katanemo_sdk
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -958,6 +1018,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Deletion successful. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -978,10 +1043,10 @@ import katanemo_sdk
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1022,6 +1087,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Deleted service. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1043,10 +1113,10 @@ from katanemo_sdk.models.organization import Organization
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1089,6 +1159,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Organization |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1110,10 +1185,10 @@ from katanemo_sdk.models.organization import Organization
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1152,6 +1227,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Organization of the acccount. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1171,10 +1251,10 @@ from katanemo_sdk.models.audit_log_entry import AuditLogEntry
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1184,8 +1264,8 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
     api_instance = katanemo_sdk.DefaultApi(api_client)
     service_id = 'service_id_example' # str | 
     account_id = 'account_id_example' # str | 
-    start_time = 'start_time_example' # str | Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)
-    end_time = 'end_time_example' # str | End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58)
+    start_time = 'start_time_example' # str | Start time of log entries
+    end_time = 'end_time_example' # str | End time of log entries
 
     try:
         # Returns list of log entries for a service and account
@@ -1203,8 +1283,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **service_id** | **str**|  | 
  **account_id** | **str**|  | 
- **start_time** | **str**| Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) | 
- **end_time** | **str**| End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g. 2023-01-15T15-28-58 which means 2023-01-15 15:28:58) | 
+ **start_time** | **str**| Start time of log entries | 
+ **end_time** | **str**| End time of log entries | 
 
 ### Return type
 
@@ -1223,6 +1303,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | List of log entries |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1244,10 +1329,10 @@ from katanemo_sdk.models.client_key_object import ClientKeyObject
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1292,6 +1377,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Getting client key successful. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1313,10 +1403,10 @@ from katanemo_sdk.models.client_key_object import ClientKeyObject
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1359,6 +1449,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | List of all users successful. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1380,10 +1475,10 @@ from katanemo_sdk.models.service_response_obj import ServiceResponseObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1422,6 +1517,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | service |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1443,10 +1543,10 @@ from katanemo_sdk.models.get_developer_public_keys200_response import GetDevelop
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1489,6 +1589,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | List of public keys for developer |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1507,10 +1612,10 @@ import katanemo_sdk
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1568,10 +1673,10 @@ from katanemo_sdk.models.o_auth_token_response import OAuthTokenResponse
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1614,6 +1719,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Getting token for client ID successful. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1635,10 +1745,10 @@ from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1683,6 +1793,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | OIDCObj |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1704,10 +1819,10 @@ from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1750,6 +1865,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | OIDC connections belonging to provided account ID |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1771,10 +1891,10 @@ from katanemo_sdk.models.password_policy import PasswordPolicy
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1817,6 +1937,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | returns the password stregnth needed to successful set password |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -1837,10 +1962,10 @@ from katanemo_sdk.models.role import Role
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1885,6 +2010,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | role |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1906,10 +2036,10 @@ from katanemo_sdk.models.role import Role
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -1952,6 +2082,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | roles belonging to provided account ID |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1971,10 +2106,10 @@ from katanemo_sdk.models.role import Role
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2017,7 +2152,12 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** |  |  -  |
+**200** | Successful retrieval of roles for service. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2039,10 +2179,10 @@ from katanemo_sdk.models.saml_obj import SAMLObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2087,6 +2227,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | SAMLObj |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2108,10 +2253,10 @@ from katanemo_sdk.models.saml_obj import SAMLObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2154,6 +2299,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | SAML connections belonging to provided account ID |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2175,10 +2325,10 @@ from katanemo_sdk.models.service_response_obj import ServiceResponseObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2221,6 +2371,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | service |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2241,10 +2396,10 @@ from katanemo_sdk.models.token_response import TokenResponse
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2297,11 +2452,11 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_tags_for_resource**
-> Tags get_tags_for_resource(account_id, service_id, name, resource_id)
+> Tags get_tags_for_resource(service_id, get_tags_request)
 
-Gets tags for resource
+Gets tags for a particular resource
 
-Gets tags object associated with the resource
+Gets tags object associated with a resource
 
 ### Example
 
@@ -2309,14 +2464,15 @@ Gets tags object associated with the resource
 import time
 import os
 import katanemo_sdk
+from katanemo_sdk.models.get_tags_request import GetTagsRequest
 from katanemo_sdk.models.tags import Tags
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2324,14 +2480,12 @@ configuration = katanemo_sdk.Configuration(
 with katanemo_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = katanemo_sdk.DefaultApi(api_client)
-    account_id = 'account_id_example' # str | 
     service_id = 'service_id_example' # str | 
-    name = 'name_example' # str | 
-    resource_id = 'resource_id_example' # str | 
+    get_tags_request = katanemo_sdk.GetTagsRequest() # GetTagsRequest | Tags and resource id
 
     try:
-        # Gets tags for resource
-        api_response = api_instance.get_tags_for_resource(account_id, service_id, name, resource_id)
+        # Gets tags for a particular resource
+        api_response = api_instance.get_tags_for_resource(service_id, get_tags_request)
         print("The response of DefaultApi->get_tags_for_resource:\n")
         pprint(api_response)
     except Exception as e:
@@ -2343,10 +2497,8 @@ with katanemo_sdk.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **account_id** | **str**|  | 
  **service_id** | **str**|  | 
- **name** | **str**|  | 
- **resource_id** | **str**|  | 
+ **get_tags_request** | [**GetTagsRequest**](GetTagsRequest.md)| Tags and resource id | 
 
 ### Return type
 
@@ -2358,14 +2510,18 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | tags |  -  |
-**0** | unexpected error |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -2384,10 +2540,10 @@ from katanemo_sdk.models.tags import Tags
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2430,7 +2586,12 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** |  |  -  |
+**200** | Successful retrieval of tags for service. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2450,10 +2611,10 @@ from katanemo_sdk.models.user import User
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2497,6 +2658,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | user belonging to provided account ID |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2518,10 +2684,10 @@ from katanemo_sdk.models.user import User
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2564,6 +2730,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | users belonging to provided account ID |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2583,10 +2754,10 @@ from katanemo_sdk.models.init_arc_response import InitArcResponse
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2627,7 +2798,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** |  |  -  |
+**200** | Successful retrieval of init arc client. |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2649,10 +2820,10 @@ from katanemo_sdk.models.service_response_obj import ServiceResponseObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2691,6 +2862,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | List all services belonging to a developer |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2713,10 +2889,10 @@ from katanemo_sdk.models.login_with_password_request import LoginWithPasswordReq
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2762,6 +2938,11 @@ No authorization required
 |-------------|-------------|------------------|
 **302** | Redirect to default page for developer after succesful login. |  * Location - Redirect URL of landing page after successful login. <br>  |
 **200** | Returns login token in a response object if skipRedirect is set to true. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2784,10 +2965,10 @@ from katanemo_sdk.models.initial_login_response import InitialLoginResponse
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2832,6 +3013,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | This API is used to determine if the user should login via an email/password combination or if the UI should redirect the user to the Idp for SSO |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2853,10 +3039,10 @@ from katanemo_sdk.models.error import Error
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2921,10 +3107,10 @@ from katanemo_sdk.models.error import Error
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -2994,10 +3180,10 @@ from katanemo_sdk.models.error import Error
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3062,10 +3248,10 @@ from katanemo_sdk.models.error import Error
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3136,10 +3322,10 @@ from katanemo_sdk.models.signup_response import SignupResponse
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3184,6 +3370,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Signup is successful. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -3205,10 +3396,10 @@ from katanemo_sdk.models.set_password_request import SetPasswordRequest
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3251,6 +3442,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Settting pasword for user is successful. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -3272,10 +3468,10 @@ from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3322,6 +3518,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | SAMLObj |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -3343,10 +3544,10 @@ from katanemo_sdk.models.role import Role
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3393,6 +3594,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Updated service object. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -3414,10 +3620,10 @@ from katanemo_sdk.models.saml_obj import SAMLObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3464,6 +3670,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | SAMLObj |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -3485,10 +3696,10 @@ from katanemo_sdk.models.service_response_obj import ServiceResponseObj
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3549,6 +3760,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Updated service object. |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -3570,10 +3786,10 @@ from katanemo_sdk.models.user import User
 from katanemo_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8090
+# Defining the host is optional and defaults to https://api.us-west-2.katanemo.dev
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_sdk.Configuration(
-    host = "http://localhost:8090"
+    host = "https://api.us-west-2.katanemo.dev"
 )
 
 
@@ -3620,6 +3836,11 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | User |  -  |
+**400** | Bad Request Exception |  -  |
+**401** | Unauthorized Exception |  -  |
+**409** | Conflict Exception |  -  |
+**429** | Too Many Requests Exception |  -  |
+**500** | Internal Server Error |  -  |
 **0** | unexpected error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
