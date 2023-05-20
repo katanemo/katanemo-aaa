@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-source common.sh
+source ./common.sh
 
 API_ENDPOINT=https://api.us-west-2.katanemo.dev
 KATUTIL=../../cli/bin/katutil
