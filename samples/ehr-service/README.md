@@ -26,23 +26,23 @@ The high-level architecture below captures AWS infrastructure resources of our s
 Use following steps to install lambda authorizer that uses apigateway to authorize calls to EHR service
 
 1. Clone [katanemo/katanemo-aaa](https://github.com/katanemo/katanemo-aaa) repo and navigate to samples/ehr-service
-    ```
-    $ git clone git@github.com:katanemo/katanemo-aaa.git
-    $ cd katanemo-aaa/samples/ehr-service
+    ```bash
+    katutil get-default-servicegit clone git@github.com:katanemo/katanemo-aaa.git
+    cd katanemo-aaa/samples/ehr-service
     ```
 2. Add katutil to path
-    ```
-    $ export PATH=$PATH:`pwd`/../../cli/bin
+    ```bash
+    export PATH=$PATH:`pwd`/../../cli/bin
     ```
     Ensure that katutil is working by typing in following
     > on first run katutil will attempt to build docker container for katutil
-    ```
-    $ katutil get-default-service | jq -r .serviceId
+    ```bash
+    katutil get-default-service | jq -r .serviceId
     ```
 3. Deploy Katanemo's Authentication Runtime Client (ARC), Lambda Authorizer, API Gateway and EHR SaaS Service using CDK
    > Use account-email that you used when onboarding with katanemo. And complete service registration step to get service-id
-    ```
-    $ sh deploy.sh <katanemo-account-email> <service-id>
+    ```bash
+    sh deploy.sh <katanemo-account-email> <service-id>
     ```
 
 After deployment is complete you will see following new resources in your AWS account,
@@ -55,19 +55,19 @@ After deployment is complete you will see following new resources in your AWS ac
 6. API Gateway that uses lambda authorizer to protect patient and diagnostic REST API paths
 
 To find out name of your API gateway issue following command,
-```
-$ aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r
+```bash
+aws cloudformation describe-stacks --stack-name ApiLambdaEhrService --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r
 ```
 
 To find out name of Katanemo's ARC Endpoint address use following command,
 
-```
-$ aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("KatanemoArcServiceURL")) | .OutputValue' -r
+```bash
+aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("KatanemoArcServiceURL")) | .OutputValue' -r
 ```
 
 # Cleanup
 
 To remove all resources configured during this sample application issue following command,
-```
-$ sh cleanup.sh
+```bash
+sh cleanup.sh
 ```
