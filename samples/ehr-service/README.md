@@ -27,7 +27,8 @@ Use following steps to install lambda authorizer that uses apigateway to authori
 
 1. Clone [katanemo/katanemo-aaa](https://github.com/katanemo/katanemo-aaa) repo and navigate to samples/ehr-service
     ```bash
-    katutil get-default-servicegit clone git@github.com:katanemo/katanemo-aaa.git
+    katutil get-default-service
+    git clone git@github.com:katanemo/katanemo-aaa.git
     cd katanemo-aaa/samples/ehr-service
     ```
 2. Add katutil to path
