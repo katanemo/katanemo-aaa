@@ -1,15 +1,15 @@
 # Overview
-The follwing project contains a sample Serverless EHR SaaS service that uses Katanemo's fully featured identity and fine-grained authorization service for privacy and collaboration features.
+The follwing project contains a sample Serverless EHR SaaS application that uses Katanemo's fully featured identity and fine-grained authorization service. With Katanemo developers can quickly add user and federated authentication to their applications, and build powerful privacy and collaboration features via Katanemo’s rich RBAC and ABAC capabilities
 
-The high-level architecture below captures AWS infrastructure resources of our service, and Katanemo's authorization components deployed alongside our application.
+The high-level architecture below captures AWS infrastructure resources of our service, and Katanemo's authorization components deployed alongside our service.
 
 <img src="https://github.com/katanemo/katanemo-aaa/blob/main/samples/ehr-service/saas_arch.png?raw=true" width="800">
 
 # Key Components and Actors 
 
-`EHR SaaS Service`: An OpenAPI based SaaS services that manages Patient and Diagnostic records via separate API-based microservices.
+`EHR SaaS Service`: An OpenAPI based SaaS service that manages Patient and Diagnostic records via API-based microservices.
 
-`AcmeHealth.io`: A provider facility that uses the EHR SaaS Service to store and manage patient records.
+`AcmeHealth.io`: A provider facility (tenant) that uses the EHR SaaS service to store and manage Patient and Diagnostic records.
 
 - The EHR SaaS service uses Katanemo to seamlessly onboard customers (e.g. AcmeHealth.io), and empowers its customers to define modern safety and privacy controls against its service, via self-service identity and access management tools offered by Katanemo.
 
@@ -39,8 +39,22 @@ Use following steps to install lambda authorizer that uses apigateway to authori
     ```bash
     katutil get-default-service | jq -r .serviceId
     ```
-3. Deploy Katanemo's Authentication Runtime Client (ARC), Lambda Authorizer, API Gateway and EHR SaaS Service using CDK
-   > Use account-email that you used when onboarding with katanemo. And complete service registration step to get service-id
+3. Create a Katanemo [developer account](https://console.katanemo.com/sign-up), if you don't already have one. 
+
+4. Create a Katanemo Service with the Katanemo CLI. 
+   >First, retrive a token for your Katanemo developer account
+   ```bash
+   katanemo_aaa=$(katutil get-default-service | jq -r .serviceId)
+   developer_token=$(katutil login-with-password --service_id $katanemo_aaa --email <katanemo-developer-account-email> --password <katanemo-developer-account-password> | jq -r .token)
+   ```
+
+   >Next, create a Katanemo Service via the init-service command. Note: the redirectURI is used to navigate users to a callback endpoint upon a successful login via Katanemo
+   ```bash
+    katutil init-service --service_name <service_name> --api_spec $(readlink -f ehr.yaml) --redirect_uri <callback_uri> --token $developer_token
+   ```
+
+5. Deploy Katanemo's Authentication Runtime Client (ARC), Lambda Authorizer, API Gateway and EHR SaaS Service using CDK
+   > Use the email address with your Katanemo account. And complete service registration step to get service-id
     ```bash
     sh deploy.sh <katanemo-account-email> <service-id>
     ```
