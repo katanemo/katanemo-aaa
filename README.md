@@ -1,6 +1,7 @@
 Welcome to Katanemo! 🚀
 ---------------
 *A ridiculously simple, identity and fine-grained permissions system to enable privacy, safety and collaboration for modern business applications*
+
 <img src="https://github.com/katanemo/katanemo-aaa/blob/main/kataneno-how-it-works.png?raw=true" width="800">
 
 The following repository contains: 
