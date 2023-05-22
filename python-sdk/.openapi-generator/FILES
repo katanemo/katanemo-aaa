@@ -15,6 +15,7 @@ docs/ConflictException.md
 docs/DefaultApi.md
 docs/Error.md
 docs/GetDeveloperPublicKeys200Response.md
+docs/GetTagsRequest.md
 docs/InitArcResponse.md
 docs/InitialLoginRequest.md
 docs/InitialLoginResponse.md
@@ -62,6 +63,7 @@ katanemo_sdk/models/client_key_response.py
 katanemo_sdk/models/conflict_exception.py
 katanemo_sdk/models/error.py
 katanemo_sdk/models/get_developer_public_keys200_response.py
+katanemo_sdk/models/get_tags_request.py
 katanemo_sdk/models/init_arc_response.py
 katanemo_sdk/models/initial_login_request.py
 katanemo_sdk/models/initial_login_response.py
