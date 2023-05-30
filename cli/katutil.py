@@ -20,7 +20,7 @@ init_service_cmd = sub_parsers.add_parser(
 init_service_cmd.add_argument(
     "--service_name", type=str, help="service name", required=True)
 init_service_cmd.add_argument(
-    "--service_description", type=str, help="service description")
+    "--service_description", type=str, help="service description", required=True)
 init_service_cmd.add_argument(
     "--api_spec", type=str, help="open api spec for service", required=True)
 init_service_cmd.add_argument(
