@@ -63,6 +63,8 @@ export class ApiLambdaEhrServiceStack extends Stack {
       runtime: Runtime.NODEJS_14_X,
       environment: {
         API_ENDPOINT: apiEndpoint.valueAsString,
+        CLIENT_KEY: clientKey.valueAsString,
+        CLIENT_SECRET: clientSecret.valueAsString,
       }
     }
 

@@ -3,7 +3,15 @@ set -e
 
 source ./common.sh
 
-API_ENDPOINT=https://api.us-west-2.katanemo.dev
+
+DEFAULT_API_ENDPOINT=https://api.us-west-2.katanemo.dev
+
+if [[ -z "$API_ENDPOINT" ]]; then
+  API_ENDPOINT=$DEFAULT_API_ENDPOINT
+fi
+
+log using api endpoint $API_ENDPOINT, auth endpoint $AUTH_ENDPOINT
+
 KATUTIL=../../cli/bin/katutil
 KATANEMO_ACCOUNT_EMAIL=$1
 EHR_SERVICE_ID=$2

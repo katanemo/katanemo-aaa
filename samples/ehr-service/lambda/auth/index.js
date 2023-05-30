@@ -11,20 +11,18 @@ function extractTokenFromHeader(e) {
   }
 }
 
-function authorizeRequest(userToken, serviceToken, path, method, methodArn, callback) {
-  let body = {
-    "Token": userToken,
-    "Path": path,
-    "HttpMethod": method,
-  }
+function authorizeRequest(userToken, path, method, methodArn, callback) {
   var now = new Date().getTime();
   fetch(arcEndpoint + '/authorize', {
     method: 'POST',
     headers: {
-      "Authentication": "Bearer " + serviceToken,
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify({
+      "Token": userToken,
+      "Path": path,
+      "HttpMethod": method,
+    })
   }).then((resp) => {
     const latency = new Date().getTime() - now
     console.log('auth service response time - auth public endpoint: ' + latency + 'ms')
@@ -42,14 +40,13 @@ function authorizeRequest(userToken, serviceToken, path, method, methodArn, call
 
 export function handler(event, _context, callback) {
   let userToken = extractTokenFromHeader(event) || '';
-  let serviceToken = userToken
   let methodArn = event.methodArn
   let apiPath = methodArn.split(':')[5]
   let apiPathTokens = apiPath.split('/')
   let method = apiPathTokens[2]
   let path = '/' + apiPathTokens.slice(3).join('/')
   method = apiPathTokens[2]
-  authorizeRequest(userToken, serviceToken, path, method, methodArn, callback);
+  authorizeRequest(userToken, path, method, methodArn, callback);
 }
 
 // Help function to generate an IAM policy
@@ -70,8 +67,8 @@ var generatePolicy = function (principalId, effect, resource, tenantId, latency)
   }
 
   authResponse.context = {
-      "tenantId": tenantId,
-      "authLatency": latency
+    "tenantId": tenantId,
+    "authLatency": latency
   };
   return authResponse;
 }

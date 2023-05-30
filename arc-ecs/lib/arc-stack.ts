@@ -10,17 +10,16 @@ export class ArcStack extends cdk.Stack {
     super(scope, id, props);
 
     const apiEndpoint = new CfnParameter(this, 'apiEndpoint');
-    const accountId = new CfnParameter(this, 'accountId');
     const serviceId = new CfnParameter(this, 'serviceId');
     const clientKey = new CfnParameter(this, 'clientKey');
     const clientSecret = new CfnParameter(this, 'clientSecret');
+    const arcSha = new CfnParameter(this, 'arcSha');
 
     const service = new ecsp.ApplicationLoadBalancedFargateService(this, 'Katanemo-Arc', {
       taskImageOptions: {
-        image: ecs.ContainerImage.fromRegistry('public.ecr.aws/c2g2h4e5/repo/aaa-staging-public:arc_latest'),
+        image: ecs.ContainerImage.fromRegistry('public.ecr.aws/c2g2h4e5/repo/aaa-staging-public:arc_' + arcSha.valueAsString),
         environment: {
           API_ENDPOINT: apiEndpoint.valueAsString,
-          ACCOUNT_ID: accountId.valueAsString,
           SERVICE_ID: serviceId.valueAsString,
           CLIENT_KEY: clientKey.valueAsString,
           CLIENT_SECRET: clientSecret.valueAsString,
