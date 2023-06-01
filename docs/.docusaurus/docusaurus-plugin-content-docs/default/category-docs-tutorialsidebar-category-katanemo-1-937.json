@@ -1,0 +1,16 @@
+{
+  "title": "Katanemo 1",
+  "description": "Katanemo stuff here",
+  "slug": "/category/katanemo-1",
+  "permalink": "/docs/category/katanemo-1",
+  "navigation": {
+    "previous": {
+      "title": "Customer/Subscriber Quick Start Guide",
+      "permalink": "/docs/customer-quick-start"
+    },
+    "next": {
+      "title": "Authorization Principles",
+      "permalink": "/docs/concepts/create-a-page"
+    }
+  }
+}

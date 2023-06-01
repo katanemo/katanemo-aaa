@@ -1,0 +1,26 @@
+{
+  "unversionedId": "concepts/resource-access-via-tags",
+  "id": "concepts/resource-access-via-tags",
+  "title": "Resource Access (via Tags)",
+  "description": "Tags consist of a key and value pair, and are part of a resource’s meta-data. Tags are used to ensure that API resources that belong to a set of principals are only accessible by those principals. Tags and Roles complement each other to create a powerful, yet simple authorization strategy. Roles capture what API operations can be performed by a principal, and Tags capture which resources are accessible to a set of principals. SaaS developers store Tags for resources created by their customers, and customers attach Tags to authorization principals to be used in authorization.",
+  "source": "@site/docs/concepts/resource-access-via-tags.md",
+  "sourceDirName": "concepts",
+  "slug": "/concepts/resource-access-via-tags",
+  "permalink": "/docs/concepts/resource-access-via-tags",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Roles",
+    "permalink": "/docs/concepts/roles"
+  },
+  "next": {
+    "title": "Connections",
+    "permalink": "/docs/concepts/connections"
+  }
+}

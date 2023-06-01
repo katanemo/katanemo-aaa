@@ -1,0 +1,60 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+:root {
+  --ifm-color-primary: #31C887; /* Replace 'your-color' with your desired color */
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+
+  /* Main Text Color Change */
+  --ifm-color-primary: #31C887;
+
+  /* When code is highlighted in MDX this color highlights it */
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.3);
+
+
+}
+
+/* Navbar link */
+.navbar__item a {
+  color: #FFF; /* Set the color of navbar links to white */
+}
+
+/* Navbar active link */
+.navbar__item a.navbar__link--active {
+  color: #FFF; /* Set the color of the active navbar link to white */
+}
+
+/* Hide the light mode icon in the navbar */
+nav[data-theme='light'] .navbar__item--icon {
+  display: none;
+}
+
+
+.footer {
+  /* Change font name and add file to comply w Katanemo brand */
+  font-family: 'Roboto', sans-serif;
+  background-color: #212121;
+}
+
+.navbar {
+  /* Change font name and add file to comply w Katanemo brand */
+  font-family: 'Roboto', sans-serif;
+  color: #31C887;
+}
+
+
+.mark {
+  background: orange;
+  color: black;
+}

@@ -1,0 +1,15 @@
+{
+  "title": "How-To Guides",
+  "slug": "/category/how-to-guides",
+  "permalink": "/docs/category/how-to-guides",
+  "navigation": {
+    "previous": {
+      "title": "Saas (API) Managed Cloud Service",
+      "permalink": "/docs/use-cases/oidc-connection"
+    },
+    "next": {
+      "title": "How to Integrate the Katanemo SDK in your application (Authorization Runtime Client)?",
+      "permalink": "/docs/how-to-guides/katanemo-sdk-integration"
+    }
+  }
+}

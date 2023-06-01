@@ -1,0 +1,22 @@
+{
+  "unversionedId": "how-to-guides/authorization-principles",
+  "id": "how-to-guides/authorization-principles",
+  "title": "Authorization Principles (DONE)",
+  "description": "Katanemo performs authorization checks on operations performed by principals in Katanemo. This includes Users, API Keys, Roles, and OIDC-based users that integrate via SSO with Katanemo. The following guide will refer to these entities as simply principals going forward.",
+  "source": "@site/docs/how-to-guides/authorization-principles.md",
+  "sourceDirName": "how-to-guides",
+  "slug": "/how-to-guides/authorization-principles",
+  "permalink": "/docs/how-to-guides/authorization-principles",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "How-To Guides",
+    "permalink": "/docs/category/how-to-guides"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "unversionedId": "how-to-guides/crypto-offload-and-sessions-tokens",
+  "id": "how-to-guides/crypto-offload-and-sessions-tokens",
+  "title": "crypto-offload-and-sessions-tokens",
+  "description": "",
+  "source": "@site/docs/how-to-guides/crypto-offload-and-sessions-tokens.md",
+  "sourceDirName": "how-to-guides",
+  "slug": "/how-to-guides/crypto-offload-and-sessions-tokens",
+  "permalink": "/docs/how-to-guides/crypto-offload-and-sessions-tokens",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Resource Access (via Tags)",
+    "permalink": "/docs/how-to-guides/resource-access-via-tags"
+  },
+  "next": {
+    "title": "keys",
+    "permalink": "/docs/how-to-guides/keys"
+  }
+}

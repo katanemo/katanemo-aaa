@@ -1,0 +1,23 @@
+{
+  "unversionedId": "how-to-guides/authorization-evaluation-logic",
+  "id": "how-to-guides/authorization-evaluation-logic",
+  "title": "authorization-evaluation-logic",
+  "description": "",
+  "source": "@site/docs/how-to-guides/authorization-evaluation-logic.md",
+  "sourceDirName": "how-to-guides",
+  "slug": "/how-to-guides/authorization-evaluation-logic",
+  "permalink": "/docs/how-to-guides/authorization-evaluation-logic",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Resource Access (via Tags)",
+    "permalink": "/docs/how-to-guides/resource-access-via-tags"
+  },
+  "next": {
+    "title": "crypto-offload-and-sessions-tokens",
+    "permalink": "/docs/how-to-guides/crypto-offload-and-sessions-tokens"
+  }
+}

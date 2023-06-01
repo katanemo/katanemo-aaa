@@ -1,0 +1,26 @@
+{
+  "unversionedId": "concepts/crypto-offload-and-sessions-tokens",
+  "id": "concepts/crypto-offload-and-sessions-tokens",
+  "title": "Crypto Offload and Session Tokens",
+  "description": "Katanemo is an OIDC compliant 3xA service, which means that it generates an idtoken, an accesstoken for users and API keys, and optionally a refresh_token as per the ODIC spec. These tokens are encrypted with an RSA256 (RS-256) signature key. You can retrieve the RSA public key via Katanemo’s JSON Web Key Set (JWKS).",
+  "source": "@site/docs/concepts/crypto-offload-and-sessions-tokens.md",
+  "sourceDirName": "concepts",
+  "slug": "/concepts/crypto-offload-and-sessions-tokens",
+  "permalink": "/docs/concepts/crypto-offload-and-sessions-tokens",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 9,
+  "frontMatter": {
+    "sidebar_position": 9
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Scopes (OAuth 2.0)",
+    "permalink": "/docs/concepts/scopes-oauth"
+  },
+  "next": {
+    "title": "Authorization Evaluation Logic",
+    "permalink": "/docs/concepts/authorization-evaluation-logic"
+  }
+}

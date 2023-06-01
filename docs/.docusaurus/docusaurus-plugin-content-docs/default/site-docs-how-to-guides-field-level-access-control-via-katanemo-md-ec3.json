@@ -1,0 +1,26 @@
+{
+  "unversionedId": "how-to-guides/field-level-access-control-via-katanemo",
+  "id": "how-to-guides/field-level-access-control-via-katanemo",
+  "title": "How to Configure Field-Level Access Control (and filtering) via Katanemo Roles?",
+  "description": "Katanemo allows you (a subscriber of a service) to easily construct Roles via OpenAPI semantics (RESTful paths and http methods) that limit operations for a user/machine. This approach requires little to no learning curve in establishing simple yet powerful authorization rules for consuming a service.",
+  "source": "@site/docs/how-to-guides/field-level-access-control-via-katanemo.md",
+  "sourceDirName": "how-to-guides",
+  "slug": "/how-to-guides/field-level-access-control-via-katanemo",
+  "permalink": "/docs/how-to-guides/field-level-access-control-via-katanemo",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "How to Configure a New Okta SAML connection?",
+    "permalink": "/docs/how-to-guides/okta-saml-connection"
+  },
+  "next": {
+    "title": "How to use an existing Identity Provider (like Okta, Auth0) with Katanemo?",
+    "permalink": "/docs/how-to-guides/existing-identity-provider"
+  }
+}

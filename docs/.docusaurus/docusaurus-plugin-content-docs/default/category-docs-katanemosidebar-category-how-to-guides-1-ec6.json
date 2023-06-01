@@ -1,0 +1,15 @@
+{
+  "title": "How-To Guides",
+  "slug": "/category/how-to-guides-1",
+  "permalink": "/docs/category/how-to-guides-1",
+  "navigation": {
+    "previous": {
+      "title": "OIDC",
+      "permalink": "/docs/how-to-guides/oidc-connection"
+    },
+    "next": {
+      "title": "ARC SDK Integration",
+      "permalink": "/docs/use-cases/arc-sdk-integration"
+    }
+  }
+}

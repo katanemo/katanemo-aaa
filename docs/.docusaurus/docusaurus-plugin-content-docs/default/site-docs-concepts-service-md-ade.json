@@ -1,0 +1,26 @@
+{
+  "unversionedId": "concepts/service",
+  "id": "concepts/service",
+  "title": "Service",
+  "description": "A Katanemo Service is a representation of the API surface area that developers want to enrich with enterprise-readiness capabilities (authentication, authorization, auditing - 3xA). Services are created using the familiar OpenAPI standard. OpenAPI neatly captures RESTful API definitions, resource schemas and establishes a great foundation for authorization and auditing. With familiar RESTful semantics developers (and customers) don’t need to learn a new policy language, and get to enrich their API experience with rich 3xA capabilities without having to build and scale complex authorization and auditing engines",
+  "source": "@site/docs/concepts/service.md",
+  "sourceDirName": "concepts",
+  "slug": "/concepts/service",
+  "permalink": "/docs/concepts/service",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Authorization Principles",
+    "permalink": "/docs/concepts/authorization-principles"
+  },
+  "next": {
+    "title": "Organizations",
+    "permalink": "/docs/concepts/organizations"
+  }
+}
