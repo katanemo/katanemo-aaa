@@ -1,0 +1,26 @@
+{
+  "unversionedId": "concepts/authorization-evaluation-logic",
+  "id": "concepts/authorization-evaluation-logic",
+  "title": "Authorization Evaluation Logic",
+  "description": "The following sequence diagram describes how policy evaluation and authorization happens in Katanemo. Authorization is conducted by ARC, a decentralized, light-weight utility managed by Katanemo that neatly integrates via an SDK or at your API gateway layer. For more details, see How to Integrate ARC (Authorization Runtime Client)",
+  "source": "@site/docs/concepts/authorization-evaluation-logic.md",
+  "sourceDirName": "concepts",
+  "slug": "/concepts/authorization-evaluation-logic",
+  "permalink": "/docs/concepts/authorization-evaluation-logic",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 10,
+  "frontMatter": {
+    "sidebar_position": 10
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Crypto Offload and Session Tokens",
+    "permalink": "/docs/concepts/crypto-offload-and-sessions-tokens"
+  },
+  "next": {
+    "title": "Use Cases",
+    "permalink": "/docs/category/use-cases"
+  }
+}

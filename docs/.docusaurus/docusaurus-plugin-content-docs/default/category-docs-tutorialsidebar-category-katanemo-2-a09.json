@@ -1,0 +1,15 @@
+{
+  "title": "Katanemo 2",
+  "slug": "/category/katanemo-2",
+  "permalink": "/docs/category/katanemo-2",
+  "navigation": {
+    "previous": {
+      "title": "Markdown Features",
+      "permalink": "/docs/katanemo-1/markdown-features"
+    },
+    "next": {
+      "title": "Manage Docs Versions",
+      "permalink": "/docs/tutorial-extras/manage-docs-versions"
+    }
+  }
+}

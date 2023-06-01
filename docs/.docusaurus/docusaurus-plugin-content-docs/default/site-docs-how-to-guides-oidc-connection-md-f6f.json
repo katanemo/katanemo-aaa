@@ -1,0 +1,26 @@
+{
+  "unversionedId": "how-to-guides/oidc-connection",
+  "id": "how-to-guides/oidc-connection",
+  "title": "How to Configure a New OIDC connection?",
+  "description": "Each SSO Identity Provider requires specific information to create and configure a new Connection. Often, the information required to create a Connection will differ by Identity Provider. To create an OpenID Connect (OIDC) Connection, you’ll need five pieces of information: a Redirect URI, a Client ID, a Client Secret, a Discovery Endpoint, and a Role.",
+  "source": "@site/docs/how-to-guides/oidc-connection.md",
+  "sourceDirName": "how-to-guides",
+  "slug": "/how-to-guides/oidc-connection",
+  "permalink": "/docs/how-to-guides/oidc-connection",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "How to Modify the Default “all tags must match” Behavior of Katanemo?",
+    "permalink": "/docs/how-to-guides/all-tags-must-match-modification"
+  },
+  "next": {
+    "title": "How to Configure a New Okta SAML connection?",
+    "permalink": "/docs/how-to-guides/okta-saml-connection"
+  }
+}

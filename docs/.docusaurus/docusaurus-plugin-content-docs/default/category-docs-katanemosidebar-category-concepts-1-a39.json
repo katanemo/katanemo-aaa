@@ -1,0 +1,15 @@
+{
+  "title": "Concepts",
+  "slug": "/category/concepts-1",
+  "permalink": "/docs/category/concepts-1",
+  "navigation": {
+    "previous": {
+      "title": "keys",
+      "permalink": "/docs/concepts/keys"
+    },
+    "next": {
+      "title": "Authorization Principles (DONE)",
+      "permalink": "/docs/how-to-guides/authorization-principles"
+    }
+  }
+}

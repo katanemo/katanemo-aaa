@@ -1,0 +1,22 @@
+{
+  "unversionedId": "overview",
+  "id": "overview",
+  "title": "Overview",
+  "description": "Katanemo helps developers build critical privacy and collaboration features for SaaS applications that unlocks growth. Katanemo is a purpose-built identity and fine-grained authorization system designed for modern SaaS applications - it unifies customer onboarding and identity (authentication), protects who can do what on which resource (authorization), and leaves a structured audit trail that helps developers meet exacting compliance requirements on behalf of their customers. With Katanemo, developers can add PLG motions via a frictionless on-boarding experience, and expand into new enterprise scenarios in minutes via powerful governance and sharing features for SaaS resources.",
+  "source": "@site/docs/overview.md",
+  "sourceDirName": ".",
+  "slug": "/overview",
+  "permalink": "/docs/overview",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "katanemoSidebar",
+  "next": {
+    "title": "Accounts",
+    "permalink": "/docs/accounts"
+  }
+}

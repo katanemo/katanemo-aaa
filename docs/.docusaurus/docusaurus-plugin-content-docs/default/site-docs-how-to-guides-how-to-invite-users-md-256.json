@@ -1,0 +1,22 @@
+{
+  "unversionedId": "how-to-guides/how-to-invite-users",
+  "id": "how-to-guides/how-to-invite-users",
+  "title": "How to invite add users and assign them tags in Katanemo?",
+  "description": "",
+  "source": "@site/docs/how-to-guides/how-to-invite-users.md",
+  "sourceDirName": "how-to-guides",
+  "slug": "/how-to-guides/how-to-invite-users",
+  "permalink": "/docs/how-to-guides/how-to-invite-users",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 7,
+  "frontMatter": {
+    "sidebar_position": 7
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "How to do OAuth2.0 via Katanemo?",
+    "permalink": "/docs/how-to-guides/how-to-add-oauth"
+  }
+}

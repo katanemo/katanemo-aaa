@@ -1,0 +1,26 @@
+{
+  "unversionedId": "concepts/create-a-page",
+  "id": "concepts/create-a-page",
+  "title": "Authorization Principles",
+  "description": "Katanemo performs authorization checks on operations performed by principals in Katanemo. This includes Users, API Keys, Roles, and OIDC-based users that integrate via SSO with Katanemo. The following guide will refer to these entities as simply principals going forward.",
+  "source": "@site/docs/concepts/create-a-page.md",
+  "sourceDirName": "concepts",
+  "slug": "/concepts/create-a-page",
+  "permalink": "/docs/concepts/create-a-page",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Concepts",
+    "permalink": "/docs/category/concepts"
+  },
+  "next": {
+    "title": "Markdown Features",
+    "permalink": "/docs/concepts/markdown-features"
+  }
+}

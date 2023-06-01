@@ -1,0 +1,15 @@
+{
+  "title": "Concepts",
+  "slug": "/category/concepts",
+  "permalink": "/docs/category/concepts",
+  "navigation": {
+    "previous": {
+      "title": "Customer Quick Start Guide",
+      "permalink": "/docs/customer-quick-start"
+    },
+    "next": {
+      "title": "Authorization Principles",
+      "permalink": "/docs/concepts/authorization-principles"
+    }
+  }
+}

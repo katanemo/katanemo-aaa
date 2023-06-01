@@ -1,0 +1,26 @@
+{
+  "unversionedId": "use-cases/oidc-connection",
+  "id": "use-cases/oidc-connection",
+  "title": "Saas (API) Managed Cloud Service",
+  "description": "SaaS (API) Managed Cloud Service use case.",
+  "source": "@site/docs/use-cases/oidc-connection.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/oidc-connection",
+  "permalink": "/docs/use-cases/oidc-connection",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "HL7 FHIR (Health Records Exchange via an EHR system)",
+    "permalink": "/docs/use-cases/health-records-use-case"
+  },
+  "next": {
+    "title": "How-To Guides",
+    "permalink": "/docs/category/how-to-guides"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "unversionedId": "use-cases/arc-sdk-integration",
+  "id": "use-cases/arc-sdk-integration",
+  "title": "ARC SDK Integration",
+  "description": "Katanemo performs authorization checks on operations performed by principals in Katanemo. This includes Users, API Keys, Roles, and OIDC-based users that integrate via SSO with Katanemo. The following guide will refer to these entities as simply principals going forward.",
+  "source": "@site/docs/use-cases/arc-sdk-integration.md",
+  "sourceDirName": "use-cases",
+  "slug": "/use-cases/arc-sdk-integration",
+  "permalink": "/docs/use-cases/arc-sdk-integration",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Use Cases",
+    "permalink": "/docs/category/use-cases"
+  },
+  "next": {
+    "title": "OIDC",
+    "permalink": "/docs/use-cases/oidc-connection"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "unversionedId": "customer-quick-start",
+  "id": "customer-quick-start",
+  "title": "Customer Quick Start Guide",
+  "description": "This guide is intended for developers to share with their customers so that they use Katanemo’ Customer Identity and Access Management (CIAM) capabilities to manage authorization policies, view audit logs and define a multi-modal identity experience for their SaaS application. As a developer you must replace { placeholder } values before sharing this guide with your customers.",
+  "source": "@site/docs/customer-quick-start.md",
+  "sourceDirName": ".",
+  "slug": "/customer-quick-start",
+  "permalink": "/docs/customer-quick-start",
+  "draft": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "katanemoSidebar",
+  "previous": {
+    "title": "Developer Quick Start Guide",
+    "permalink": "/docs/developer-quick-start-guide"
+  },
+  "next": {
+    "title": "Concepts",
+    "permalink": "/docs/category/concepts"
+  }
+}
