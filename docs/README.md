@@ -1,41 +1,30 @@
-# Website
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+# Katanemo Documentation Contribution Guide
 
-### Installation
+To edit pages, please go to it's respective `.md` file in the `/docs` folder. Use GitHub markdown styles to edit the page. You can also directly edit the page within GitHub with the pencil icon or use ann IDE.
 
+## Building
+
+Start by accessing the `/docs` folder:
 ```
-$ yarn
-```
-
-### Local Development
-
-```
-$ yarn start
+cd docs
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-### Build
-
+Then, please install the dependencies:
 ```
-$ yarn build
+npm install
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-### Deployment
-
-Using SSH:
-
+Finally, start the server:
 ```
-$ USE_SSH=true yarn deploy
+npm start
 ```
 
-Not using SSH:
-
+To **build** the documentation, and use local search:
 ```
-$ GIT_USER=<Your GitHub username> yarn deploy
+npm run build && npm run serve
 ```
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+The `docusaurus.config.js` file should not be touched. It's the configuration file and everything is already configured. If your using the search function, make sure that the `typesense` search is commented out of this file.
+
+Other questions? Refer to the [Docusaurus documentation.](https://docusaurus.io/docs/)

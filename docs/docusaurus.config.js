@@ -104,7 +104,7 @@ const config = {
       {
         specs: [
           {
-            spec: '/Users/musamalik/Downloads/docu/my-website/katanemo-aaa-api.yml',
+            spec: './katanemo-aaa-api.yml',
             route: '/api/',
           },
         ],
