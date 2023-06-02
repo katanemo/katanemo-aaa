@@ -98,19 +98,24 @@ const config = {
   },
 
   presets: [
+    '@docusaurus/preset-classic',
     [
-      'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-        },
+      'redocusaurus',
+      {
+        specs: [
+          {
+            spec: '/Users/musamalik/Downloads/docu/my-website/katanemo-aaa-api.yml',
+            route: '/api/',
+          },
+        ],
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          primaryColor: '#1890ff',
         },
-      }),
+      },
     ],
   ],
+
+
 
   stylesheets: [
     // Add the path to the custom CSS file
@@ -162,7 +167,20 @@ const config = {
         logo: {
           alt: 'Katanemo Documentation',
           src: 'img/katanemologo-web.png',
+          href: 'https://katanemo.com/'
         },
+        items: [
+          {
+            to: '/docs/overview',
+            label: 'Documentation',
+            position: 'right',
+          },
+          {
+            to: '/api',
+            label: 'API',
+            position: 'right',
+          },
+        ]
       },
       footer: {
         style: 'dark',

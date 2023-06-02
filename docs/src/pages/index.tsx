@@ -32,8 +32,8 @@ export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`Katanemo Documentation`}
+      description="Build winning, enterprise-ready services in minutes.">
 
       <main>
         <Homepage/>
