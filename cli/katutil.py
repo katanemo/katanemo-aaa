@@ -7,7 +7,7 @@ import katanemo_sdk
 
 log.basicConfig(level=log.INFO, format="%(message)s")
 
-DEFAULT_API_ENDPOINT = "https://api.us-west-2.katanemo.dev"
+DEFAULT_API_ENDPOINT = "https://api.katanemo.com"
 
 
 parser = argparse.ArgumentParser(prog="katutil")

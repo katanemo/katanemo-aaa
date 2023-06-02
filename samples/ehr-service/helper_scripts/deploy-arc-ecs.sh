@@ -23,5 +23,5 @@ log arc endpoint address $ARC_AUTH_ENDPOINT
 log cdk bootstrap
 cdk bootstrap
 
-log cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="https://api.us-west-2.katanemo.dev" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
-cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="https://api.us-west-2.katanemo.dev" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
+log cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="https://api.katanemo.com" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
+cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="https://api.katanemo.com" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"

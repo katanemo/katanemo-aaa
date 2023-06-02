@@ -1,7 +1,7 @@
 source .ehr_admin_details 
 source .ehr_service_details
 
-DEFAULT_API_ENDPOINT=https://api.us-west-2.katanemo.dev
+DEFAULT_API_ENDPOINT=https://api.katanemo.com
 DEFAULT_ARC_IMAGE=public.ecr.aws/c2g2h4e5/repo/aaa-public:arc_latest
 if [[ -z "$ARC_IMAGE" ]]; then
   ARC_IMAGE=$DEFAULT_ARC_IMAGE
