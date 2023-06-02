@@ -171,9 +171,10 @@ const config = {
         },
         items: [
           {
-            to: '/docs/overview',
-            label: 'Documentation',
+            type: 'docSidebar',
+            sidebarId: 'defaultSidebar',
             position: 'right',
+            label: 'Documentation',
           },
           {
             to: '/api',

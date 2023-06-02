@@ -44,17 +44,12 @@ nav[data-theme='light'] .navbar__item--icon {
 .footer {
   /* Change font name and add file to comply w Katanemo brand */
   font-family: 'Roboto', sans-serif;
-  background-color: #212121;
+  background-color: #064C59;
 }
 
 .navbar {
   /* Change font name and add file to comply w Katanemo brand */
   font-family: 'Roboto', sans-serif;
   color: #31C887;
-}
-
-
-.mark {
-  background: orange;
-  color: black;
+  background-color: #0C292F;
 }
