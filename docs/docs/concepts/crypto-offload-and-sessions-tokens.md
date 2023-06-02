@@ -2,7 +2,7 @@
 sidebar_position: 9
 ---
 
-# Crypto Offload and Session Tokens
+# Crypto Offload
 
 Katanemo is an OIDC compliant 3xA service, which means that it generates an `id_token`, an `access_token` for users and API keys, and optionally a `refresh_token` as per the ODIC spec. These tokens are encrypted with an RSA256 (RS-256) signature key. You can retrieve the RSA public key via Katanemo’s JSON Web Key Set (JWKS).
 

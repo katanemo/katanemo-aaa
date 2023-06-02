@@ -2,11 +2,13 @@
 sidebar_position: 1
 ---
 
-# Overview
+# Understanding Katanemo
+
+_A powerful, identity and fine-grained authorization system designed for modern API-first SaaS applications - quickly build privacy and safe collaboration features that grow your business._
 
 Katanemo helps developers build critical privacy and collaboration features for SaaS applications that unlocks growth. Katanemo is a purpose-built identity and fine-grained authorization system designed for modern SaaS applications - it unifies customer onboarding and identity (_authentication_), protects who can do what on which resource (_authorization_), and leaves a structured audit trail that helps developers meet exacting compliance requirements on behalf of their customers. With Katanemo, developers can add [PLG](https://openviewpartners.com/product-led-growth/) motions via a frictionless on-boarding experience, and expand into new enterprise scenarios in minutes via powerful governance and sharing features for SaaS resources.
 
-
+![overview-2.png](..%2Fstatic%2Fimg%2Foverview-2.png)
 
 Today, developers building modern SaaS applications are faced with an increasingly complex trade-off between usability and security. On the one hand, they want users to simply and seamlessly access their applications. On the other, they must prevent access to data and functionality that should not be seen by other users.
 
