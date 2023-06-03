@@ -1,5 +1,5 @@
 
-DEFAULT_API_ENDPOINT="https://api.us-west-2.katanemo.dev"
+DEFAULT_API_ENDPOINT="https://api.katanemo.com"
 DEFAULT_ARC_SHA="7efe6b7"
 
 if [[ -z "$API_ENDPOINT" ]]; then

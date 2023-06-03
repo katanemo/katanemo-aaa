@@ -4,7 +4,7 @@ set -e
 source ./common.sh
 
 
-DEFAULT_API_ENDPOINT=https://api.us-west-2.katanemo.dev
+DEFAULT_API_ENDPOINT=https://api.katanemo.com
 
 if [[ -z "$API_ENDPOINT" ]]; then
   API_ENDPOINT=$DEFAULT_API_ENDPOINT
