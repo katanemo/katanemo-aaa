@@ -5,7 +5,6 @@ sidebar_position: 4
 # Customer Quick Start Guide 
 
 
-
 This guide is intended for developers to share with their customers so that they use Katanemo’ Customer Identity and Access Management (CIAM) capabilities to manage authorization policies, view audit logs and define a multi-modal identity experience for their SaaS application. As a developer you must replace _{ placeholder }_ values before sharing this guide with your customers.
 
 

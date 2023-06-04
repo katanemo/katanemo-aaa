@@ -104,7 +104,7 @@ const config = {
       {
         specs: [
           {
-            spec: './katanemo-aaa-api.yml',
+            spec: 'katanemo-aaa-api.yml',
             route: '/api/',
           },
         ],
@@ -125,38 +125,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // typesense: {
-      //   // Replace this with the name of your index/collection.
-      //   // It should match the "index_name" entry in the scraper's "config.json" file.
-      //   typesenseCollectionName: 'katanemo-docs',
-      //
-      //   typesenseServerConfig: {
-      //     nodes: [
-      //       {
-      //         host: 'mjthru73ykfvedabp-1.a1.typesense.net',
-      //         port: 443,
-      //         protocol: 'https',
-      //       },
-      //       // {
-      //       //   host: 'xxx-2.a1.typesense.net',
-      //       //   port: 443,
-      //       //   protocol: 'https',
-      //       // },
-      //       // {
-      //       //   host: 'xxx-3.a1.typesense.net',
-      //       //   port: 443,
-      //       //   protocol: 'https',
-      //       // },
-      //     ],
-      //     apiKey: '5ikrqiTp4gjeVswk7J7eWbwiQ5aqYLEJ',
-      //   },
-      //
-      //   // Optional: Typesense search parameters: https://typesense.org/docs/0.24.0/api/search.html#search-parameters
-      //   typesenseSearchParameters: {},
-      //
-      //   // Optional
-      //   contextualSearch: true,
-      // },
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: false,
