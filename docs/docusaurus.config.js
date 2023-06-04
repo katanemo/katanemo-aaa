@@ -81,12 +81,11 @@ const config = {
   ],
 
   // Set the production url of your site here
-  url: 'https://docs.katanemo.com/',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
+  url: 'https://katanemo.github.io', // Your website URL
   baseUrl: '/',
-
-
+  projectName: 'katanemo.github.io',
+  organizationName: 'katanemo-aaa',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
