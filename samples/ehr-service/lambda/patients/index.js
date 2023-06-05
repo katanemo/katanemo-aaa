@@ -7,7 +7,15 @@ const tableName = process.env.PATIENTS_TABLE_NAME || 'patient-records'
 
 export async function handler(event, context) {
   console.log('Received event:', JSON.stringify(event, null, 2));
-
+  let redirectUrl = getRedirect(event)
+  if(redirectUrl) {
+        return {
+       'statusCode': 302,
+       'headers': {
+           'Location': redirectUrl
+       }
+    }
+  }
   let body;
   let statusCode = '200';
   const headers = {
@@ -107,6 +115,10 @@ function getLatency(event) {
 
 function getTenantId(event) {
   return ((event['requestContext'] ?? {})['authorizer'] ?? {})['tenantId'] ?? null
+}
+
+function getRedirect(event) {
+  return ((event["requestContext"] ?? {})["authorizer"] ?? {})["redirectUrl"] ?? null;
 }
 
 function randomString(length) {
