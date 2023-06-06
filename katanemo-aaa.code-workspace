@@ -1,0 +1,24 @@
+{
+	"folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "pythonsdk",
+      "path": "pythonsdk"
+    },
+    {
+      "name": "ehr-service",
+      "path": "samples/ehr-service"
+    },
+    {
+      "name": "arc",
+      "path": "arc-ecs"
+    },
+  ],
+	"settings": {
+    "python.defaultInterpreterPath": "python3",
+    "python.formatting.provider": "black",
+	}
+}
