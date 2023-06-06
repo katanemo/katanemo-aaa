@@ -1,0 +1,47 @@
+# do not import all endpoints into this module because that uses a lot of memory and stack frames
+# if you need the ability to import all endpoints from this module, import them with
+# from katanemo_sdk.apis.path_to_api import path_to_api
+
+import enum
+
+
+class PathValues(str, enum.Enum):
+    SERVICE = "/service"
+    SERVICE_3X_A = "/service/3xA"
+    SERVICE_SERVICE_ID = "/service/{serviceId}"
+    SERVICE_SERVICE_ID_TAGS = "/service/{serviceId}/tags"
+    SERVICE_SERVICE_ID__WELLKNOWN_JWKS_JSON = "/service/{serviceId}/.well-known/jwks.json"
+    SIGNUP_SERVICE_ID = "/sign-up/{serviceId}"
+    CONFIRM_USER_CONFIRMATION_CODE = "/confirmUser/{confirmationCode}"
+    SETPASSWORD_SERVICE_ID = "/set-password/{serviceId}"
+    LOGININIT_SERVICE_ID = "/login-init/{serviceId}"
+    LOGIN_SERVICE_ID = "/login/{serviceId}"
+    ASSIGNROLE = "/assignrole"
+    ASSUME_ROLE = "/assumeRole"
+    ORG = "/org"
+    ORG_ACCOUNT_ID = "/org/{accountId}"
+    ORG_ACCOUNT_ID_VERIFY = "/org/{accountId}/verify"
+    ORG_ACCOUNT_ID_USER = "/org/{accountId}/user"
+    ORG_ACCOUNT_ID_USER_USER_ID = "/org/{accountId}/user/{userId}"
+    ORG_ACCOUNT_ID_ROLE = "/org/{accountId}/role"
+    ORG_ACCOUNT_ID_ROLE_ROLE_ID = "/org/{accountId}/role/{roleId}"
+    ORG_ACCOUNT_ID_KEYS = "/org/{accountId}/keys"
+    ORG_ACCOUNT_ID_KEY_KEY_ID = "/org/{accountId}/key/{keyId}"
+    TOKEN = "/token"
+    OAUTH_TOKEN = "/oauth/token"
+    AUTHORIZE = "/authorize"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_OIDC = "/org/{accountId}/sso-connections/oidc"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_OIDC_CONNECTION_ID = "/org/{accountId}/sso-connections/oidc/{connectionId}"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_OIDC_CONNECTION_ID_LOGINTRIGGER = "/org/{accountId}/sso-connections/oidc/{connectionId}/login-trigger"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_OIDC_CONNECTION_ID_SSOCALLBACK = "/org/{accountId}/sso-connections/oidc/{connectionId}/sso-callback"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_SAML = "/org/{accountId}/sso-connections/saml"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_SAML_CONNECTION_ID = "/org/{accountId}/sso-connections/saml/{connectionId}"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_SAML_CONNECTION_ID_MAP_ATTRIBUTE_TO_ROLES = "/org/{accountId}/sso-connections/saml/{connectionId}/mapAttributeToRoles"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_SAML_CONNECTION_ID_LOGINTRIGGER = "/org/{accountId}/sso-connections/saml/{connectionId}/login-trigger"
+    ORG_ACCOUNT_ID_SSOCONNECTIONS_SAML_CONNECTION_ID_SSOCALLBACK_SAML_ACS = "/org/{accountId}/sso-connections/saml/{connectionId}/sso-callback/saml/acs"
+    ARC_SERVICE_ID_ROLE = "/arc/{serviceId}/role"
+    ARC_SERVICE_ID_TAGS = "/arc/{serviceId}/tags"
+    ARC_SERVICE_ID_INIT = "/arc/{serviceId}/init"
+    ARC_AUTHORIZE = "/arc/authorize"
+    HEALTHZ = "/healthz"
+    AUDITLOGS_SERVICE_SERVICE_ID_ACCOUNT_ACCOUNT_ID = "/audit-logs/service/{serviceId}/account/{accountId}"
