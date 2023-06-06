@@ -1,0 +1,4578 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@katanemo.com
+    name: Katanemo Labs Inc.
+    url: https://api.katanemo.com
+  description: "With Katanemo developers can add support for users, enterprise SSO,\
+    \ machine keys and fine-grained authorization in minutes."
+  termsOfService: https://www.katanemo.com/terms-of-service
+  title: "Katanemo - identity, and fine-grained authorization for modern { API-first\
+    \ } software companies."
+  version: 1.0.0
+servers:
+- url: https://api.katanemo.com
+tags:
+- description: Katanemo's Service related APIs
+  name: service
+- description: Katanemo's Login and sign-up APIs
+  name: sign-up/login
+- description: "Katamemo's APIs that help achieve customers and developers achieve\
+    \ fine-grained access controls (roles, abac, etc.)"
+  name: access-control
+- description: Katanemo's Organization (SaaS customers) related APIs
+  name: organization
+- description: Katanemo's Identity related APIs
+  name: identity
+- description: Katanemo's Access logs related APIs
+  name: access-logs
+- description: Katanemo's Enterprise SSO APIs
+  name: sso
+- description: Katanemo's Authorization Runtime Client APIs
+  name: arc
+- description: Katanemo's Health APIs
+  name: health
+paths:
+  /service:
+    get:
+      description: List services that belong to a particular developer. Requires bearer
+        token authorization
+      operationId: ListServicesByDeveloper
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ServiceResponseObj'
+                type: array
+          description: List all services belonging to a developer
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List Services
+      tags:
+      - service
+    post:
+      description: Create a Service in Katanemo. Once a service is created Katanemo  identity
+        and authorization capabilities on behalf of SaaS (API) Developers
+      operationId: createService
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateServiceRequest'
+        description: "Details about the service, including the text-representation\
+          \ of the service APIs."
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+          description: Service Successfully Created.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Create Service
+      tags:
+      - service
+  /service/3xA:
+    get:
+      description: "Gets details about Katanemo's AAA SaaS service. Katanemo is powered\
+        \ by Katanemo, and our 3xA service uses the same core identity and authorization\
+        \ capabilities that we offer SaaS (API) developers"
+      operationId: GetDefaultService
+      responses:
+        "200":
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+          description: service
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get Details for Katanemo AAA
+      tags:
+      - service
+  /service/{serviceId}:
+    delete:
+      description: Deletes a service. Note the delete operation is a 'soft' delete
+        where by organizations can't access your service. Requires a bearer token
+        to validate that the caller can delete the service.
+      operationId: deleteService
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Deleted service.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Delete Service
+      tags:
+      - service
+    get:
+      description: "Gets a Katanemo Service. The principal token must be present in\
+        \ the bearer header to retrieve the service details, unless the service is\
+        \ public"
+      operationId: getService
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+          description: service
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get Service
+      tags:
+      - service
+    put:
+      description: Update Service. Requires bearer token authorization for the caller
+        updating the service
+      operationId: updateService
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateServiceRequest'
+        description: Service object of the service being updated.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceResponseObj'
+          description: Updated service object.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Update Service
+      tags:
+      - service
+  /service/{serviceId}/tags:
+    get:
+      description: Gets tags associated with a resource of a service
+      operationId: GetTagsForResource
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTagsRequest'
+        description: Tags and resource id
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+          description: tags
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+      summary: Gets tags for a resource
+      tags:
+      - service
+      - access-control
+    post:
+      description: "Add tags (key/value pair) to a particular resource that is created\
+        \ for a service, for a particular organization account id."
+      operationId: createTags
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tags'
+        description: Tags and resource id
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+          description: User account
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Add tags to a resource
+      tags:
+      - service
+      - access-control
+  /service/{serviceId}/.well-known/jwks.json:
+    get:
+      description: Gets public key that can be used to verify jwt token issued by
+        Katanemo. This API does not require bearer authorization
+      operationId: GetDeveloperPublicKeys
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDeveloperPublicKeys_200_response'
+          description: List of public keys for developer
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: JWKS endpoint for Service
+      tags:
+      - service
+  /sign-up/{serviceId}:
+    post:
+      description: Onborad customers to a particular SaaS service managed by Katanemo.
+        Generates email verification workflows and creates an organization for the
+        customer subscribing to this particular service
+      operationId: serviceSignup
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+        description: Signup Info of the service developer or a service subscriber
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupResponse'
+          description: Signup is successful.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Sign-up for Service
+      tags:
+      - sign-up/login
+  /confirmUser/{confirmationCode}:
+    get:
+      description: Confirm that the user belongs to the organization (email) they
+        signed-up with. Used by Katanemo to verify developers signing-up for its 3xA
+        service and for service developers on-boarding their customers (subscribers)
+      operationId: confirmUser
+      parameters:
+      - explode: false
+        in: path
+        name: confirmationCode
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserConfirmationResponse'
+          description: The first user (email) has been subscribed to a particular
+            service and an organization id has been created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Confirm User
+      tags:
+      - sign-up/login
+  /set-password/{serviceId}:
+    get:
+      description: "Gets the password policy (length, characters, etc), to help the\
+        \ user set the correct password"
+      operationId: getPasswordPolicy
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordPolicy'
+          description: returns the password stregnth needed to successful set password
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+      summary: Get password policy
+      tags:
+      - sign-up/login
+    post:
+      description: Allows the user to set password after verficiation via a session
+        token.
+      operationId: setPassword
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetPasswordRequest'
+        description: Set password info
+        required: true
+      responses:
+        "200":
+          description: Settting pasword for user is successful.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Set Password
+      tags:
+      - sign-up/login
+  /login-init/{serviceId}:
+    post:
+      description: Login-init helps developers determine if the user should be presented
+        a SAML/SSO workflow or a user/password sign-in experience.
+      operationId: loginInit
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitialLoginRequest'
+        description: Login info (email) of the user
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitialLoginResponse'
+          description: This API is used to determine if the user should login via
+            an email/password combination or if the UI should redirect the user to
+            the Idp for SSO
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Login-init (SSO vs. Password)
+      tags:
+      - sign-up/login
+  /login/{serviceId}:
+    post:
+      description: Login to any katanemo service. serviceId indicates service user
+        is logging in to.
+      operationId: login
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginWithPasswordRequest'
+        description: Login info of a user
+        required: true
+      responses:
+        "302":
+          description: Redirect to default page for developer after succesful login.
+          headers:
+            Location:
+              description: URL of the dashboard page
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginToken'
+          description: Returns login token in a response object if skipRedirect is
+            set to true.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Login (Password)
+      tags:
+      - sign-up/login
+  /assignrole:
+    post:
+      description: Assign role to an identity principal
+      operationId: AssignRoleToPrincipal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRoleObj'
+        description: Role assignment
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: User account
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Assign role
+      tags:
+      - access-control
+  /assumeRole:
+    post:
+      description: Creates a token with requested roleId
+      operationId: AssumeRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssumeRoleObj'
+        description: Role assignment
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: token
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Assume role
+      tags:
+      - access-control
+  /org:
+    get:
+      description: Returns an object with information regarding an account which is
+        present in the token
+      operationId: GetAccountOrganization
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+          description: Organization of the acccount.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List Organizations
+      tags:
+      - organization
+  /org/{accountId}:
+    get:
+      description: Returns an object with information regarding an account
+      operationId: GetAccountInfo
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+          description: Organization
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get Organization
+      tags:
+      - organization
+    put:
+      description: Returns status code for successful or failed update.
+      operationId: UpdateAccountInfo
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationRequest'
+        description: Update account object
+        required: true
+      responses:
+        "200":
+          description: Successfully updated organization
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Update Organization
+      tags:
+      - organization
+  /org/{accountId}/verify:
+    get:
+      description: "Triggers the domain verification flow. If TXT record is created\
+        \ and has the correct verification code, the domain is verified."
+      operationId: VerifyAccountDomain
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Domain verified
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Verify Domain
+      tags:
+      - organization
+  /org/{accountId}/user:
+    get:
+      description: Returns a list of all users belonging to provided organization
+        ID
+      operationId: GetUsersForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+                type: array
+          description: users belonging to provided account ID
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List Users
+      tags:
+      - organization
+      - identity
+    post:
+      description: "Creates a new User and triggers an email verification workflow,\
+        \ followed by set-password"
+      operationId: createUserForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        description: User information
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: User
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Invite User
+      tags:
+      - organization
+      - identity
+  /org/{accountId}/user/{userId}:
+    get:
+      description: Get a specific user for a particular organization
+      operationId: GetUser
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: user belonging to provided account ID
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get User
+      tags:
+      - organization
+      - identity
+    put:
+      description: Updates a User account
+      operationId: updateUser
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        description: User information
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: User
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Update user
+      tags:
+      - organization
+      - identity
+  /org/{accountId}/role:
+    get:
+      description: Returns a list of all roles belonging to provided organization
+        ID
+      operationId: GetRolesForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RoleResponse'
+                type: array
+          description: roles belonging to provided account ID
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List Roles
+      tags:
+      - organization
+      - access-control
+    post:
+      description: Creates a new Role
+      operationId: createRole
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleRequest'
+        description: Role to add to the system
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+          description: Role
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Creates Role
+      tags:
+      - organization
+      - access-control
+  /org/{accountId}/role/{roleId}:
+    get:
+      description: Gets a particular role for an organization
+      operationId: GetRole
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: roleId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+          description: role
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get Role
+      tags:
+      - organization
+      - access-control
+    put:
+      description: Update role
+      operationId: updateRole
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: roleId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleRequest'
+        description: Role object that is being updated.
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+          description: Updated service object.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Update Role
+      tags:
+      - organization
+      - access-control
+  /org/{accountId}/keys:
+    get:
+      description: List all client keys for an organization accessing a developers
+        service
+      operationId: getClientKeyList
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ClientKeyObject'
+                type: array
+          description: List of all users successful.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List API Keys
+      tags:
+      - organization
+      - identity
+      - access-control
+    post:
+      description: Creates a new client key for accessing a developers APIs
+      operationId: createClientKey
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientKeyRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientKeyResponse'
+          description: Successful org keys.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Create API Key
+      tags:
+      - organization
+      - identity
+      - access-control
+  /org/{accountId}/key/{keyId}:
+    delete:
+      description: Delete a particular API Key for an organization.
+      operationId: deleteClientKey
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: keyId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Successful deletion of client key.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Delete API Key
+      tags:
+      - organization
+      - identity
+      - access-control
+    get:
+      description: Get details of a particular API key for an organization.
+      operationId: getClientKey
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: keyId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientKeyObject'
+          description: Getting client key successful.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get API Key
+      tags:
+      - organization
+      - identity
+      - access-control
+  /token:
+    post:
+      description: Returns a short-lived token for API key/secret pair. Tokens contain
+        claims that identify what a principal can or cannot do.
+      operationId: getShortTermToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+          description: Generate Token for an authentication principal
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get Token
+      tags:
+      - access-control
+  /oauth/token:
+    post:
+      description: Get an OAuth2.0 Token for an Authorization Code
+      operationId: getOAuthToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthTokenRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthTokenResponse'
+          description: Getting token for client ID successful.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: OAuth Token
+      tags:
+      - access-control
+  /authorize:
+    get:
+      description: Determine where to take a user for login
+      operationId: authorize
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizeRequest'
+        description: parameters requiired to determine where to take the user
+        required: true
+      responses:
+        "302":
+          description: Redirect to Katanemo's signin page
+          headers:
+            Location:
+              description: URL of the Katanemo signin landing page
+              explode: false
+              schema:
+                type: string
+              style: simple
+      summary: Initiate the login flow by redirecting to login page
+  /org/{accountId}/sso-connections/oidc:
+    get:
+      description: Returns a list of all OIDC connections belonging to provided organization
+      operationId: GetOIDCConnectionsForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/OIDCObj'
+                type: array
+          description: OIDC connections belonging to provided account ID
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List OIDC Connections
+      tags:
+      - sso
+    post:
+      description: Creates a new OIDC connection
+      operationId: createOIDCCOnnection
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OIDCObj'
+        description: ODIC connection attributes
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OIDCObj'
+          description: OIDCObj
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Creates OIDC connection
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/oidc/{connectionId}:
+    delete:
+      description: Delete an OIDC connection
+      operationId: deleteOIDCConnection
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Deletion successful.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Delete OIDC connection
+      tags:
+      - sso
+    get:
+      description: Get details of an OIDC connection
+      operationId: getOIDCConnection
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OIDCObj'
+          description: OIDCObj
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get OIDC connection
+      tags:
+      - sso
+    put:
+      description: Updates a OIDC connection
+      operationId: updateOIDCConnection
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OIDCObj'
+        description: OIDC connection attributes
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OIDCObj'
+          description: SAMLObj
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Update OIDC connection
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/oidc/{connectionId}/login-trigger:
+    get:
+      description: Triggers SSO for a particular OIDC connection. This would be initiated
+        by the developer from applicatoon code
+      operationId: OIDCLoginTrigger
+      parameters:
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Trigger OIDC SSO
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/oidc/{connectionId}/sso-callback:
+    get:
+      description: Handles OIDC login callback
+      operationId: oidcSSOCallBack
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Authorization code returned by the OIDC provider
+        explode: true
+        in: query
+        name: code
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Authorization code returned by the OIDC provider
+        explode: true
+        in: query
+        name: state
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "302":
+          description: Redirect to default page for developer after succesful login.
+          headers:
+            Location:
+              description: Redirect URL of landing page after successful login.
+              explode: false
+              schema:
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: OIDC Callback
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/saml:
+    get:
+      description: Returns a list of all SAML connections belonging to provided organization
+      operationId: GetSAMLConnectionsForAccount
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SAMLObj'
+                type: array
+          description: SAML connections belonging to provided account ID
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List SAML Connections
+      tags:
+      - sso
+    post:
+      description: Creates a new SAML connection
+      operationId: createSAMLConnection
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SAMLObj'
+        description: SAML connection attributes
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+          description: SAMLObj
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Creates SAML connection
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/saml/{connectionId}:
+    get:
+      description: Retreive a SAML connection
+      operationId: GetSAMLConnection
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+          description: SAMLObj
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get connection
+      tags:
+      - sso
+    put:
+      description: Updates a SAML connection
+      operationId: updateSAMLConnection
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SAMLObj'
+        description: SAML connection attributes
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+          description: SAMLObj
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Update SAML connection
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/saml/{connectionId}/mapAttributeToRoles:
+    post:
+      description: Creates a new attribute mapping for a SAML connection
+      operationId: createSAMLConnectionMapping
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttributeRoleMapping'
+        description: SAML user attributes to role mapping
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SAMLObj'
+          description: SAMLObj
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: MAP SAML Attributes
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/saml/{connectionId}/login-trigger:
+    get:
+      description: Triggers SAML login for a particular connection. Account can have
+        multiple SAML connections. It redirects to the login URL corresponding to
+        a particular connection.
+      operationId: SAMLLoginTrigger
+      parameters:
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Triggers SAML SSO
+      tags:
+      - sso
+  /org/{accountId}/sso-connections/saml/{connectionId}/sso-callback/saml/acs:
+    post:
+      description: Handle SAML login callback with SAML assertion. It can be passed
+        as query parameter or payload.
+      operationId: samlSSOCallBack
+      parameters:
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: connectionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: SAML response returned by the SAML IDP
+        explode: true
+        in: query
+        name: SAMLResponse
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/samlSSOCallBack_request'
+      responses:
+        "302":
+          description: Redirect to default page for developer after succesful login.
+          headers:
+            Location:
+              description: Redirect URL of landing page after successful login.
+              explode: false
+              schema:
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: SAML Callback
+      tags:
+      - sso
+  /arc/{serviceId}/role:
+    get:
+      operationId: GetRolesForService
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RoleResponse'
+                type: array
+          description: Successful retrieval of roles for service.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get Service Roles
+      tags:
+      - arc
+  /arc/{serviceId}/tags:
+    get:
+      description: Get all resource tags associated with a Katanemo Service.
+      operationId: GetTagsForService
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Tags'
+                type: array
+          description: Successful retrieval of tags for service.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Get Resource Tags
+      tags:
+      - arc
+  /arc/{serviceId}/init:
+    get:
+      description: Initiative the Authorization Runtime Client with Developer API
+        Keys
+      operationId: InitArcClient
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/InitArcResponse'
+                type: array
+          description: Successful retrieval of init arc client.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: Initialize ARC Client
+      tags:
+      - arc
+  /arc/authorize:
+    post:
+      operationId: PostAuthorize
+      responses:
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+      summary: dummy endpoint for authorize
+  /healthz:
+    get:
+      description: This API returns the current health of the Katanemo Contorl Plane
+        and Data Plane services.
+      operationId: GetHealthz
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: token
+      summary: Return Katanemo Health
+      tags:
+      - health
+  /audit-logs/service/{serviceId}/account/{accountId}:
+    get:
+      description: Return a list of access logs that belong to a particular service
+        and orgaization
+      operationId: GetAuditLogs
+      parameters:
+      - explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Start time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g.
+          2023-01-15T15-28-58 which means 2023-01-15 15:28:58)
+        explode: true
+        in: query
+        name: startTime
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: End time of log entries in the format YYYY-MM-DDThh-mm-ss (e.g.
+          2023-01-15T15-28-58 which means 2023-01-15 15:28:58)
+        explode: true
+        in: query
+        name: endTime
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AuditLogEntry'
+                type: array
+          description: List of log entries
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+          description: Bad Request Exception
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedException'
+          description: Unauthorized Exception
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+          description: Conflict Exception
+        "429":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsException'
+          description: Too Many Requests Exception
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorException'
+          description: Internal Server Error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      summary: List Access logs
+      tags:
+      - access-logs
+components:
+  schemas:
+    InitArcResponse:
+      example:
+        sessionToken: sessionToken
+        queueUrl: queueUrl
+        keyId: keyId
+        expiration: 0
+        keySecret: keySecret
+      properties:
+        queueUrl:
+          title: queueUrl
+          type: string
+        keyId:
+          title: keyId
+          type: string
+        keySecret:
+          title: keySecret
+          type: string
+        sessionToken:
+          title: sessionToken
+          type: string
+        expiration:
+          title: expiration
+          type: integer
+      title: InitArcResponse
+    SignupRequest:
+      example:
+        emailAddress: emailAddress
+      properties:
+        emailAddress:
+          description: Email address of user signing up for the service.
+          title: emailAddress
+          type: string
+      required:
+      - emailAddress
+      title: SignupRequest
+    SignupResponse:
+      example:
+        accountId: accountId
+      properties:
+        accountId:
+          description: Account ID of developer signed up.
+          title: accountId
+          type: string
+      required:
+      - accountId
+      title: SignupResponse
+    UserConfirmationResponse:
+      example:
+        accountId: accountId
+        emailAddress: emailAddress
+        session: session
+        serviceId: serviceId
+      properties:
+        session:
+          description: Session info in response to confirm user. This session can
+            be used to set password.
+          title: session
+          type: string
+        accountId:
+          description: returns the account id for the organization that subscribed
+            to the service.
+          title: accountId
+          type: string
+        emailAddress:
+          description: returns the email address of the user signing up.
+          title: emailAddress
+          type: string
+        serviceId:
+          description: returns the service id for which user subscribed to.
+          title: serviceId
+          type: string
+      required:
+      - accountId
+      - emailAddress
+      - serviceId
+      - session
+      title: UserConfirmationResponse
+    SetPasswordRequest:
+      example:
+        emailAddress: emailAddress
+        password: password
+        session: session
+      properties:
+        emailAddress:
+          description: Email address of the user.
+          title: emailAddress
+          type: string
+        session:
+          description: Session information of the user from confirm user respoonse.
+          title: session
+          type: string
+        password:
+          description: Password of the user for the user to be used in future.
+          title: password
+          type: string
+      required:
+      - emailAddress
+      - password
+      - session
+      title: SetPasswordRequest
+    InitialLoginRequest:
+      example:
+        emailAddress: emailAddress
+        state: state
+      properties:
+        emailAddress:
+          description: Email address of the developer account's user
+          title: emailAddress
+          type: string
+        state:
+          description: Optional state parameters
+          title: state
+          type: string
+      required:
+      - emailAddress
+      title: InitialLoginRequest
+    InitialLoginResponse:
+      example:
+        ssoEnabled: true
+        ssoRedirectUrl: ssoRedirectUrl
+      properties:
+        ssoEnabled:
+          description: Determines if sso is enabled or not
+          title: ssoEnabled
+          type: boolean
+        ssoRedirectUrl:
+          description: If sso is enabled then have to make call to sso endpoint for
+            authentication
+          title: ssoRedirectUrl
+          type: string
+      required:
+      - ssoEnabled
+      title: InitialLoginResponse
+    LoginWithPasswordRequest:
+      example:
+        skipRedirect: true
+        emailAddress: emailAddress
+        password: password
+        state: state
+      properties:
+        emailAddress:
+          description: Email address of the developer account's user
+          title: emailAddress
+          type: string
+        password:
+          description: Password of the user
+          title: password
+          type: string
+        skipRedirect:
+          description: "By default login will redirect to service redirect URL, if\
+            \ this parameter is set as true then response will be returned."
+          title: skipRedirect
+          type: boolean
+        state:
+          description: Optional state parameter.
+          title: state
+          type: string
+      required:
+      - emailAddress
+      - password
+      title: LoginWithPasswordRequest
+    LoginToken:
+      example:
+        token: token
+      properties:
+        token:
+          description: Login Token
+          title: token
+          type: string
+      required:
+      - token
+      title: LoginToken
+    CreateServiceRequest:
+      properties:
+        name:
+          description: Service Name
+          type: string
+        description:
+          description: Service Description
+          type: string
+        redirectUrl:
+          description: Redirect URL after a successful login.
+          type: string
+        apiSpecFile:
+          description: openapi service json or yaml file
+          format: binary
+          type: string
+        authExclusionPaths:
+          description: List of paths for which we do not require authentication
+          items:
+            type: string
+          type: array
+        displayName:
+          description: "Display name of the service/company used in the Sign up, Login,\
+            \ Logout and other relevant branding pages"
+          type: string
+        logoUrl:
+          description: "The URL for the service/company Logo used in the Sign up,\
+            \ Login, Logout and other relevant branding pages"
+          type: string
+        detailsImageUrl:
+          description: The URL of image showing details about the service to be displayed
+            on the sign-up page.
+          type: string
+        termsUrl:
+          description: The URL for the terms of the service
+          type: string
+        privacyUrl:
+          description: The URL for the privacy of the service
+          type: string
+        docsUrl:
+          description: The URL for the documentation of the service
+          type: string
+      required:
+      - apiSpecFile
+      - name
+      - redirectUrl
+      type: object
+    UpdateServiceRequest:
+      properties:
+        name:
+          description: Service Name
+          type: string
+        description:
+          description: Service Description
+          type: string
+        redirectUrl:
+          description: Redirect URL after a successful login.
+          type: string
+        apiSpecFile:
+          description: openapi service json or yaml file
+          format: binary
+          type: string
+        authExclusionPaths:
+          description: List of paths for which we do not require authentication
+          items:
+            type: string
+          type: array
+        displayName:
+          description: "Display name of the service/company used in the Sign up, Login,\
+            \ Logout and other relevant branding pages"
+          type: string
+        logoUrl:
+          description: "The URL for the service/company Logo used in the Sign up,\
+            \ Login, Logout and other relevant branding pages"
+          type: string
+        detailsImageUrl:
+          description: The URL of image showing details about the service to be displayed
+            on the sign-up page.
+          type: string
+        termsUrl:
+          description: The URL for the terms of the service
+          type: string
+        privacyUrl:
+          description: The URL for the privacy of the service
+          type: string
+        docsUrl:
+          description: The URL for the documentatio of the service
+          type: string
+      type: object
+    ServiceResponseObj:
+      example:
+        privacyUrl: privacyUrl
+        apiSpecFileContents: apiSpecFileContents
+        redirectUrl: redirectUrl
+        authExclusionPaths:
+        - authExclusionPaths
+        - authExclusionPaths
+        displayName: displayName
+        description: description
+        onboardURL: onboardURL
+        serviceName: serviceName
+        version: 0
+        logoUrl: logoUrl
+        accountId: accountId
+        createdAt: 1
+        termsUrl: termsUrl
+        apis:
+        - apis
+        - apis
+        docsUrl: docsUrl
+        serviceId: serviceId
+        updatedAt: 6
+        detailsImageUrl: detailsImageUrl
+      properties:
+        accountId:
+          description: Account ID of service creator
+          title: accountId
+          type: string
+        serviceId:
+          description: ID of the service
+          title: serviceId
+          type: string
+        serviceName:
+          description: Name of the service
+          title: serviceName
+          type: string
+        description:
+          description: Description of service
+          title: description
+          type: string
+        onboardURL:
+          description: Pretty onboarding URL for the service generated by Katanemo
+          title: onboardURL
+          type: string
+        redirectUrl:
+          description: redirect url
+          title: redirectUrl
+          type: string
+        apiSpecFileContents:
+          description: S3 url of open api spec (Json or yaml) file contents
+          title: apiSpecFileContents
+          type: string
+        apis:
+          description: List of paths exposed by the service
+          items:
+            type: string
+          title: apis
+          type: array
+        authExclusionPaths:
+          description: List of paths for which we do not require authentication
+          items:
+            type: string
+          title: authExclusionPaths
+          type: array
+        version:
+          title: version
+          type: integer
+        updatedAt:
+          format: int64
+          title: updatedAt
+          type: integer
+        createdAt:
+          format: int64
+          title: createdAt
+          type: integer
+        displayName:
+          description: "Display name of the service/company used in the Sign up, Login,\
+            \ Logout and other relevant branding pages"
+          title: displayName
+          type: string
+        logoUrl:
+          description: "The URL for the service/company Logo used in the Sign up,\
+            \ Login, Logout and other relevant branding pages"
+          title: logoUrl
+          type: string
+        detailsImageUrl:
+          description: The URL of image showing details about the service to be displayed
+            on the sign-up page.
+          title: detailsImageUrl
+          type: string
+        termsUrl:
+          description: The URL for the terms of the service
+          title: termsUrl
+          type: string
+        privacyUrl:
+          description: The URL for the privacy of the service
+          title: privacyUrl
+          type: string
+        docsUrl:
+          description: The URL for the documentatio of the service
+          title: docsUrl
+          type: string
+      required:
+      - apiSpecFileContents
+      - apis
+      - onboardURL
+      - redirectUrl
+      - serviceId
+      - serviceName
+      title: ServiceResponseObj
+    OIDCPublicKey:
+      example:
+        kty: kty
+        e: e
+        use: use
+        kid: kid
+        alg: alg
+        "n": "n"
+      properties:
+        kid:
+          description: key id
+          title: kid
+          type: string
+        alg:
+          description: Key algorithm
+          title: alg
+          type: string
+        e:
+          description: RSA exponent
+          title: e
+          type: string
+        "n":
+          description: RSA modulus
+          title: "n"
+          type: string
+        use:
+          description: key usage
+          title: use
+          type: string
+        kty:
+          description: key type
+          title: kty
+          type: string
+      title: OIDCPublicKey
+    OrganizationResponse:
+      example:
+        samlConnectionsCount: 5
+        rolesCount: 6
+        oidcConnectionsCount: 1
+        launchedServices:
+        - launchedServices
+        - launchedServices
+        subscribedServices:
+        - subscribedServices
+        - subscribedServices
+        subscribers:
+        - subscribers
+        - subscribers
+        domainVerificationCode: domainVerificationCode
+        usersCount: 0
+        defaultConnectionType: defaultConnectionType
+        accountId: accountId
+        domainVerified: true
+        adminAccount: adminAccount
+        domain: domain
+        defaultConnection: defaultConnection
+        name: name
+      properties:
+        accountId:
+          title: accountId
+          type: string
+        name:
+          title: name
+          type: string
+        adminAccount:
+          title: adminAccount
+          type: string
+        domainVerificationCode:
+          title: domainVerificationCode
+          type: string
+        domain:
+          title: domain
+          type: string
+        domainVerified:
+          title: domainVerified
+          type: boolean
+        usersCount:
+          title: usersCount
+          type: integer
+        rolesCount:
+          title: rolesCount
+          type: integer
+        oidcConnectionsCount:
+          title: oidcConnectionsCount
+          type: integer
+        samlConnectionsCount:
+          title: samlConnectionsCount
+          type: integer
+        defaultConnection:
+          title: defaultConnection
+          type: string
+        defaultConnectionType:
+          title: defaultConnectionType
+          type: string
+        launchedServices:
+          items:
+            type: string
+          title: launchedServices
+          type: array
+        subscribedServices:
+          items:
+            type: string
+          title: subscribedServices
+          type: array
+        subscribers:
+          items:
+            type: string
+          title: subscribers
+          type: array
+      required:
+      - accountId
+      - adminAccount
+      - name
+      title: OrganizationResponse
+    UserRequest:
+      example:
+        accountId: accountId
+        roles:
+        - roleId1
+        - roleId2
+        - roleId3
+        userId: userId
+        tags:
+          key:
+          - tags
+          - tags
+      properties:
+        accountId:
+          description: Tenant name
+          title: accountId
+          type: string
+        userId:
+          description: email address of the user
+          title: userId
+          type: string
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: tags
+          type: object
+        roles:
+          example:
+          - roleId1
+          - roleId2
+          - roleId3
+          items:
+            type: string
+          title: roles
+          type: array
+      required:
+      - accountId
+      title: UserRequest
+    UserResponse:
+      example:
+        accountId: accountId
+        roles:
+        - roleId1
+        - roleId2
+        - roleId3
+        isAdmin: true
+        serviceId: serviceId
+        isActive: true
+        userId: userId
+        token: token
+        tags:
+          key:
+          - tags
+          - tags
+      properties:
+        accountId:
+          description: Organization Identifier for a SaaS customer
+          title: accountId
+          type: string
+        serviceId:
+          description: Service which this account subscribed to
+          title: serviceId
+          type: string
+        userId:
+          description: Email
+          title: userId
+          type: string
+        isAdmin:
+          description: is the user an admin?
+          title: isAdmin
+          type: boolean
+        isActive:
+          description: Is the user active yet?
+          title: isActive
+          type: boolean
+        token:
+          description: User token
+          title: token
+          type: string
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: tags
+          type: object
+        roles:
+          example:
+          - roleId1
+          - roleId2
+          - roleId3
+          items:
+            type: string
+          title: roles
+          type: array
+      required:
+      - accountId
+      title: UserResponse
+    AssignRoleObj:
+      example:
+        roleId: roleId
+        principalId: principalId
+      properties:
+        principalId:
+          title: principalId
+          type: string
+        roleId:
+          title: roleId
+          type: string
+      required:
+      - principalId
+      - roleId
+      title: AssignRoleObj
+    AssumeRoleObj:
+      example:
+        roleId: roleId
+        principalId: principalId
+      properties:
+        principalId:
+          title: principalId
+          type: string
+        roleId:
+          title: roleId
+          type: string
+      required:
+      - principalId
+      - roleId
+      title: AssumeRoleObj
+    RoleRequest:
+      example:
+        accountId: accountId
+        rolename: rolename
+        description: description
+        serviceId: serviceId
+        policy:
+          policyContent: policyContent
+      properties:
+        accountId:
+          description: AccountId
+          title: accountId
+          type: string
+        rolename:
+          description: Role name
+          title: rolename
+          type: string
+        description:
+          description: Role description
+          title: description
+          type: string
+        serviceId:
+          description: ID of the service
+          title: serviceId
+          type: string
+        policy:
+          $ref: '#/components/schemas/Policy'
+      title: RoleRequest
+    RoleResponse:
+      example:
+        accountId: accountId
+        createdAt: 1
+        roleId: roleId
+        rolename: rolename
+        description: description
+        serviceId: serviceId
+        version: 0
+        policy:
+          policyContent: policyContent
+        updatedAt: 6
+      properties:
+        accountId:
+          description: AccountId
+          title: accountId
+          type: string
+        roleId:
+          description: Role Id
+          title: roleId
+          type: string
+        rolename:
+          description: Role name
+          title: rolename
+          type: string
+        description:
+          description: Role description
+          title: description
+          type: string
+        serviceId:
+          description: ID of the service
+          title: serviceId
+          type: string
+        policy:
+          $ref: '#/components/schemas/Policy'
+        version:
+          title: version
+          type: integer
+        updatedAt:
+          format: int64
+          title: updatedAt
+          type: integer
+        createdAt:
+          format: int64
+          title: createdAt
+          type: integer
+      title: RoleResponse
+    Policy:
+      example:
+        policyContent: policyContent
+      properties:
+        policyContent:
+          description: "Policy rules for allowing API paths, it can be defined as\
+            \ json or yaml format."
+          title: policyContent
+          type: string
+      required:
+      - policyContent
+      title: Policy
+    UpdateOrganizationRequest:
+      example:
+        name: name
+      properties:
+        name:
+          description: Organization's account name to be dupated.
+          title: name
+          type: string
+      required:
+      - name
+      title: UpdateOrganizationRequest
+    OIDCObj:
+      example:
+        redirectURL: redirectURL
+        clientId: clientId
+        jwksEndpoint: jwksEndpoint
+        oidcConfigEndpoint: oidcConfigEndpoint
+        nonce: nonce
+        authorizationEndpoint: authorizationEndpoint
+        accountId: accountId
+        tokenEndpoint: tokenEndpoint
+        issuerEndpoint: issuerEndpoint
+        name: name
+        connectionId: connectionId
+        clientSecret: clientSecret
+        state: state
+        serviceId: serviceId
+        userInfoEndpoint: userInfoEndpoint
+      properties:
+        oidcConfigEndpoint:
+          description: OIDC configuration URL
+          title: oidcConfigEndpoint
+          type: string
+        redirectURL:
+          description: Callback URL for OIDC IdP
+          title: redirectURL
+          type: string
+        name:
+          description: Name of the OIDC connection
+          title: name
+          type: string
+        clientId:
+          title: clientId
+          type: string
+        clientSecret:
+          title: clientSecret
+          type: string
+        nonce:
+          title: nonce
+          type: string
+        state:
+          title: state
+          type: string
+        accountId:
+          title: accountId
+          type: string
+        serviceId:
+          title: serviceId
+          type: string
+        authorizationEndpoint:
+          title: authorizationEndpoint
+          type: string
+        tokenEndpoint:
+          title: tokenEndpoint
+          type: string
+        userInfoEndpoint:
+          title: userInfoEndpoint
+          type: string
+        issuerEndpoint:
+          title: issuerEndpoint
+          type: string
+        jwksEndpoint:
+          title: jwksEndpoint
+          type: string
+        connectionId:
+          title: connectionId
+          type: string
+      required:
+      - clientId
+      - clientSecret
+      - oidcConfigEndpoint
+      title: OIDCObj
+    SAMLObj:
+      example:
+        audienceLink: audienceLink
+        loginLink: loginLink
+        acsLink: acsLink
+        rootURL: rootURL
+        accountId: accountId
+        idProvider: idProvider
+        name: name
+        connectionId: connectionId
+        attributeRoleMappings:
+        - roleId: roleId
+          attribute: attribute
+          value: value
+        - roleId: roleId
+          attribute: attribute
+          value: value
+        state: state
+        metadataLink: metadataLink
+        serviceId: serviceId
+        defaultRoleId: defaultRoleId
+      properties:
+        connectionId:
+          title: connectionId
+          type: string
+        idProvider:
+          title: idProvider
+          type: string
+        state:
+          title: state
+          type: string
+        name:
+          title: name
+          type: string
+        defaultRoleId:
+          title: defaultRoleId
+          type: string
+        loginLink:
+          title: loginLink
+          type: string
+        metadataLink:
+          title: metadataLink
+          type: string
+        acsLink:
+          title: acsLink
+          type: string
+        audienceLink:
+          title: audienceLink
+          type: string
+        attributeRoleMappings:
+          items:
+            $ref: '#/components/schemas/AttributeRoleMapping'
+          title: attributeRoleMappings
+          type: array
+        rootURL:
+          title: rootURL
+          type: string
+        accountId:
+          title: accountId
+          type: string
+        serviceId:
+          title: serviceId
+          type: string
+      required:
+      - accountId
+      - defaultRoleId
+      - idProvider
+      - serviceId
+      title: SAMLObj
+    ClientKeyRequest:
+      example:
+        clientName: clientName
+        defaultRoleId: defaultRoleId
+      properties:
+        defaultRoleId:
+          title: defaultRoleId
+          type: string
+        clientName:
+          title: clientName
+          type: string
+      required:
+      - clientName
+      - defaultRoleId
+      title: ClientKeyRequest
+    ClientKeyResponse:
+      example:
+        clientId: clientId
+        clientSecret: clientSecret
+      properties:
+        clientId:
+          title: clientId
+          type: string
+        clientSecret:
+          title: clientSecret
+          type: string
+      title: ClientKeyResponse
+    ClientKeyObject:
+      example:
+        accountId: accountId
+        clientName: clientName
+        roles:
+        - roleId1
+        - roleId2
+        - roleId3
+        clientKeyId: clientKeyId
+        serviceId: serviceId
+        isActive: true
+      properties:
+        accountId:
+          title: accountId
+          type: string
+        roles:
+          example:
+          - roleId1
+          - roleId2
+          - roleId3
+          items:
+            type: string
+          title: roles
+          type: array
+        clientName:
+          title: clientName
+          type: string
+        clientKeyId:
+          title: clientKeyId
+          type: string
+        serviceId:
+          title: serviceId
+          type: string
+        isActive:
+          title: isActive
+          type: boolean
+      title: ClientKeyObject
+    Tags:
+      example:
+        accountId: accountId
+        serviceIdPath: serviceIdPath
+        resourceId: resourceId
+        name: name
+        serviceId: serviceId
+        token: token
+        tags:
+          key:
+          - tags
+          - tags
+      properties:
+        serviceIdPath:
+          title: serviceIdPath
+          type: string
+        serviceId:
+          title: serviceId
+          type: string
+        name:
+          title: name
+          type: string
+        resourceId:
+          title: resourceId
+          type: string
+        accountId:
+          title: accountId
+          type: string
+        token:
+          title: token
+          type: string
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          title: tags
+          type: object
+      required:
+      - name
+      - resourceId
+      - serviceId
+      - tags
+      - token
+      title: Tags
+    GetTagsRequest:
+      example:
+        accountId: accountId
+        resourceId: resourceId
+        resourceName: resourceName
+      properties:
+        resourceName:
+          title: resourceName
+          type: string
+        resourceId:
+          title: resourceId
+          type: string
+        accountId:
+          title: accountId
+          type: string
+      required:
+      - accountId
+      - resourceId
+      - resourceName
+      title: GetTagsRequest
+    AttributeRoleMapping:
+      example:
+        roleId: roleId
+        attribute: attribute
+        value: value
+      properties:
+        attribute:
+          title: attribute
+          type: string
+        value:
+          title: value
+          type: string
+        roleId:
+          title: roleId
+          type: string
+      required:
+      - attribute
+      - roleId
+      - value
+      title: AttributeRoleMapping
+    TokenRequest:
+      example:
+        clientId: clientId
+        clientSecret: clientSecret
+      properties:
+        clientId:
+          title: clientId
+          type: string
+        clientSecret:
+          title: clientSecret
+          type: string
+      title: TokenRequest
+    TokenResponse:
+      example:
+        accessToken: accessToken
+      properties:
+        accessToken:
+          title: accessToken
+          type: string
+      title: TokenResponse
+    OAuthTokenRequest:
+      example:
+        code: code
+        clientId: clientId
+        clientSecret: clientSecret
+      properties:
+        code:
+          title: code
+          type: string
+        clientId:
+          title: clientId
+          type: string
+        clientSecret:
+          title: clientSecret
+          type: string
+      title: OAuthTokenRequest
+    OAuthTokenResponse:
+      example:
+        expiresIn: 0
+        idToken: idToken
+        accessToken: accessToken
+        tokenType: tokenType
+      properties:
+        idToken:
+          title: idToken
+          type: string
+        accessToken:
+          title: accessToken
+          type: string
+        expiresIn:
+          title: expiresIn
+          type: integer
+        tokenType:
+          title: tokenType
+          type: string
+      title: OAuthTokenResponse
+    PasswordPolicy:
+      example:
+        requireSymbols: true
+        requiredNumbers: true
+        requireLowerCase: true
+        minimumLegnth: 0
+        requireUpperCase: true
+      properties:
+        minimumLegnth:
+          description: The minimum length of the password in the policy that you have
+            set. This value can't be less than 6.
+          format: int32
+          title: minimumLegnth
+          type: integer
+        requiredNumbers:
+          description: "In the password policy that you have set, refers to whether\
+            \ you have required users to use at least one number in their password."
+          title: requiredNumbers
+          type: boolean
+        requireSymbols:
+          description: "In the password policy that you have set, refers to whether\
+            \ you have required users to use at least one symbol in their password."
+          title: requireSymbols
+          type: boolean
+        requireUpperCase:
+          description: "In the password policy that you have set, refers to whether\
+            \ you have required users to use at least one uppercase letter in their\
+            \ password."
+          title: requireUpperCase
+          type: boolean
+        requireLowerCase:
+          description: "In the password policy that you have set, refers to whether\
+            \ you have required users to use at least one lowercase letter in their\
+            \ password."
+          title: requireLowerCase
+          type: boolean
+      required:
+      - minimumLegnth
+      - requireLowerCase
+      - requireSymbols
+      - requireUpperCase
+      - requiredNumbers
+      title: PasswordPolicy
+    AuthorizeRequest:
+      example:
+        clientId: clientId
+        state: state
+      properties:
+        clientId:
+          description: ClientId of the developer
+          title: clientId
+          type: string
+        state:
+          description: Optional state parameter to return to the Developer in case
+            of a successful login
+          title: state
+          type: string
+      required:
+      - clientId
+      title: AuthorizeRequest
+    AuditLogEntry:
+      example:
+        principal: principal
+        accountId: accountId
+        path: path
+        authorizationCode: 6
+        authenticationCode: 0
+        serviceId: serviceId
+        operation: operation
+        timestamp: timestamp
+      properties:
+        timestamp:
+          title: timestamp
+          type: string
+        accountId:
+          title: accountId
+          type: string
+        serviceId:
+          title: serviceId
+          type: string
+        path:
+          title: path
+          type: string
+        operation:
+          title: operation
+          type: string
+        principal:
+          title: principal
+          type: string
+        authenticationCode:
+          title: authenticationCode
+          type: integer
+        authorizationCode:
+          title: authorizationCode
+          type: integer
+      required:
+      - accountId
+      - authenticationCode
+      - authorizationCode
+      - operation
+      - path
+      - principal
+      - serviceId
+      - timestamp
+      title: AuditLogEntry
+    Error:
+      example:
+        code: 0
+        message: message
+      properties:
+        code:
+          description: Error code
+          format: int32
+          title: code
+          type: integer
+        message:
+          description: Error message
+          title: message
+          type: string
+      required:
+      - code
+      - message
+      title: Error
+    BadRequestException:
+      properties:
+        message:
+          title: message
+          type: string
+        errorCode:
+          title: errorCode
+          type: string
+      title: BadRequestException
+      type: object
+    UnauthorizedException:
+      properties:
+        message:
+          title: message
+          type: string
+        errorCode:
+          title: errorCode
+          type: string
+      title: UnauthorizedException
+      type: object
+    NotFoundException:
+      properties:
+        message:
+          type: string
+        errorCode:
+          type: string
+      type: object
+    ConflictException:
+      properties:
+        message:
+          title: message
+          type: string
+        errorCode:
+          title: errorCode
+          type: string
+      title: ConflictException
+      type: object
+    TooManyRequestsException:
+      properties:
+        message:
+          title: message
+          type: string
+        errorCode:
+          title: errorCode
+          type: string
+      title: TooManyRequestsException
+      type: object
+    InternalServerErrorException:
+      properties:
+        message:
+          title: message
+          type: string
+        errorCode:
+          title: errorCode
+          type: string
+      title: InternalServerErrorException
+      type: object
+    GetDeveloperPublicKeys_200_response:
+      example:
+        keys:
+        - kty: kty
+          e: e
+          use: use
+          kid: kid
+          alg: alg
+          "n": "n"
+        - kty: kty
+          e: e
+          use: use
+          kid: kid
+          alg: alg
+          "n": "n"
+      properties:
+        keys:
+          items:
+            $ref: '#/components/schemas/OIDCPublicKey'
+          title: keys
+          type: array
+      title: GetDeveloperPublicKeys_200_response
+      type: object
+    samlSSOCallBack_request:
+      properties:
+        SAMLResponse:
+          description: SAML response returned by the SAML IDP
+          type: string
+      type: object
