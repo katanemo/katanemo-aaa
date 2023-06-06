@@ -11,7 +11,7 @@ clickclick==20.10.2
 connexion==2.14.1
 cryptography==39.0.1
 Deprecated==1.2.13
-Flask==2.1.1
+Flask==2.2.5
 frozendict==2.3.8
 idna==3.4
 importlib-metadata==6.0.0
