@@ -82,7 +82,7 @@ const config = {
 
   // Set the production url of your site here
   url: 'https://katanemo.github.io', // Your website URL
-  baseUrl: '/',
+  baseUrl: '/katanemo-aaa/',
   projectName: 'katanemo-aaa',
   organizationName: 'katanemo',
   trailingSlash: false,
