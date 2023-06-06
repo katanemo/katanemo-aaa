@@ -4,6 +4,7 @@ import core_utils
 import argparse
 import json
 import katanemo_sdk
+from katanemo_sdk.apis.tags import service_api
 
 log.basicConfig(level=log.INFO, format="%(message)s")
 
@@ -115,9 +116,11 @@ def get_api_client():
         host=api_endpoint
     )
     api_client = katanemo_sdk.ApiClient(configuration)
-    if hasattr(args, 'token') and args.token:
-        api_client.default_headers["Authorization"] = "Bearer " + args.token
-    return katanemo_sdk.DefaultApi(api_client)
+    api_instance = service_api.GetDefaultService(api_client)
+    return api_instance
+    # if hasattr(args, 'token') and args.token:
+    #     api_client.default_headers["Authorization"] = "Bearer " + args.token
+    # return katanemo_sdk.DefaultApi(api_client)
 
 
 if args.sub_parser == "init-service":
@@ -146,9 +149,15 @@ if args.sub_parser == "login-with-password":
     print(api_response.json(by_alias=True))
 
 
+_all_accept_content_types = (
+    'application/json; charset=UTF-8',
+)
+
+
+
 if args.sub_parser == "get-default-service":
-    api_response = get_api_client().get_default_service()
-    print(api_response.json(by_alias=True))
+    api_response = get_api_client().get_default_service(accept_content_types=_all_accept_content_types)
+    print(api_response.body)
 
 
 if args.sub_parser == "signup-service":
