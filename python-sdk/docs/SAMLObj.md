@@ -6,6 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **connection_id** | **str** |  | [optional] 
 **id_provider** | **str** |  | 
+**state** | **str** |  | [optional] 
+**name** | **str** |  | [optional] 
 **default_role_id** | **str** |  | 
 **login_link** | **str** |  | [optional] 
 **metadata_link** | **str** |  | [optional] 

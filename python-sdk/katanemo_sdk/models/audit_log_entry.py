@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -26,6 +26,7 @@ class AuditLogEntry(BaseModel):
     """
     AuditLogEntry
     """
+    timestamp: StrictStr = Field(...)
     account_id: StrictStr = Field(..., alias="accountId")
     service_id: StrictStr = Field(..., alias="serviceId")
     path: StrictStr = Field(...)
@@ -33,7 +34,7 @@ class AuditLogEntry(BaseModel):
     principal: StrictStr = Field(...)
     authentication_code: StrictInt = Field(..., alias="authenticationCode")
     authorization_code: StrictInt = Field(..., alias="authorizationCode")
-    __properties = ["accountId", "serviceId", "path", "operation", "principal", "authenticationCode", "authorizationCode"]
+    __properties = ["timestamp", "accountId", "serviceId", "path", "operation", "principal", "authenticationCode", "authorizationCode"]
 
     class Config:
         """Pydantic configuration"""
@@ -71,6 +72,7 @@ class AuditLogEntry(BaseModel):
             return AuditLogEntry.parse_obj(obj)
 
         _obj = AuditLogEntry.parse_obj({
+            "timestamp": obj.get("timestamp"),
             "account_id": obj.get("accountId"),
             "service_id": obj.get("serviceId"),
             "path": obj.get("path"),

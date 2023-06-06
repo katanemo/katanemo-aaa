@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -17,11 +17,11 @@ import unittest
 import datetime
 
 import katanemo_sdk
-from katanemo_sdk.models.organization import Organization  # noqa: E501
+from katanemo_sdk.models.organization_response import OrganizationResponse  # noqa: E501
 from katanemo_sdk.rest import ApiException
 
-class TestOrganization(unittest.TestCase):
-    """Organization unit test stubs"""
+class TestOrganizationResponse(unittest.TestCase):
+    """OrganizationResponse unit test stubs"""
 
     def setUp(self):
         pass
@@ -30,22 +30,27 @@ class TestOrganization(unittest.TestCase):
         pass
 
     def make_instance(self, include_optional):
-        """Test Organization
+        """Test OrganizationResponse
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `Organization`
+        # uncomment below to create an instance of `OrganizationResponse`
         """
-        model = katanemo_sdk.models.organization.Organization()  # noqa: E501
+        model = katanemo_sdk.models.organization_response.OrganizationResponse()  # noqa: E501
         if include_optional :
-            return Organization(
+            return OrganizationResponse(
                 account_id = '', 
                 name = '', 
                 admin_account = '', 
+                domain_verification_code = '', 
+                domain = '', 
+                domain_verified = True, 
                 users_count = 56, 
                 roles_count = 56, 
                 oidc_connections_count = 56, 
                 saml_connections_count = 56, 
+                default_connection = '', 
+                default_connection_type = '', 
                 launched_services = [
                     ''
                     ], 
@@ -57,15 +62,15 @@ class TestOrganization(unittest.TestCase):
                     ]
             )
         else :
-            return Organization(
+            return OrganizationResponse(
                 account_id = '',
                 name = '',
                 admin_account = '',
         )
         """
 
-    def testOrganization(self):
-        """Test Organization"""
+    def testOrganizationResponse(self):
+        """Test OrganizationResponse"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -19,7 +19,7 @@ import re  # noqa: F401
 import json
 
 
-
+from typing import Optional
 from pydantic import BaseModel, Field, StrictStr
 
 class InitialLoginRequest(BaseModel):
@@ -27,7 +27,8 @@ class InitialLoginRequest(BaseModel):
     InitialLoginRequest
     """
     email_address: StrictStr = Field(..., alias="emailAddress", description="Email address of the developer account's user")
-    __properties = ["emailAddress"]
+    state: Optional[StrictStr] = Field(None, description="Optional state parameters")
+    __properties = ["emailAddress", "state"]
 
     class Config:
         """Pydantic configuration"""
@@ -65,7 +66,8 @@ class InitialLoginRequest(BaseModel):
             return InitialLoginRequest.parse_obj(obj)
 
         _obj = InitialLoginRequest.parse_obj({
-            "email_address": obj.get("emailAddress")
+            "email_address": obj.get("emailAddress"),
+            "state": obj.get("state")
         })
         return _obj
 

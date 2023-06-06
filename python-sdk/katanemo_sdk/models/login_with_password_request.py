@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -29,7 +29,8 @@ class LoginWithPasswordRequest(BaseModel):
     email_address: StrictStr = Field(..., alias="emailAddress", description="Email address of the developer account's user")
     password: StrictStr = Field(..., description="Password of the user")
     skip_redirect: Optional[StrictBool] = Field(None, alias="skipRedirect", description="By default login will redirect to service redirect URL, if this parameter is set as true then response will be returned.")
-    __properties = ["emailAddress", "password", "skipRedirect"]
+    state: Optional[StrictStr] = Field(None, description="Optional state parameter.")
+    __properties = ["emailAddress", "password", "skipRedirect", "state"]
 
     class Config:
         """Pydantic configuration"""
@@ -69,7 +70,8 @@ class LoginWithPasswordRequest(BaseModel):
         _obj = LoginWithPasswordRequest.parse_obj({
             "email_address": obj.get("emailAddress"),
             "password": obj.get("password"),
-            "skip_redirect": obj.get("skipRedirect")
+            "skip_redirect": obj.get("skipRedirect"),
+            "state": obj.get("state")
         })
         return _obj
 

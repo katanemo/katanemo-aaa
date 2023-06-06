@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **email_address** | **str** | Email address of the developer account&#39;s user | 
 **password** | **str** | Password of the user | 
 **skip_redirect** | **bool** | By default login will redirect to service redirect URL, if this parameter is set as true then response will be returned. | [optional] 
+**state** | **str** | Optional state parameter. | [optional] 
 
 ## Example
 

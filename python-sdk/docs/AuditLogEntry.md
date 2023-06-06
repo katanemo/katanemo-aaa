@@ -4,6 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**timestamp** | **str** |  | 
 **account_id** | **str** |  | 
 **service_id** | **str** |  | 
 **path** | **str** |  | 

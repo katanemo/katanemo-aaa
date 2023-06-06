@@ -5,6 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **oidc_config_endpoint** | **str** | OIDC configuration URL | 
+**redirect_url** | **str** | Callback URL for OIDC IdP | [optional] 
+**name** | **str** | Name of the OIDC connection | [optional] 
 **client_id** | **str** |  | 
 **client_secret** | **str** |  | 
 **nonce** | **str** |  | [optional] 
