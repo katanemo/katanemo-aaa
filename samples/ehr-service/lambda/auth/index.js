@@ -5,6 +5,7 @@ const url = require('url');
 const arcEndpoint = process.env.AUTH_ENDPOINT
 const apiEndpoint = process.env.API_ENDPOINT
 const clientKey = process.env.CLIENT_KEY
+const serviceId = process.env.SERVICE_ID
 
 console.log(apiEndpoint)
 
@@ -46,6 +47,7 @@ function authorizeRequest(userToken, serviceToken, path, method, methodArn, call
       if(!userToken) {
         const apiAuthPath = apiEndpoint + '/authorize'
         const queryParams = {
+          'serviceId': serviceId,
           'clientId': clientKey,
           'state': 'value2',
         };
