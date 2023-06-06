@@ -1,6 +1,6 @@
 
 DEFAULT_API_ENDPOINT="https://api.katanemo.com"
-DEFAULT_ARC_SHA="5bcfd8c"
+DEFAULT_ARC_SHA="4d68f35"
 
 if [[ -z "$API_ENDPOINT" ]]; then
   API_ENDPOINT=$DEFAULT_API_ENDPOINT
