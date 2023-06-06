@@ -12,6 +12,7 @@ export class ApiLambdaEhrServiceStack extends Stack {
 
     const clientKey = new CfnParameter(this, 'clientKey');
     const clientSecret = new CfnParameter(this, 'clientSecret');
+    const serviceId = new CfnParameter(this, 'serviceId');
     const apiEndpoint = new CfnParameter(this, 'apiEndpoint');
     const authEndpoint = new CfnParameter(this, 'authEndpoint');
 
@@ -69,6 +70,7 @@ export class ApiLambdaEhrServiceStack extends Stack {
         API_ENDPOINT: apiEndpoint.valueAsString,
         CLIENT_KEY: clientKey.valueAsString,
         CLIENT_SECRET: clientSecret.valueAsString,
+        SERVICE_ID: serviceId.valueAsString,
       }
     }
 
