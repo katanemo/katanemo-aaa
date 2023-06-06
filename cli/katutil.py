@@ -26,7 +26,7 @@ init_service_cmd.add_argument(
 init_service_cmd.add_argument(
     "--token", type=str, help="access token", required=True)
 init_service_cmd.add_argument(
-    "--print_output", type=bool, help="print response from server", default=False)
+    "--auth_exclusion_paths", type=str, help="List of paths for which we do not require authentication")
 
 get_token_cmd = sub_parsers.add_parser(
     "login-with-password", help="get token for service")
@@ -118,8 +118,14 @@ def get_api_client():
 
 
 if args.sub_parser == "init-service":
+    print(args.auth_exclusion_paths)
+    auth_exclusion_paths = None
+    if args.auth_exclusion_paths:
+        auth_exclusion_paths = json.loads(args.auth_exclusion_paths)
+    print("auth_exclusion_paths")
+    print(auth_exclusion_paths)
     resp = katanemo_sdk.ServiceApi(get_api_client()).create_service(
-        name=args.service_name, redirect_url=args.redirect_uri, api_spec_file=args.api_spec, description=args.service_description)
+        name=args.service_name, redirect_url=args.redirect_uri, api_spec_file=args.api_spec, description=args.service_description, auth_exclusion_paths=auth_exclusion_paths)
     print(resp.json(by_alias=True))
 
     service_id = resp.service_id
