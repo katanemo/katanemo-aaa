@@ -1,9 +1,6 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 const url = require('url');
-const pathjoiner = require('path');
-
-
 
 const arcEndpoint = process.env.AUTH_ENDPOINT
 const apiEndpoint = process.env.API_ENDPOINT
@@ -27,8 +24,10 @@ function authorizeRequest(userToken, serviceToken, path, method, methodArn, call
     "Path": path,
     "HttpMethod": method,
   }
+  console.log(JSON.stringify(body))
   var now = new Date().getTime();
-  const authUrl = pathjoiner.join(arcEndpoint, '/arc/authorize')
+  const authUrl = arcEndpoint + '/arc/authorize'
+  console.log("authUrl: " + authUrl)
   fetch(authUrl, {
     method: 'POST',
     headers: {
@@ -45,7 +44,7 @@ function authorizeRequest(userToken, serviceToken, path, method, methodArn, call
       callback(null, generatePolicy(decoded.sub, 'Allow', methodArn, decoded.accountId, latency))
     } else {
       if(!userToken) {
-        const apiAuthPath = pathjoiner.join(apiEndpoint, '/authorize')
+        const apiAuthPath = apiEndpoint + '/authorize'
         const queryParams = {
           'clientId': clientKey,
           'state': 'value2',
