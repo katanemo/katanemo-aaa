@@ -179,7 +179,7 @@ if args.sub_parser == "confirm-and-set-password":
 if args.sub_parser == "create-client-key":
     client_key_req = katanemo_sdk.ClientKeyRequest(
         defaultRoleId=args.role_id, clientName=args.client_name)
-    api_instance = katanemo_sdk.SignUpLoginApi(get_api_client())
+    api_instance = katanemo_sdk.IdentityApi(get_api_client())
     resp = api_instance.create_client_key(args.account_id, client_key_req)
     print(resp.json(by_alias=True))
 
