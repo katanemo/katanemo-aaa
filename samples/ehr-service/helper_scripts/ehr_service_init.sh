@@ -33,7 +33,7 @@ EHR_ADMIN_TOKEN=$($KATUTIL login-with-password --service_id $KATANEMO_SERVICE_ID
 
 log registering service with api spec $1 to katanemo
 log katutil init-service --service_name 'patient records service' --service_description 'patient records service' --api_spec $API_SPEC --redirect_uri www.google.com --token XXXXX
-EHR_SERVICE_ID=$($KATUTIL init-service --service_name 'patient records service' --service_description 'patient records service' --api_spec $API_SPEC --redirect_uri www.google.com --token $EHR_ADMIN_TOKEN --auth_exclusion_paths '["/abc"]' | jq -r .serviceId)
+EHR_SERVICE_ID=$($KATUTIL init-service --service_name 'patient records service' --service_description 'patient records service' --api_spec $API_SPEC --redirect_uri www.google.com --token $EHR_ADMIN_TOKEN --auth_exclusion_paths '["GET:/callback"]' | jq -r .serviceId)
 
 # echo EHR_SERVICE_ID=$EHR_SERVICE_ID > .ehr_service_details
 
