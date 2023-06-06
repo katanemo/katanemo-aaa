@@ -72,6 +72,25 @@ export class ApiLambdaEhrServiceStack extends Stack {
       }
     }
 
+    // oauth 2.0 callback lambda
+    const callbackLambda = new NodejsFunction(this, 'CallbackFunction', {
+      entry: join(__dirname, 'lambda/callback', 'index.js'),
+      depsLockFilePath: join(__dirname, 'lambda/callback', 'package-lock.json'),
+      bundling: {
+        externalModules: [
+          'aws-sdk',
+        ],
+      },
+      runtime: Runtime.NODEJS_18_X,
+      environment: {
+        API_ENDPOINT: apiEndpoint.valueAsString,
+        CLIENT_KEY: clientKey.valueAsString,
+        CLIENT_SECRET: clientSecret.valueAsString
+      },
+    });
+
+    const callbackIntegration = new LambdaIntegration(callbackLambda);
+
     // patient record lambda methods
     const getPatientRecordLambda = new NodejsFunction(this, 'getPatientRecord', {
       entry: join(__dirname, 'lambda/patients', 'index.js'),
@@ -120,6 +139,9 @@ export class ApiLambdaEhrServiceStack extends Stack {
       apiKeySourceType: ApiKeySourceType.AUTHORIZER,
     });
 
+    // callback route
+    const callbackHook = ehrServiceApiGateway.root.addResource('callback');
+    callbackHook.addMethod('GET', callbackIntegration, { authorizer: katanemoTokenAuthorizer });
     // entry points for patient records
     const createPatientRecord = ehrServiceApiGateway.root.addResource('patient');
     createPatientRecord.addMethod('POST', createPatientRecordIntegration, { authorizer: katanemoTokenAuthorizer });
