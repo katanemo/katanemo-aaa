@@ -17,7 +17,7 @@ export class ArcStack extends cdk.Stack {
 
     const service = new ecsp.ApplicationLoadBalancedFargateService(this, 'Katanemo-Arc', {
       taskImageOptions: {
-        image: ecs.ContainerImage.fromRegistry('public.ecr.aws/c2g2h4e5/repo/aaa-staging-public:arc_' + arcSha.valueAsString),
+        image: ecs.ContainerImage.fromRegistry('public.ecr.aws/c2g2h4e5/repo/aaa-public:arc_' + arcSha.valueAsString),
         environment: {
           API_ENDPOINT: apiEndpoint.valueAsString,
           SERVICE_ID: serviceId.valueAsString,
