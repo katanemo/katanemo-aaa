@@ -2149,6 +2149,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /authorize:
+    get:
+      summary: OAuth Authorize
+      description: Used to initiate login workflow for user from application
+      operationId: authorize
+      tags:
+        - access-control
+      requestBody:
+        description: parameters requiired to determine where to take the user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizeRequest'
+      responses:
+        '302':
+          description: Redirect to Katanemo's signin page
+          headers:
+            Location:
+              description: URL of the Katanemo signin landing page
+              schema:
+                type: string
   /org/{accountId}/sso-connections/oidc:
     get:
       summary: List OIDC Connections
@@ -3071,10 +3093,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /authorize:
+  /arc/authorize:
     post:
-      summary: dummy endpoint for authorize
+      summary: ARC Authorize
+      description: Used by katanemo-arc to perform authroization on http requests
       operationId: PostAuthorize
+      tags:
+        - access-control
+      responses:
+        '400':
+          description: Bad Request Exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
   /healthz:
     get:
       summary: Return Katanemo Health
@@ -3245,6 +3277,9 @@ components:
         emailAddress:
           type: string
           description: Email address of the developer account's user
+        state:
+          type: string
+          description: Optional state parameters
     InitialLoginResponse:
       required:
         - ssoEnabled
@@ -3273,6 +3308,9 @@ components:
           description: >-
             By default login will redirect to service redirect URL, if this
             parameter is set as true then response will be returned.
+        state:
+          type: string
+          description: Optional state parameter.
     LoginToken:
       required:
         - token
@@ -3594,6 +3632,9 @@ components:
         rolename:
           type: string
           description: Role name
+        description:
+          type: string
+          description: Role description
         serviceId:
           type: string
           description: ID of the service
@@ -3610,6 +3651,9 @@ components:
         rolename:
           type: string
           description: Role name
+        description:
+          type: string
+          description: Role description
         serviceId:
           type: string
           description: ID of the service
@@ -3753,7 +3797,6 @@ components:
         - serviceId
         - name
         - resourceId
-        - token
         - tags
       properties:
         serviceIdPath:
@@ -3862,6 +3905,18 @@ components:
             In the password policy that you have set, refers to whether you have
             required users to use at least one lowercase letter in their
             password.
+    AuthorizeRequest:
+      required:
+        - clientId
+      properties:
+        clientId:
+          type: string
+          description: ClientId of the developer
+        state:
+          type: string
+          description: >-
+            Optional state parameter to return to the Developer in case of a
+            successful login
     AuditLogEntry:
       required:
         - timestamp
