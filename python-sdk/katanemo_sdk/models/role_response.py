@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -23,19 +23,20 @@ from typing import Optional
 from pydantic import BaseModel, Field, StrictInt, StrictStr
 from katanemo_sdk.models.policy import Policy
 
-class Role(BaseModel):
+class RoleResponse(BaseModel):
     """
-    Role
+    RoleResponse
     """
     account_id: Optional[StrictStr] = Field(None, alias="accountId", description="AccountId")
     role_id: Optional[StrictStr] = Field(None, alias="roleId", description="Role Id")
     rolename: Optional[StrictStr] = Field(None, description="Role name")
+    description: Optional[StrictStr] = Field(None, description="Role description")
     service_id: Optional[StrictStr] = Field(None, alias="serviceId", description="ID of the service")
     policy: Optional[Policy] = None
     version: Optional[StrictInt] = None
     updated_at: Optional[StrictInt] = Field(None, alias="updatedAt")
     created_at: Optional[StrictInt] = Field(None, alias="createdAt")
-    __properties = ["accountId", "roleId", "rolename", "serviceId", "policy", "version", "updatedAt", "createdAt"]
+    __properties = ["accountId", "roleId", "rolename", "description", "serviceId", "policy", "version", "updatedAt", "createdAt"]
 
     class Config:
         """Pydantic configuration"""
@@ -51,8 +52,8 @@ class Role(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Role:
-        """Create an instance of Role from a JSON string"""
+    def from_json(cls, json_str: str) -> RoleResponse:
+        """Create an instance of RoleResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -67,18 +68,19 @@ class Role(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> Role:
-        """Create an instance of Role from a dict"""
+    def from_dict(cls, obj: dict) -> RoleResponse:
+        """Create an instance of RoleResponse from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return Role.parse_obj(obj)
+            return RoleResponse.parse_obj(obj)
 
-        _obj = Role.parse_obj({
+        _obj = RoleResponse.parse_obj({
             "account_id": obj.get("accountId"),
             "role_id": obj.get("roleId"),
             "rolename": obj.get("rolename"),
+            "description": obj.get("description"),
             "service_id": obj.get("serviceId"),
             "policy": Policy.from_dict(obj.get("policy")) if obj.get("policy") is not None else None,
             "version": obj.get("version"),

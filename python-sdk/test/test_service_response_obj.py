@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -49,11 +49,15 @@ class TestServiceResponseObj(unittest.TestCase):
                 apis = [
                     ''
                     ], 
+                auth_exclusion_paths = [
+                    ''
+                    ], 
                 version = 56, 
                 updated_at = 56, 
                 created_at = 56, 
                 display_name = '', 
                 logo_url = '', 
+                details_image_url = '', 
                 terms_url = '', 
                 privacy_url = '', 
                 docs_url = ''
@@ -62,7 +66,6 @@ class TestServiceResponseObj(unittest.TestCase):
             return ServiceResponseObj(
                 service_id = '',
                 service_name = '',
-                description = '',
                 onboard_url = '',
                 redirect_url = '',
                 api_spec_file_contents = '',

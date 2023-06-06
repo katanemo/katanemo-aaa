@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -20,21 +20,17 @@ import json
 
 
 from typing import Dict, List, Optional
-from pydantic import BaseModel, Field, StrictBool, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictStr, conlist
 
-class User(BaseModel):
+class UserRequest(BaseModel):
     """
-    User
+    UserRequest
     """
     account_id: StrictStr = Field(..., alias="accountId", description="Tenant name")
-    service_id: Optional[StrictStr] = Field(None, alias="serviceId", description="Service ID which this account subscribed to")
-    user_id: Optional[StrictStr] = Field(None, alias="userId", description="User name (email)")
-    is_admin: Optional[StrictBool] = Field(None, alias="isAdmin", description="is the user an admin?")
-    is_active: Optional[StrictBool] = Field(None, alias="isActive", description="Is the user active yet?")
-    token: Optional[StrictStr] = Field(None, description="User token")
+    user_id: Optional[StrictStr] = Field(None, alias="userId", description="email address of the user")
     tags: Optional[Dict[str, conlist(StrictStr)]] = None
     roles: Optional[conlist(StrictStr)] = None
-    __properties = ["accountId", "serviceId", "userId", "isAdmin", "isActive", "token", "tags", "roles"]
+    __properties = ["accountId", "userId", "tags", "roles"]
 
     class Config:
         """Pydantic configuration"""
@@ -50,8 +46,8 @@ class User(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> User:
-        """Create an instance of User from a JSON string"""
+    def from_json(cls, json_str: str) -> UserRequest:
+        """Create an instance of UserRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -63,21 +59,17 @@ class User(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> User:
-        """Create an instance of User from a dict"""
+    def from_dict(cls, obj: dict) -> UserRequest:
+        """Create an instance of UserRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return User.parse_obj(obj)
+            return UserRequest.parse_obj(obj)
 
-        _obj = User.parse_obj({
+        _obj = UserRequest.parse_obj({
             "account_id": obj.get("accountId"),
-            "service_id": obj.get("serviceId"),
             "user_id": obj.get("userId"),
-            "is_admin": obj.get("isAdmin"),
-            "is_active": obj.get("isActive"),
-            "token": obj.get("token"),
             "tags": obj.get("tags"),
             "roles": obj.get("roles")
         })

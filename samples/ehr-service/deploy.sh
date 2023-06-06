@@ -67,7 +67,7 @@ log cdk bootstrap
 cdk bootstrap
 
 log cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="$API_ENDPOINT" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
-cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="$API_ENDPOINT" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
+cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="$API_ENDPOINT" --parameters authEndpoint="$ARC_AUTH_ENDPOINT" --parameters serviceId=$EHR_SERVICE_ID
 
 API_GATEWAY=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("patientRecordServiceEndpoint")) | .OutputValue' -r)
 

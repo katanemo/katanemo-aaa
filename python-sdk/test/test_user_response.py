@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -17,11 +17,11 @@ import unittest
 import datetime
 
 import katanemo_sdk
-from katanemo_sdk.models.user import User  # noqa: E501
+from katanemo_sdk.models.user_response import UserResponse  # noqa: E501
 from katanemo_sdk.rest import ApiException
 
-class TestUser(unittest.TestCase):
-    """User unit test stubs"""
+class TestUserResponse(unittest.TestCase):
+    """UserResponse unit test stubs"""
 
     def setUp(self):
         pass
@@ -30,15 +30,15 @@ class TestUser(unittest.TestCase):
         pass
 
     def make_instance(self, include_optional):
-        """Test User
+        """Test UserResponse
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `User`
+        # uncomment below to create an instance of `UserResponse`
         """
-        model = katanemo_sdk.models.user.User()  # noqa: E501
+        model = katanemo_sdk.models.user_response.UserResponse()  # noqa: E501
         if include_optional :
-            return User(
+            return UserResponse(
                 account_id = '', 
                 service_id = '', 
                 user_id = '', 
@@ -53,13 +53,13 @@ class TestUser(unittest.TestCase):
                 roles = ["roleId1","roleId2","roleId3"]
             )
         else :
-            return User(
+            return UserResponse(
                 account_id = '',
         )
         """
 
-    def testUser(self):
-        """Test User"""
+    def testUserResponse(self):
+        """Test UserResponse"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

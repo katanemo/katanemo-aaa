@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -27,6 +27,8 @@ class OIDCObj(BaseModel):
     OIDCObj
     """
     oidc_config_endpoint: StrictStr = Field(..., alias="oidcConfigEndpoint", description="OIDC configuration URL")
+    redirect_url: Optional[StrictStr] = Field(None, alias="redirectURL", description="Callback URL for OIDC IdP")
+    name: Optional[StrictStr] = Field(None, description="Name of the OIDC connection")
     client_id: StrictStr = Field(..., alias="clientId")
     client_secret: StrictStr = Field(..., alias="clientSecret")
     nonce: Optional[StrictStr] = None
@@ -39,7 +41,7 @@ class OIDCObj(BaseModel):
     issuer_endpoint: Optional[StrictStr] = Field(None, alias="issuerEndpoint")
     jwks_endpoint: Optional[StrictStr] = Field(None, alias="jwksEndpoint")
     connection_id: Optional[StrictStr] = Field(None, alias="connectionId")
-    __properties = ["oidcConfigEndpoint", "clientId", "clientSecret", "nonce", "state", "accountId", "serviceId", "authorizationEndpoint", "tokenEndpoint", "userInfoEndpoint", "issuerEndpoint", "jwksEndpoint", "connectionId"]
+    __properties = ["oidcConfigEndpoint", "redirectURL", "name", "clientId", "clientSecret", "nonce", "state", "accountId", "serviceId", "authorizationEndpoint", "tokenEndpoint", "userInfoEndpoint", "issuerEndpoint", "jwksEndpoint", "connectionId"]
 
     class Config:
         """Pydantic configuration"""
@@ -78,6 +80,8 @@ class OIDCObj(BaseModel):
 
         _obj = OIDCObj.parse_obj({
             "oidc_config_endpoint": obj.get("oidcConfigEndpoint"),
+            "redirect_url": obj.get("redirectURL"),
+            "name": obj.get("name"),
             "client_id": obj.get("clientId"),
             "client_secret": obj.get("clientSecret"),
             "nonce": obj.get("nonce"),

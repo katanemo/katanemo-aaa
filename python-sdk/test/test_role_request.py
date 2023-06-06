@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -17,11 +17,11 @@ import unittest
 import datetime
 
 import katanemo_sdk
-from katanemo_sdk.models.role import Role  # noqa: E501
+from katanemo_sdk.models.role_request import RoleRequest  # noqa: E501
 from katanemo_sdk.rest import ApiException
 
-class TestRole(unittest.TestCase):
-    """Role unit test stubs"""
+class TestRoleRequest(unittest.TestCase):
+    """RoleRequest unit test stubs"""
 
     def setUp(self):
         pass
@@ -30,32 +30,29 @@ class TestRole(unittest.TestCase):
         pass
 
     def make_instance(self, include_optional):
-        """Test Role
+        """Test RoleRequest
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `Role`
+        # uncomment below to create an instance of `RoleRequest`
         """
-        model = katanemo_sdk.models.role.Role()  # noqa: E501
+        model = katanemo_sdk.models.role_request.RoleRequest()  # noqa: E501
         if include_optional :
-            return Role(
+            return RoleRequest(
                 account_id = '', 
-                role_id = '', 
                 rolename = '', 
+                description = '', 
                 service_id = '', 
                 policy = katanemo_sdk.models.policy.Policy(
-                    policy_content = '', ), 
-                version = 56, 
-                updated_at = 56, 
-                created_at = 56
+                    policy_content = '', )
             )
         else :
-            return Role(
+            return RoleRequest(
         )
         """
 
-    def testRole(self):
-        """Test Role"""
+    def testRoleRequest(self):
+        """Test RoleRequest"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

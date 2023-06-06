@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "katanemo_sdk"
 version = "1.0.0"
-description = "Katanemo - identity, and fine-grained authorization for modern [API-first] software companies."
+description = "Katanemo - identity, and fine-grained authorization for modern { API-first } software companies."
 authors = ["Katanemo Labs Inc. <support@katanemo.com>"]
 license = "NoLicense"
 readme = "README.md"
 repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
-keywords = ["OpenAPI", "OpenAPI-Generator", "Katanemo - identity, and fine-grained authorization for modern [API-first] software companies."]
+keywords = ["OpenAPI", "OpenAPI-Generator", "Katanemo - identity, and fine-grained authorization for modern { API-first } software companies."]
 
 [tool.poetry.dependencies]
 python = "^3.7"

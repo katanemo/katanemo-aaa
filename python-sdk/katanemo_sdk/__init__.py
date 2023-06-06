@@ -3,9 +3,9 @@
 # flake8: noqa
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -18,7 +18,16 @@
 __version__ = "1.0.0"
 
 # import apis into sdk package
+from katanemo_sdk.api.access_control_api import AccessControlApi
+from katanemo_sdk.api.access_logs_api import AccessLogsApi
+from katanemo_sdk.api.arc_api import ArcApi
 from katanemo_sdk.api.default_api import DefaultApi
+from katanemo_sdk.api.health_api import HealthApi
+from katanemo_sdk.api.identity_api import IdentityApi
+from katanemo_sdk.api.organization_api import OrganizationApi
+from katanemo_sdk.api.service_api import ServiceApi
+from katanemo_sdk.api.sign_up_login_api import SignUpLoginApi
+from katanemo_sdk.api.sso_api import SsoApi
 
 # import ApiClient
 from katanemo_sdk.api_response import ApiResponse
@@ -36,11 +45,13 @@ from katanemo_sdk.models.assign_role_obj import AssignRoleObj
 from katanemo_sdk.models.assume_role_obj import AssumeRoleObj
 from katanemo_sdk.models.attribute_role_mapping import AttributeRoleMapping
 from katanemo_sdk.models.audit_log_entry import AuditLogEntry
+from katanemo_sdk.models.authorize_request import AuthorizeRequest
 from katanemo_sdk.models.bad_request_exception import BadRequestException
 from katanemo_sdk.models.client_key_object import ClientKeyObject
 from katanemo_sdk.models.client_key_request import ClientKeyRequest
 from katanemo_sdk.models.client_key_response import ClientKeyResponse
 from katanemo_sdk.models.conflict_exception import ConflictException
+from katanemo_sdk.models.create_service_request import CreateServiceRequest
 from katanemo_sdk.models.error import Error
 from katanemo_sdk.models.get_developer_public_keys200_response import GetDeveloperPublicKeys200Response
 from katanemo_sdk.models.get_tags_request import GetTagsRequest
@@ -55,11 +66,13 @@ from katanemo_sdk.models.o_auth_token_request import OAuthTokenRequest
 from katanemo_sdk.models.o_auth_token_response import OAuthTokenResponse
 from katanemo_sdk.models.oidc_obj import OIDCObj
 from katanemo_sdk.models.oidc_public_key import OIDCPublicKey
-from katanemo_sdk.models.organization import Organization
+from katanemo_sdk.models.organization_response import OrganizationResponse
 from katanemo_sdk.models.password_policy import PasswordPolicy
 from katanemo_sdk.models.policy import Policy
-from katanemo_sdk.models.role import Role
+from katanemo_sdk.models.role_request import RoleRequest
+from katanemo_sdk.models.role_response import RoleResponse
 from katanemo_sdk.models.saml_obj import SAMLObj
+from katanemo_sdk.models.saml_sso_call_back_request import SamlSSOCallBackRequest
 from katanemo_sdk.models.service_response_obj import ServiceResponseObj
 from katanemo_sdk.models.set_password_request import SetPasswordRequest
 from katanemo_sdk.models.signup_request import SignupRequest
@@ -69,5 +82,8 @@ from katanemo_sdk.models.token_request import TokenRequest
 from katanemo_sdk.models.token_response import TokenResponse
 from katanemo_sdk.models.too_many_requests_exception import TooManyRequestsException
 from katanemo_sdk.models.unauthorized_exception import UnauthorizedException
-from katanemo_sdk.models.user import User
+from katanemo_sdk.models.update_organization_request import UpdateOrganizationRequest
+from katanemo_sdk.models.update_service_request import UpdateServiceRequest
 from katanemo_sdk.models.user_confirmation_response import UserConfirmationResponse
+from katanemo_sdk.models.user_request import UserRequest
+from katanemo_sdk.models.user_response import UserResponse

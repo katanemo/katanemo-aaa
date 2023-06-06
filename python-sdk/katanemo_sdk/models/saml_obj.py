@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Katanemo - identity, and fine-grained authorization for modern [API-first] software companies.
+    Katanemo - identity, and fine-grained authorization for modern { API-first } software companies.
 
-    Public APIs of Katanemo. With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
+    With Katanemo developers can add support for users, enterprise SSO, machine keys and fine-grained authorization in minutes.  # noqa: E501
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@katanemo.com
@@ -29,6 +29,8 @@ class SAMLObj(BaseModel):
     """
     connection_id: Optional[StrictStr] = Field(None, alias="connectionId")
     id_provider: StrictStr = Field(..., alias="idProvider")
+    state: Optional[StrictStr] = None
+    name: Optional[StrictStr] = None
     default_role_id: StrictStr = Field(..., alias="defaultRoleId")
     login_link: Optional[StrictStr] = Field(None, alias="loginLink")
     metadata_link: Optional[StrictStr] = Field(None, alias="metadataLink")
@@ -38,7 +40,7 @@ class SAMLObj(BaseModel):
     root_url: Optional[StrictStr] = Field(None, alias="rootURL")
     account_id: StrictStr = Field(..., alias="accountId")
     service_id: StrictStr = Field(..., alias="serviceId")
-    __properties = ["connectionId", "idProvider", "defaultRoleId", "loginLink", "metadataLink", "acsLink", "audienceLink", "attributeRoleMappings", "rootURL", "accountId", "serviceId"]
+    __properties = ["connectionId", "idProvider", "state", "name", "defaultRoleId", "loginLink", "metadataLink", "acsLink", "audienceLink", "attributeRoleMappings", "rootURL", "accountId", "serviceId"]
 
     class Config:
         """Pydantic configuration"""
@@ -85,6 +87,8 @@ class SAMLObj(BaseModel):
         _obj = SAMLObj.parse_obj({
             "connection_id": obj.get("connectionId"),
             "id_provider": obj.get("idProvider"),
+            "state": obj.get("state"),
+            "name": obj.get("name"),
             "default_role_id": obj.get("defaultRoleId"),
             "login_link": obj.get("loginLink"),
             "metadata_link": obj.get("metadataLink"),
