@@ -4,12 +4,12 @@ sidebar_position: 3
 
 # Developer Quick Start Guide 
 
-Katanemo supports an OpenAPI-based development workflow. You simply define RESTful APIs just like you would today via the [OpenAPI spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md), publish that spec to Katanemo and instantly add user/federated authentication to your application and build powerful privacy and collaboration features via Katanemo’s Role-based Access Control (RBAC) and Attribute-based Access Control ([ABAC](https://en.wikipedia.org/wiki/Attribute-based_access_control)) capabilities. Katanemo offers a holistic approach to identity, privacy, and safe collaboration that empowers developers to focus on what matters most: moving fast in building features and capabilities unique to their business.
+Katanemo supports an OpenAPI-based development workflow. You simply define RESTful APIs just like you would today via the [OpenAPI spec](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md), publish that spec to Katanemo and instantly add user/federated authentication to your application and build powerful privacy and collaboration features via Katanemo’s Role-based Access Control ([RBAC](https://en.wikipedia.org/wiki/Role-based_access_control)), Attribute-based Access Control ([ABAC](https://en.wikipedia.org/wiki/Attribute-based_access_control)) and [Resource-based Access Control](https://en.wikipedia.org/wiki/Access-control_list). Katanemo offers a holistic approach to identity, privacy, and safe collaboration that empowers developers to focus on what matters most: moving fast in building features and capabilities unique to their business.
 
 ## **Step 1: Create a Service in Katanemo via your OpenAPI service specification**
 
 
-To get started, you must have a Katanemo account. If you don’t already have one, visit the [Katanemo signup page](https://console.katanemo.com/sign-up) to register. You are now ready to publish your [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md) spec to Katanemo, and in minutes offer self-service on-boarding workflows, powerful authorization and auditing capabilities for your SaaS APIs.
+To get started, you must have a Katanemo account. If you don’t already have one, visit the [Katanemo signup page](https://console.katanemo.com/sign-up) to register with Katanemo. You are now ready to publish your [OpenAPI](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.1.md) spec to Katanemo, and in minutes create self-service on-boarding workflows, powerful authorization and auditing capabilities for your SaaS application.
 
 ![service-dashboard.png](..%2Fstatic%2Fimg%2Fservice-dashboard.png)
 
