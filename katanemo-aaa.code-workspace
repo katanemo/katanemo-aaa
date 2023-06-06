@@ -13,7 +13,7 @@
       "path": "samples/ehr-service"
     },
     {
-      "name": "arc",
+      "name": "arc-ecs",
       "path": "arc-ecs"
     },
   ],
