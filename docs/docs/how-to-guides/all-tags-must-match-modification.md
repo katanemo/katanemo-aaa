@@ -2,13 +2,13 @@
 sidebar_position: 2
 ---
 
-# How to Modify the Default “all tags must match” Behavior of Katanemo?
+# How to Modify the default "tagging match” behavior of Katanemo?
 
-Katanemo’s default behavior is to match **all** tags associated with a resource against tags present in the session token (of the principal) making the call. However, you can alter this default behavior for your particular use case by adding the “where” clause to your Role definition (aka. Role policies).
+Katanemo’s default behavior is to match tags associated with a resource against tags present in the session token (of the principal) making the request. However, you can alter this default behavior for your particular use case by adding the `where` clause to your Role policies.
 
 
 _Where clause (via Role policies)_
-In cases where the default behavior of **all** tags associated with a resource doesn’t satisfy your particular use case, you can define conditional policies using the “where” clause to match tags as per your use case. Note, the above UI experience hides the details of how to construct permission boundaries of a Role, however the following use cases showcase _policies_ using the OpenAPI-based semantics and the “where” clause to construct simple, yet highly powerful authorization rules.
+In cases where the default behavior of matching tags associated with a resource doesn’t satisfy your particular use case, you can define conditional policies using the `where` clause to match tags as per your use case. Note, the UI experience offers an "Advanced Editor" that enables you to construct permission with a `where` clause. The following use cases showcase _policies_ using Katanemo's OpenAPI-based permissions language with the `where` clause to construct simple, yet highly powerful authorization rules.
 
 _Use Case #1: Some users will have READ/WRITE access to dev clusters, and READ access to stage & prod clusters._
 
