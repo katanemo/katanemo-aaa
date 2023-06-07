@@ -78,6 +78,12 @@ const config = {
         }
       },
     ],
+    [
+      '@docusaurus/plugin-google-analytics',
+      {
+        trackingID: 'G-MLLF21EZF4',
+      },
+    ],
   ],
 
   // Set the production url of your site here
@@ -134,7 +140,7 @@ const config = {
         logo: {
           alt: 'Katanemo Documentation',
           src: 'img/katanemologo-web.png',
-          href: 'https://katanemo.com/'
+          href: 'https://www.katanemo.com/'
         },
         items: [
           {
