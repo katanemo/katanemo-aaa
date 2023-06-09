@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Understanding Katanemo
 
-_Katanemo is new leading dev platform to build API-first applications without the infrastructure tax. We help product leaders effortlessly serve new usage scenarios, engineering leaders eliminate undifferentiated infrastructure work to build SaaS applications, and empower CEOs to upsell via critical enterprise-ready features._
+_Katanemo is a development platform to build API-first applications without the infrastructure tax. We help product leaders effortlessly serve new usage scenarios, engineering leaders eliminate undifferentiated infrastructure work to build SaaS applications, and empower CEOs to upsell via critical enterprise-ready features._
 
 Katanemo’s first service is a powerful 💪 , identity and fine-grained authorization system designed for modern (API-first) SaaS applications - quickly build privacy and safe collaboration features that grow your business. Katanemo unifies customer identity (_authentication_), protects who can do what on which resource (_authorization_), and leaves a structured audit trail that helps developers meet exacting compliance requirements on behalf of their customers. 
 
