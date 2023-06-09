@@ -9,7 +9,7 @@ Roles establish a permission boundary that enables access to select API operatio
 
 * GET:  /v2/catalog/doctors/images/{image-id}
 * PUT:  /v2/catalog/doctors/images/{image-id}
-* POST: /v2/catalog/doctors/images/{image-id
+* POST: /v2/catalog/doctors/images/{image-id}
 
 ![rolename.png](..%2F..%2Fstatic%2Fimg%2Frolename.png)
 
@@ -24,8 +24,8 @@ For RESTful APIs Katanemo supports an OpenAPI-based policy language. OpenAPI nea
 The following is an OpenAPI-based permission policy for an SaaS application where users can get and update the cluster resource via the /cluster API. 
 
 ```yaml
+type: openAPI
 allow:
-  apis:
     - PUT: /cluster/{cluster-id}
     - GET: /cluster/{cluster-id}
 ```
@@ -33,6 +33,7 @@ allow:
 Similarly, the following is a GraphQL-based permission policy where users can query the cluster resource of a SaaS application. 
 
 ```yaml
+type: graphQL
 allow:
   query:
     - cluster
@@ -44,13 +45,13 @@ In some cases a simple permissions policy like the ones shown above can’t sati
 _Use Case #1: Interns will have READ/WRITE access to dev clusters, and READ access to stage & prod clusters._
 
 ```yaml
+type: openAPI
 allow:
-  api:
-    - PUT: /cluster/{cluster-id}
-    - GET: /cluster/{cluster-id}
+  - PUT: /cluster/{cluster-id}
+  - GET: /cluster/{cluster-id}
   where: $resourceTags:cluster = ‘dev’
-  api: 
-    - GET: /cluster/{cluster-id}
+allow: 
+  - GET: /cluster/{cluster-id}
   where: $resourceTags:cluster IN (‘stage’, ‘prod’)
 ```
 _Note: $resourceTags, $request, and $principalTags_ are reserved Katanemo variables that can be used in the where clause to construct precise authorization policies. In the above example, Katanemo retrieves values for the "cluster" tag on the `{clusterId}` resource, and checks to see if the tag value is either `staging` or `production`. Learn more about resource access via Katanemo Tags.
@@ -58,28 +59,28 @@ _Note: $resourceTags, $request, and $principalTags_ are reserved Katanemo variab
 _Use Case #2: Some users will have READ/WRITE access to dev clusters of type EKS_
 
 ```yaml
+type: openAPI
 allow:
-  api:
-    - PUT: /cluster/{cluster-id}
-    - GET: /cluster/{cluster-id}
+  - PUT: /cluster/{cluster-id}
+  - GET: /cluster/{cluster-id}
   where: $resourceTags:cluster = ‘dev’ AND $resourceTags:clusterType = ‘EKS’
 ```
 
 _Use Case #3: Some users will have the ability to create promotions only up to a maximum of 10% off._
 
 ```yaml
+type: openAPI
 allow:
-  api:
-    - POST: /api-offers/promo/create
+  - POST: /api-offers/promo/create
   where: $request:promo:discount:value < 10 AND $request:promo:targetProducts:value IN ('SKU-124')
 ```
 
 _Use Case #3a: Some users will have the ability to UPDATE promotions where tag = “independence-day”_
 
 ```yaml
+type: openAPI
 allow:
-  api:
-    - PUT: /api-offers/promo/update/{promoId}
+  - PUT: /api-offers/promo/update/{promoId}
   where: $resourceTag:note = "independence day promos"
 ```
 
