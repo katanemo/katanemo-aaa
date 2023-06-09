@@ -1,4 +1,4 @@
-import { ApiKeySourceType, LambdaIntegration, RestApi, RequestAuthorizer } from 'aws-cdk-lib/aws-apigateway';
+import { ApiKeySourceType, LambdaIntegration, RestApi, TokenAuthorizer } from 'aws-cdk-lib/aws-apigateway';
 import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { App, Stack, RemovalPolicy, CfnParameter, Duration } from 'aws-cdk-lib';
@@ -47,14 +47,10 @@ export class ApiLambdaEhrServiceStack extends Stack {
       runtime: Runtime.NODEJS_18_X,
       environment: {
         AUTH_ENDPOINT: authEndpoint.valueAsString,
-        API_ENDPOINT: apiEndpoint.valueAsString,
-        CLIENT_KEY: clientKey.valueAsString,
-        CLIENT_SECRET: clientSecret.valueAsString
       },
     });
 
-    const katanemoTokenAuthorizer = new RequestAuthorizer(this, 'KatanemoTokenAutorizer', {
-      identitySources: [],
+    const katanemoTokenAuthorizer = new TokenAuthorizer(this, 'KatanemoTokenAutorizer', {
       handler: katanemoAuthLambda,
       resultsCacheTtl: Duration.seconds(0),
     })
