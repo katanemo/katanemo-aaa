@@ -78,6 +78,13 @@ const config = {
         }
       },
     ],
+    [
+      '@docusaurus/plugin-google-analytics',
+      {
+        trackingID: 'G-MLLF21EZF4',
+
+      },
+    ],
   ],
 
   // Set the production url of your site here
