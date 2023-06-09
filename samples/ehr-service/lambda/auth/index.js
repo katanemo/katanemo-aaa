@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
 
-console.log(apiEndpoint)
-
 const arcEndpoint = process.env.AUTH_ENDPOINT
 
 function extractTokenFromHeader(e) {
@@ -13,7 +11,7 @@ function extractTokenFromHeader(e) {
   }
 }
 
-function authorizeRequest(userToken, serviceToken, path, method, methodArn, callback) {
+function authorizeRequest(userToken, path, method, methodArn, callback) {
   let body = {
     "Token": userToken,
     "Path": path,
