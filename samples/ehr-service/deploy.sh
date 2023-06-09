@@ -46,8 +46,8 @@ EHR_CLIENT_SECRET=$(echo $EHR_CLIENT_KEY_DETAILS | jq -r .clientSecret)
 
 log created client key id $EHR_CLIENT_ID and client key secret xxxxx used for identifying API calls to Katanemo by EHR SaaS Service
 
-log cdk bootstrap
-cdk bootstrap
+# log cdk bootstrap
+# cdk bootstrap
 
 log setting up arc on ecs
 pushd ../../arc-ecs
