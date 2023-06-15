@@ -1,6 +1,5 @@
 from flask import request
 
-# copied from auth0 https://auth0.com/docs/quickstart/backend/python
 
 class AuthError(Exception):
     def __init__(self, error, status_code):

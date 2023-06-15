@@ -1,4 +1,3 @@
-# noqa
 from os import environ as env
 import logging as log
 from functools import wraps
