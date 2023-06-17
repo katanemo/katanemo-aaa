@@ -1,9 +1,14 @@
 
 DEFAULT_API_ENDPOINT="https://api.katanemo.com"
-DEFAULT_ARC_SHA="4d68f35"
+DEFAULT_ARCOS_ENDPOINT="https://auth.katanemo.com"
+DEFAULT_ARC_SHA="9059ddf"
 
 if [[ -z "$API_ENDPOINT" ]]; then
   API_ENDPOINT=$DEFAULT_API_ENDPOINT
+fi
+
+if [[ -z "$API_ENDPOINT" ]]; then
+  ARCOS_ENDPOINT=$DEFAULT_ARCOS_ENDPOINT
 fi
 
 if [[ -z "$ARC_SHA" ]]; then
