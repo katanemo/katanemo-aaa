@@ -59,15 +59,20 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, c
     let decoded = ''
     if (resp.status == 200) {
       if (!userToken) {
+        // The path accessed without token found in exclusion list
+        // hence ARC returned 200.
         callback(null, generatePolicy("USER", "Allow", methodArn, "", latency));
       } else {
+        // A valid access token was found
         let decoded = jwt.decode(userToken)
         callback(null, generatePolicy(decoded.sub, "Allow", methodArn, decoded.accountId, latency));
       }
     } else {
+      // No token was found for a path which is not in exclusion list for the service
+      // Need to redirect for login
       if(!userToken) {
         let state = "https://" + e.requestContext.domainName + e.requestContext.path
-        console.log('return path: ' + state)
+        
         const buffer = Buffer.from(state, "utf8");
         const base64String = buffer.toString("base64");
         const apiAuthPath = apiEndpoint + '/authorize'
@@ -77,7 +82,7 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, c
           'state': base64String,
         };
         const constructedUrl = url.format({ pathname: apiAuthPath, query: queryParams });
-        console.log('Redirecting for login: ' + constructedUrl)
+        console.log('No token found; redirecting for login')
         fetch(constructedUrl, {
           method: 'GET',
           headers: {
@@ -85,6 +90,8 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, c
           },
           
         }).then((resp2) => {
+          // Since Lambda Authorizer cannot issue a redirect; pack the requested URL in context
+          // and let downstream Lambda to request a redirect.
           const redirectUrl = resp2.url
           callback(null, generateRedirectPolicy("USER", "Allow", methodArn, redirectUrl));
 
@@ -93,6 +100,7 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, c
           callback('Error: call to api service failed')
         })
       } else {
+        // A protected path was accessed with an invalid token.
         callback(null, generatePolicy(decoded.sub, 'Deny', methodArn, decoded.accountId, latency))
       }
       

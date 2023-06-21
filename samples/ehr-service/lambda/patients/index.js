@@ -10,8 +10,8 @@ export async function handler(event, context) {
   let redirectUrl = getRedirect(event)
   if(redirectUrl) {
         return {
-       'statusCode': 302,
-       'headers': {
+        'statusCode': 302,
+        'headers': {
            'Location': redirectUrl
        }
     }

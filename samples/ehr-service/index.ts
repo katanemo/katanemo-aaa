@@ -134,12 +134,7 @@ export class ApiLambdaEhrServiceStack extends Stack {
     // callback route
     const callbackHook = ehrServiceApiGateway.root.addResource('callback');
     callbackHook.addMethod('GET', callbackIntegration, { authorizer: katanemoTokenAuthorizer });
-    callbackHook.addCorsPreflight({
-      allowOrigins: [
-        "console.katanemo.com"
-      ]
-    });
-
+    
     // entry points for patient records
     const createPatientRecord = ehrServiceApiGateway.root.addResource('patient');
     createPatientRecord.addMethod('POST', createPatientRecordIntegration, { authorizer: katanemoTokenAuthorizer });
