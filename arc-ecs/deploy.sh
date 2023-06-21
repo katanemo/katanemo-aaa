@@ -7,7 +7,7 @@ if [[ -z "$API_ENDPOINT" ]]; then
   API_ENDPOINT=$DEFAULT_API_ENDPOINT
 fi
 
-if [[ -z "$API_ENDPOINT" ]]; then
+if [[ -z "$ARCOS_ENDPOINT" ]]; then
   ARCOS_ENDPOINT=$DEFAULT_ARCOS_ENDPOINT
 fi
 
@@ -16,7 +16,6 @@ if [[ -z "$ARC_SHA" ]]; then
 fi
 
 if [[ -z "$SERVICE_ID" ]] || \
-   [[ -z "$SERVICE_ID" ]] || \
    [[ -z "$CLIENT_ID" ]] || \
    [[ -z "$CLIENT_SECRET" ]]; then
   echo "Please set the following environment variables:"
