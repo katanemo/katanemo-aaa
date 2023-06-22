@@ -6,66 +6,52 @@ const arcEndpoint = process.env.AUTH_ENDPOINT
 const apiEndpoint = process.env.API_ENDPOINT
 const clientKey = process.env.CLIENT_KEY
 const serviceId = process.env.SERVICE_ID
-const AUTHORIZATION_HEADER = "Authorization"
 
-/**
- * This is the entry point for the Lambda authorizer. It does three things
- * 
- * 1. 
- * 2. 
- * 3. 
- * 
- * @param {*} event 
- * @param {*} _context 
- * @param {*} callback 
- */
-export function handler(event, _context, callback) {
+function extractTokenFromHeader(e2) {
+  console.log(e2);
+  let token = ''
+  if ("Authorization" in e2.headers && e2.headers["Authorization"].split(" ")[0] === "Bearer") { 
+    token = e2.headers["Authorization"].split(" ")[1];
   
-  let userToken = extractTokenFromHeader(event) || '';
-  let serviceToken = userToken
-  let methodArn = event.methodArn
-  let apiPath = methodArn.split(':')[5]
-  let apiPathTokens = apiPath.split('/')
-  let method = apiPathTokens[2]
-  let path = '/' + apiPathTokens.slice(3).join('/')
-  method = apiPathTokens[2]
-  let policy = authorieRequestOrSetRedirectContextForUserViaPolicy(event, userToken, serviceToken, path, method, methodArn);
-  callback()
+  } else  {
+    token = findTokenInCookies(e2)
+  } 
+  return token;
 }
 
-/**
- * 
- * @param {*} event 
- * @param {*} userToken 
- * @param {*} serviceToken 
- * @param {*} path 
- * @param {*} method 
- */
-function authorieRequestOrSetRedirectContextForUser(event, userToken, serviceToken, path, method){
-  //authorizeRequest
-}
+function findTokenInCookies(e2) {
+  if ( !("Cookie" in e2.headers) ) {
+    return ''
+  }
 
-/**
- * 
- * @param {*} e 
- * @param {*} userToken 
- * @param {*} serviceToken 
- * @param {*} path 
- * @param {*} method 
- * @param {*} methodArn 
- * @param {*} callback 
- */
-function authorizeRequest(e, userToken, serviceToken, path, method, methodArn) {
+  let cookies = e2.headers["Cookie"];
+  const stringArray = cookies.split(';');
+
+  for (let i = 0; i < stringArray.length; i++) {
+    const currentString = stringArray[i].trim();
+    let cookieParts = currentString.split('=');
+    let name = cookieParts[0].trim();
+    
+    if (name !== 'katanemo.accessToken') {
+      continue;
+    }
+    
+    console.log('Found access token cookie: ' + currentString);
+    let value = cookieParts[1].trim();
+    return value;
+  }
+  return ''
+}
+function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, callback) {
   let body = {
     "Token": userToken,
     "Path": path,
     "HttpMethod": method,
   }
-
   console.log(JSON.stringify(body))
   var now = new Date().getTime();
   const authUrl = arcEndpoint + '/arc/authorize'
-  
+  console.log("authUrl: " + authUrl)
   fetch(authUrl, {
     method: 'POST',
     headers: {
@@ -76,6 +62,7 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn) {
   }).then((resp) => {
     const latency = new Date().getTime() - now
     console.log('auth service response time - auth public endpoint: ' + latency + 'ms')
+    let decoded = ''
     
     if (resp.status == 200) {
       let user = "USER"
@@ -104,53 +91,6 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn) {
     callback('Error: call to auth service failed')
   })
 }
-
-/**
- * 
- * @param {*} event 
- * @returns 
- */
-function extractTokenFromHeader(event) {
-  console.log(event);
-  let token = ''
-  if (AUTHORIZATION_HEADER in e2.headers && e2.headers[AUTHORIZATION_HEADER].split(" ")[0] === "Bearer") { 
-    token = e2.headers[AUTHORIZATION_HEADER].split(" ")[1];
-  
-  } else  {
-    token = findTokenInCookies(e2)
-  } 
-  return token;
-}
-
-/**
- * 
- * @param {*} event
- * @returns 
- */
-function findTokenInCookies(event) {
-  if ( !("Cookie" in event.headers) ) {
-    return ''
-  }
-
-  let cookies = e2.headers["Cookie"];
-  const stringArray = cookies.split(';');
-
-  for (let i = 0; i < stringArray.length; i++) {
-    const currentString = stringArray[i].trim();
-    let cookieParts = currentString.split('=');
-    let name = cookieParts[0].trim();
-    
-    if (name !== 'katanemo.accessToken') {
-      continue;
-    }
-    
-    console.log('Found access token cookie: ' + currentString);
-    let value = cookieParts[1].trim();
-    return value;
-  }
-  return ''
-}
-
 
 function loginRedirectHandler(e, methodArn, callback) {
   
@@ -182,10 +122,23 @@ function loginRedirectHandler(e, methodArn, callback) {
   })
 }
 
+export function handler(event, _context, callback) {
+  
+  let userToken = extractTokenFromHeader(event) || '';
+  let serviceToken = userToken
+  let methodArn = event.methodArn
+  let apiPath = methodArn.split(':')[5]
+  let apiPathTokens = apiPath.split('/')
+  let method = apiPathTokens[2]
+  let path = '/' + apiPathTokens.slice(3).join('/')
+  method = apiPathTokens[2]
+  authorizeRequest(event, userToken, serviceToken, path, method, methodArn, callback);
+}
 
 // Help function to generate an IAM policy
 var generatePolicy = function (principalId, effect, resource, tenantId, latency) {
-  var authResponse = prepareAuthResponse(principalId, effect, resource)=
+  var authResponse = prepareAuthResponse(principalId, effect, resource)
+
   authResponse.context = {
       "tenantId": tenantId,
       "authLatency": latency
@@ -196,6 +149,7 @@ var generatePolicy = function (principalId, effect, resource, tenantId, latency)
 
 var generateRedirectPolicy = function (principalId, effect, resource, redirect) {
   var authResponse = prepareAuthResponse(principalId, effect, resource)
+
   authResponse.context = {
       "redirectUrl": redirect
   };
