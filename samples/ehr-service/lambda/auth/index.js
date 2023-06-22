@@ -6,43 +6,36 @@ const arcEndpoint = process.env.AUTH_ENDPOINT
 const apiEndpoint = process.env.API_ENDPOINT
 const clientKey = process.env.CLIENT_KEY
 const serviceId = process.env.SERVICE_ID
+const AUTHORIZATION_HEADER = "Authorization"
+const TOKEN_COOKIE_NAME = "katanemo.accessToken"
 
-function extractTokenFromHeader(e2) {
-  console.log(e2);
-  let token = ''
-  if ("Authorization" in e2.headers && e2.headers["Authorization"].split(" ")[0] === "Bearer") { 
-    token = e2.headers["Authorization"].split(" ")[1];
+/**
+ * This is the entry point for Lambda Authorizer.
+ * It extracts token from the header and prepares other necessary params
+ * and then calls the main handler function
+ */
+export function handler(event, _context, callback) {
   
-  } else  {
-    token = findTokenInCookies(e2)
-  } 
-  return token;
+  let userToken = extractTokenFromHeader(event) || '';
+  let serviceToken = userToken
+  let methodArn = event.methodArn
+  let apiPath = methodArn.split(':')[5]
+  let apiPathTokens = apiPath.split('/')
+  let method = apiPathTokens[2]
+  let path = '/' + apiPathTokens.slice(3).join('/')
+
+  authorizeRequestOrRedirectForLogin(event, userToken, serviceToken, path, method, methodArn, callback);
 }
 
-function findTokenInCookies(e2) {
-  if ( !("Cookie" in e2.headers) ) {
-    return ''
-  }
-
-  let cookies = e2.headers["Cookie"];
-  const stringArray = cookies.split(';');
-
-  for (let i = 0; i < stringArray.length; i++) {
-    const currentString = stringArray[i].trim();
-    let cookieParts = currentString.split('=');
-    let name = cookieParts[0].trim();
-    
-    if (name !== 'katanemo.accessToken') {
-      continue;
-    }
-    
-    console.log('Found access token cookie: ' + currentString);
-    let value = cookieParts[1].trim();
-    return value;
-  }
-  return ''
-}
-function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, callback) {
+/**
+ * This is the core function. It does following:
+ * 1. Calls ARC with required params
+ * 2. Based on decision (status code) returned by ARC it either:
+ *    2.a: Allows the call if the status was 200
+ *    2.b: If a protected resource was accessed without a token, setup redirect to login page
+ *    2.c: If a protected resource was accessed with an invalid token; Deny
+ */
+function authorizeRequestOrRedirectForLogin(event, userToken, serviceToken, path, method, methodArn, callback) {
   let body = {
     "Token": userToken,
     "Path": path,
@@ -51,7 +44,7 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, c
   console.log(JSON.stringify(body))
   var now = new Date().getTime();
   const authUrl = arcEndpoint + '/arc/authorize'
-  console.log("authUrl: " + authUrl)
+  
   fetch(authUrl, {
     method: 'POST',
     headers: {
@@ -78,7 +71,7 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, c
       // No token was found for a protected path
       // Need to redirect for login
       if(!userToken) {
-        loginRedirectHandler(e, methodArn, callback)
+        loginRedirectHandler(event, methodArn, callback)
       } else {
         
         // A protected path was accessed with an invalid token.
@@ -92,9 +85,13 @@ function authorizeRequest(e, userToken, serviceToken, path, method, methodArn, c
   })
 }
 
-function loginRedirectHandler(e, methodArn, callback) {
+/**
+ *  This method encapsulates the logic of calling OAuth /authorize and set up context
+ *  for downstream lambdas to trigger redirect since Lambda Authorizer cannot redirect by itself
+ */
+function loginRedirectHandler(event, methodArn, callback) {
   
-  let state = "https://" + e.requestContext.domainName + e.requestContext.path
+  let state = "https://" + event.requestContext.domainName + event.requestContext.path
         
   const buffer = Buffer.from(state, "utf8");
   const base64String = buffer.toString("base64");
@@ -122,20 +119,47 @@ function loginRedirectHandler(e, methodArn, callback) {
   })
 }
 
-export function handler(event, _context, callback) {
+/**
+ ****************************************
+          Helpers
+ ****************************************
+ */
+function extractTokenFromHeader(event) {
+  console.log(event);
+  let token = ''
+  if (AUTHORIZATION_HEADER in event.headers && event.headers[AUTHORIZATION_HEADER].split(" ")[0] === "Bearer") { 
+    token = event.headers[AUTHORIZATION_HEADER].split(" ")[1];
   
-  let userToken = extractTokenFromHeader(event) || '';
-  let serviceToken = userToken
-  let methodArn = event.methodArn
-  let apiPath = methodArn.split(':')[5]
-  let apiPathTokens = apiPath.split('/')
-  let method = apiPathTokens[2]
-  let path = '/' + apiPathTokens.slice(3).join('/')
-  method = apiPathTokens[2]
-  authorizeRequest(event, userToken, serviceToken, path, method, methodArn, callback);
+  } else  {
+    token = findTokenInCookies(event)
+  } 
+  return token;
 }
 
-// Help function to generate an IAM policy
+function findTokenInCookies(event) {
+  if ( !("Cookie" in event.headers) ) {
+    return ''
+  }
+
+  let cookies = event.headers["Cookie"];
+  const cookiesArray = cookies.split(';');
+
+  for (let i = 0; i < cookiesArray.length; i++) {
+    const cookieString = cookiesArray[i].trim();
+    let cookieParts = cookieString.split('=');
+    let name = cookieParts[0].trim();
+    
+    if (name !== TOKEN_COOKIE_NAME) {
+      continue;
+    }
+    
+    console.log('Found access token cookie: ' + cookieString);
+    let value = cookieParts[1].trim();
+    return value;
+  }
+  return ''
+}
+
 var generatePolicy = function (principalId, effect, resource, tenantId, latency) {
   var authResponse = prepareAuthResponse(principalId, effect, resource)
 
