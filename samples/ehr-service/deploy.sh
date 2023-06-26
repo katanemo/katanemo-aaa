@@ -46,6 +46,8 @@ EHR_CLIENT_SECRET=$(echo $EHR_CLIENT_KEY_DETAILS | jq -r .clientSecret)
 
 log created client key id $EHR_CLIENT_ID and client key secret xxxxx used for identifying API calls to Katanemo by EHR SaaS Service
 
+# log cdk bootstrap
+# cdk bootstrap
 
 log setting up arc on ecs
 pushd ../../arc-ecs
@@ -62,9 +64,6 @@ log getting the arc auth endpoint
 ARC_AUTH_ENDPOINT=$(aws cloudformation describe-stacks --query "Stacks[*].Outputs" --output json | jq '.[]' | jq '.[] | select(.OutputKey | test("KatanemoArcServiceURL")) | .OutputValue' -r)
 
 log arc endpoint address $ARC_AUTH_ENDPOINT
-
-log cdk bootstrap
-cdk bootstrap
 
 log cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="$API_ENDPOINT" --parameters authEndpoint="$ARC_AUTH_ENDPOINT"
 cdk deploy --parameters clientKey=$EHR_CLIENT_ID --parameters clientSecret=$EHR_CLIENT_SECRET --parameters apiEndpoint="$API_ENDPOINT" --parameters authEndpoint="$ARC_AUTH_ENDPOINT" --parameters serviceId=$EHR_SERVICE_ID

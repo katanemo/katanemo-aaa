@@ -40,7 +40,7 @@ log '=== adding doctor account ==='
 # create doctor account to manage patient record
 log adding doctor account $DOCTOR_EMAIL
 log katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --token xxxx --tags '{"function": ["doctor"]}'
-$KATUTIL add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --token $SUBSCRIBER_ACCESS_TOKEN --tags '{"function": ["doctor"]}' &> /dev/null
+$KATUTIL add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $DOCTOR_EMAIL --token $SUBSCRIBER_ACCESS_TOKEN --tags '{"function": ["doctor"]}'
 
 log enter code sent to $DOCTOR_EMAIL
 read CODE
@@ -66,7 +66,7 @@ $KATUTIL assign-role --principal_id $DOCTOR_EMAIL --role_id $DOCTOR_ROLE_ID --to
 # create receptionist account to manage appointments
 log adding receptionist account $RECEPTIONIST_EMAIL
 log katutil add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $RECEPTIONIST_EMAIL --token xxxx --tags '{"function": ["doctor"]}'
-$KATUTIL add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $RECEPTIONIST_EMAIL --token $SUBSCRIBER_ACCESS_TOKEN --tags '{"function": ["receptionist"]}' &> /dev/null
+$KATUTIL add-user --account_id $SUBSCRIBER_ACCOUNT_ID --email $RECEPTIONIST_EMAIL --token $SUBSCRIBER_ACCESS_TOKEN --tags '{"function": ["receptionist"]}'
 
 log enter code sent to $RECEPTIONIST_EMAIL
 read CODE

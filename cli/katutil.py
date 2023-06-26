@@ -184,7 +184,7 @@ if args.sub_parser == "create-role":
         "policyContent": json.dumps(policiesJson),
     }
 
-    role = katanemo_sdk.Role(accountId=args.account_id,
+    role = katanemo_sdk.RoleRequest(accountId=args.account_id,
                              serviceId=args.service_id, rolename=args.role_name, policy=policy)
     api_instance = katanemo_sdk.AccessControlApi(get_api_client())
     resp = api_instance.create_role(args.account_id, role)
@@ -210,7 +210,7 @@ if args.sub_parser == "get-roles":
 
 if args.sub_parser == "add-user":
     api_instance = katanemo_sdk.IdentityApi(get_api_client())
-    api_response = api_instance.create_user_for_account(args.account_id, katanemo_sdk.User(
+    api_response = api_instance.create_user_for_account(args.account_id, katanemo_sdk.UserRequest(
         account_id=args.account_id, user_id=args.email, tags=json.loads(args.tags)))
     print(api_response.json(by_alias=True))
 

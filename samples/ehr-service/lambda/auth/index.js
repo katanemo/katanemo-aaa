@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
-const url = require('url');
 
 const arcEndpoint = process.env.AUTH_ENDPOINT
 const apiEndpoint = process.env.API_ENDPOINT
@@ -48,10 +47,13 @@ function authorizeRequestOrRedirectForLogin(event, userToken, serviceToken, path
   fetch(authUrl, {
     method: 'POST',
     headers: {
-      "Authentication": "Bearer " + serviceToken,
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify({
+      "Token": userToken,
+      "Path": path,
+      "HttpMethod": method,
+    })
   }).then((resp) => {
     const latency = new Date().getTime() - now
     console.log('auth service response time - auth public endpoint: ' + latency + 'ms')
