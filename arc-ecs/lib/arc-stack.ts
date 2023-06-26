@@ -10,6 +10,7 @@ export class ArcStack extends cdk.Stack {
     super(scope, id, props);
 
     const apiEndpoint = new CfnParameter(this, 'apiEndpoint');
+    const arcosEndpoint = new CfnParameter(this, 'arcosEndpoint');
     const serviceId = new CfnParameter(this, 'serviceId');
     const clientKey = new CfnParameter(this, 'clientKey');
     const clientSecret = new CfnParameter(this, 'clientSecret');
@@ -20,6 +21,7 @@ export class ArcStack extends cdk.Stack {
         image: ecs.ContainerImage.fromRegistry('public.ecr.aws/c2g2h4e5/repo/aaa-public:arc_' + arcSha.valueAsString),
         environment: {
           API_ENDPOINT: apiEndpoint.valueAsString,
+          ARCOS_ENDPOINT: arcosEndpoint.valueAsString,
           SERVICE_ID: serviceId.valueAsString,
           CLIENT_KEY: clientKey.valueAsString,
           CLIENT_SECRET: clientSecret.valueAsString,

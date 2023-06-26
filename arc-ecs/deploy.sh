@@ -1,7 +1,7 @@
 
 DEFAULT_API_ENDPOINT="https://api.katanemo.com"
 DEFAULT_ARCOS_ENDPOINT="https://auth.katanemo.com"
-DEFAULT_ARC_SHA="9059ddf"
+DEFAULT_ARC_SHA="4e3ef9e"
 
 if [[ -z "$API_ENDPOINT" ]]; then
   API_ENDPOINT=$DEFAULT_API_ENDPOINT
@@ -32,4 +32,5 @@ cdk deploy --parameters serviceId=$SERVICE_ID \
            --parameters clientKey=$CLIENT_ID \
            --parameters clientSecret=$CLIENT_SECRET \
            --parameters apiEndpoint="$API_ENDPOINT" \
+           --parameters arcosEndpoint="$ARCOS_ENDPOINT" \
            --parameters arcSha="$ARC_SHA"
