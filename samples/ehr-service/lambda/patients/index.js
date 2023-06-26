@@ -117,6 +117,10 @@ function getTenantId(event) {
   return ((event['requestContext'] ?? {})['authorizer'] ?? {})['tenantId'] ?? null
 }
 
+function getRedirect(event) {
+  return ((event["requestContext"] ?? {})["authorizer"] ?? {})["redirectUrl"] ?? null;
+}
+
 function randomString(length) {
   let result = '';
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';

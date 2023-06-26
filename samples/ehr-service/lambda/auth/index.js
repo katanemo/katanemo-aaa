@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import fetch from 'node-fetch';
+const url = require('url');
 
 const arcEndpoint = process.env.AUTH_ENDPOINT
 const apiEndpoint = process.env.API_ENDPOINT
