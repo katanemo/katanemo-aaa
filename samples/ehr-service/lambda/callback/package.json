@@ -1,5 +1,5 @@
 {
-  "name": "03-node-packages",
+  "name": "patients-service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,12 +8,11 @@
   },
   "author": "",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
-    "jsonwebtoken": "^9.0.0",
+    "aws-sdk": "^2.1391.0",
     "node-fetch": "^3.3.1",
-    "uuid": "^8.3.2",
     "path": "^0.12.7",
     "url": "^0.11.0"
-  }
+  },
+  "type": "module"
 }

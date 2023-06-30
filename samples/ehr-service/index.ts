@@ -1,4 +1,4 @@
-import { ApiKeySourceType, LambdaIntegration, RestApi, TokenAuthorizer } from 'aws-cdk-lib/aws-apigateway';
+import { ApiKeySourceType, LambdaIntegration, RestApi, RequestAuthorizer } from 'aws-cdk-lib/aws-apigateway';
 import { AttributeType, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { App, Stack, RemovalPolicy, CfnParameter, Duration } from 'aws-cdk-lib';
@@ -47,10 +47,15 @@ export class ApiLambdaEhrServiceStack extends Stack {
       runtime: Runtime.NODEJS_18_X,
       environment: {
         AUTH_ENDPOINT: authEndpoint.valueAsString,
+        API_ENDPOINT: apiEndpoint.valueAsString,
+        CLIENT_KEY: clientKey.valueAsString,
+        CLIENT_SECRET: clientSecret.valueAsString,
+        SERVICE_ID: serviceId.valueAsString,
       },
     });
 
-    const katanemoTokenAuthorizer = new TokenAuthorizer(this, 'KatanemoTokenAutorizer', {
+    const katanemoTokenAuthorizer = new RequestAuthorizer(this, 'KatanemoTokenAutorizer', {
+      identitySources: [],
       handler: katanemoAuthLambda,
       resultsCacheTtl: Duration.seconds(0),
     })
@@ -66,9 +71,17 @@ export class ApiLambdaEhrServiceStack extends Stack {
         API_ENDPOINT: apiEndpoint.valueAsString,
         CLIENT_KEY: clientKey.valueAsString,
         CLIENT_SECRET: clientSecret.valueAsString,
-        SERVICE_ID: serviceId.valueAsString,
       }
     }
+
+    // oauth 2.0 callback lambda
+    const callbackLambda = new NodejsFunction(this, 'CallbackFunction', {
+      entry: join(__dirname, 'lambda/callback', 'index.js'),
+      depsLockFilePath: join(__dirname, 'lambda/callback', 'package-lock.json'),
+      ...nodeJsFunctionProps,
+    });
+
+    const callbackIntegration = new LambdaIntegration(callbackLambda);
 
     // patient record lambda methods
     const getPatientRecordLambda = new NodejsFunction(this, 'getPatientRecord', {
@@ -118,6 +131,10 @@ export class ApiLambdaEhrServiceStack extends Stack {
       apiKeySourceType: ApiKeySourceType.AUTHORIZER,
     });
 
+    // callback route
+    const callbackHook = ehrServiceApiGateway.root.addResource('callback');
+    callbackHook.addMethod('GET', callbackIntegration, { authorizer: katanemoTokenAuthorizer });
+    
     // entry points for patient records
     const createPatientRecord = ehrServiceApiGateway.root.addResource('patient');
     createPatientRecord.addMethod('POST', createPatientRecordIntegration, { authorizer: katanemoTokenAuthorizer });

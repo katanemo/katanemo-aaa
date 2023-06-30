@@ -1,9 +1,14 @@
 
 DEFAULT_API_ENDPOINT="https://api.katanemo.com"
-DEFAULT_ARC_SHA="4d68f35"
+DEFAULT_ARCOS_ENDPOINT="https://auth.katanemo.com"
+DEFAULT_ARC_SHA="4e3ef9e"
 
 if [[ -z "$API_ENDPOINT" ]]; then
   API_ENDPOINT=$DEFAULT_API_ENDPOINT
+fi
+
+if [[ -z "$ARCOS_ENDPOINT" ]]; then
+  ARCOS_ENDPOINT=$DEFAULT_ARCOS_ENDPOINT
 fi
 
 if [[ -z "$ARC_SHA" ]]; then
@@ -11,7 +16,6 @@ if [[ -z "$ARC_SHA" ]]; then
 fi
 
 if [[ -z "$SERVICE_ID" ]] || \
-   [[ -z "$SERVICE_ID" ]] || \
    [[ -z "$CLIENT_ID" ]] || \
    [[ -z "$CLIENT_SECRET" ]]; then
   echo "Please set the following environment variables:"
@@ -28,4 +32,5 @@ cdk deploy --parameters serviceId=$SERVICE_ID \
            --parameters clientKey=$CLIENT_ID \
            --parameters clientSecret=$CLIENT_SECRET \
            --parameters apiEndpoint="$API_ENDPOINT" \
+           --parameters arcosEndpoint="$ARCOS_ENDPOINT" \
            --parameters arcSha="$ARC_SHA"
