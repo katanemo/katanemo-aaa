@@ -83,3 +83,5 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+samples/ehr-flask/.env
