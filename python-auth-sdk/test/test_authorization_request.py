@@ -16,9 +16,9 @@
 import unittest
 import datetime
 
-import katanemo_auth_sdk
-from katanemo_auth_sdk.models.authorization_request import AuthorizationRequest  # noqa: E501
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.models.authorization_request import AuthorizationRequest  # noqa: E501
+from katanemo_auth.rest import ApiException
 
 class TestAuthorizationRequest(unittest.TestCase):
     """AuthorizationRequest unit test stubs"""
@@ -36,7 +36,7 @@ class TestAuthorizationRequest(unittest.TestCase):
             optional params are included """
         # uncomment below to create an instance of `AuthorizationRequest`
         """
-        model = katanemo_auth_sdk.models.authorization_request.AuthorizationRequest()  # noqa: E501
+        model = katanemo_auth.models.authorization_request.AuthorizationRequest()  # noqa: E501
         if include_optional :
             return AuthorizationRequest(
                 token = '', 

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "katanemo_auth_sdk"
+name = "katanemo_auth"
 version = "1.0.0"
 description = "Katanemo Authorizer"
 authors = ["Katanemo Labs Inc. <info@katanemo.com>"]

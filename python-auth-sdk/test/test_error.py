@@ -16,9 +16,9 @@
 import unittest
 import datetime
 
-import katanemo_auth_sdk
-from katanemo_auth_sdk.models.error import Error  # noqa: E501
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.models.error import Error  # noqa: E501
+from katanemo_auth.rest import ApiException
 
 class TestError(unittest.TestCase):
     """Error unit test stubs"""
@@ -36,7 +36,7 @@ class TestError(unittest.TestCase):
             optional params are included """
         # uncomment below to create an instance of `Error`
         """
-        model = katanemo_auth_sdk.models.error.Error()  # noqa: E501
+        model = katanemo_auth.models.error.Error()  # noqa: E501
         if include_optional :
             return Error(
                 code = 56, 

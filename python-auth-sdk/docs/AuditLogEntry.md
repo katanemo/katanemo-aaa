@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from katanemo_auth_sdk.models.audit_log_entry import AuditLogEntry
+from katanemo_auth.models.audit_log_entry import AuditLogEntry
 
 # TODO update the JSON string below
 json = "{}"

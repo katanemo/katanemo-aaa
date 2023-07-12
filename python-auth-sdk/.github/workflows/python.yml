@@ -3,7 +3,7 @@
 #
 # ref: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: katanemo_auth_sdk Python package
+name: katanemo_auth Python package
 
 on: [push, pull_request]
 

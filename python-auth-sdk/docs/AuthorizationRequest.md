@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from katanemo_auth_sdk.models.authorization_request import AuthorizationRequest
+from katanemo_auth.models.authorization_request import AuthorizationRequest
 
 # TODO update the JSON string below
 json = "{}"

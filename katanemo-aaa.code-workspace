@@ -9,12 +9,16 @@
       "path": "cli"
     },
     {
-      "name": "python-sdk",
-      "path": "python-sdk"
+      "name": "python-identity-sdk",
+      "path": "python-identity-sdk"
     },
     {
       "name": "python-auth-sdk",
       "path": "python-auth-sdk"
+    },
+    {
+      "name": "python-flask-sdk",
+      "path": "python-flask-sdk"
     },
     {
       "name": "ehr-service",

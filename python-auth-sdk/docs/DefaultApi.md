@@ -1,4 +1,4 @@
-# katanemo_auth_sdk.DefaultApi
+# katanemo_auth.DefaultApi
 
 All URIs are relative to *http://localhost:8081*
 
@@ -21,23 +21,23 @@ Add access-logs from ARC.
 ```python
 import time
 import os
-import katanemo_auth_sdk
-from katanemo_auth_sdk.models.audit_log_entry import AuditLogEntry
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.models.audit_log_entry import AuditLogEntry
+from katanemo_auth.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8081
 # See configuration.py for a list of all supported configuration parameters.
-configuration = katanemo_auth_sdk.Configuration(
+configuration = katanemo_auth.Configuration(
     host = "http://localhost:8081"
 )
 
 
 # Enter a context with an instance of the API client
-with katanemo_auth_sdk.ApiClient(configuration) as api_client:
+with katanemo_auth.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = katanemo_auth_sdk.DefaultApi(api_client)
-    audit_log_entry = [katanemo_auth_sdk.AuditLogEntry()] # List[AuditLogEntry] | List of access logs.
+    api_instance = katanemo_auth.DefaultApi(api_client)
+    audit_log_entry = [katanemo_auth.AuditLogEntry()] # List[AuditLogEntry] | List of access logs.
 
     try:
         # Add access-logs from ARC.
@@ -86,23 +86,23 @@ Authorize a request
 ```python
 import time
 import os
-import katanemo_auth_sdk
-from katanemo_auth_sdk.models.authorization_request import AuthorizationRequest
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.models.authorization_request import AuthorizationRequest
+from katanemo_auth.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8081
 # See configuration.py for a list of all supported configuration parameters.
-configuration = katanemo_auth_sdk.Configuration(
+configuration = katanemo_auth.Configuration(
     host = "http://localhost:8081"
 )
 
 
 # Enter a context with an instance of the API client
-with katanemo_auth_sdk.ApiClient(configuration) as api_client:
+with katanemo_auth.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = katanemo_auth_sdk.DefaultApi(api_client)
-    authorization_request = katanemo_auth_sdk.AuthorizationRequest() # AuthorizationRequest | Authorization request information.
+    api_instance = katanemo_auth.DefaultApi(api_client)
+    authorization_request = katanemo_auth.AuthorizationRequest() # AuthorizationRequest | Authorization request information.
 
     try:
         # Authorize a request
@@ -151,21 +151,21 @@ Returns service health
 ```python
 import time
 import os
-import katanemo_auth_sdk
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8081
 # See configuration.py for a list of all supported configuration parameters.
-configuration = katanemo_auth_sdk.Configuration(
+configuration = katanemo_auth.Configuration(
     host = "http://localhost:8081"
 )
 
 
 # Enter a context with an instance of the API client
-with katanemo_auth_sdk.ApiClient(configuration) as api_client:
+with katanemo_auth.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = katanemo_auth_sdk.DefaultApi(api_client)
+    api_instance = katanemo_auth.DefaultApi(api_client)
 
     try:
         # Returns service health

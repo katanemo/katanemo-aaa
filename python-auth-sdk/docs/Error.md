@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from katanemo_auth_sdk.models.error import Error
+from katanemo_auth.models.error import Error
 
 # TODO update the JSON string below
 json = "{}"

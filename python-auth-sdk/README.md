@@ -24,7 +24,7 @@ pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
 
 Then import the package:
 ```python
-import katanemo_auth_sdk
+import katanemo_auth
 ```
 
 ### Setuptools
@@ -38,7 +38,7 @@ python setup.py install --user
 
 Then import the package:
 ```python
-import katanemo_auth_sdk
+import katanemo_auth
 ```
 
 ### Tests
@@ -52,23 +52,23 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```python
 
 import time
-import katanemo_auth_sdk
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to http://localhost:8081
 # See configuration.py for a list of all supported configuration parameters.
-configuration = katanemo_auth_sdk.Configuration(
+configuration = katanemo_auth.Configuration(
     host = "http://localhost:8081"
 )
 
 
 
 # Enter a context with an instance of the API client
-with katanemo_auth_sdk.ApiClient(configuration) as api_client:
+with katanemo_auth.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = katanemo_auth_sdk.DefaultApi(api_client)
-    audit_log_entry = [katanemo_auth_sdk.AuditLogEntry()] # List[AuditLogEntry] | List of access logs.
+    api_instance = katanemo_auth.DefaultApi(api_client)
+    audit_log_entry = [katanemo_auth.AuditLogEntry()] # List[AuditLogEntry] | List of access logs.
 
     try:
         # Add access-logs from ARC.

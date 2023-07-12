@@ -15,16 +15,16 @@
 
 import unittest
 
-import katanemo_auth_sdk
-from katanemo_auth_sdk.api.default_api import DefaultApi  # noqa: E501
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.api.default_api import DefaultApi  # noqa: E501
+from katanemo_auth.rest import ApiException
 
 
 class TestDefaultApi(unittest.TestCase):
     """DefaultApi unit test stubs"""
 
     def setUp(self):
-        self.api = katanemo_auth_sdk.api.default_api.DefaultApi()  # noqa: E501
+        self.api = katanemo_auth.api.default_api.DefaultApi()  # noqa: E501
 
     def tearDown(self):
         pass

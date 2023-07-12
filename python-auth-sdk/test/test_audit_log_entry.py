@@ -16,9 +16,9 @@
 import unittest
 import datetime
 
-import katanemo_auth_sdk
-from katanemo_auth_sdk.models.audit_log_entry import AuditLogEntry  # noqa: E501
-from katanemo_auth_sdk.rest import ApiException
+import katanemo_auth
+from katanemo_auth.models.audit_log_entry import AuditLogEntry  # noqa: E501
+from katanemo_auth.rest import ApiException
 
 class TestAuditLogEntry(unittest.TestCase):
     """AuditLogEntry unit test stubs"""
@@ -36,7 +36,7 @@ class TestAuditLogEntry(unittest.TestCase):
             optional params are included """
         # uncomment below to create an instance of `AuditLogEntry`
         """
-        model = katanemo_auth_sdk.models.audit_log_entry.AuditLogEntry()  # noqa: E501
+        model = katanemo_auth.models.audit_log_entry.AuditLogEntry()  # noqa: E501
         if include_optional :
             return AuditLogEntry(
                 account_id = '', 

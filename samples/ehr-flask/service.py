@@ -3,7 +3,7 @@ import logging as log
 from functools import wraps
 
 from utils import AuthError, get_token_auth_header
-from katanemo.integrations import KatanemoFlaskAuth
+from katanemo_flask import KatanemoFlaskAuth
 from flask import Flask, request, session, redirect
 from dotenv import load_dotenv, find_dotenv
 
@@ -30,11 +30,15 @@ def requires_authz(f):
     def decorated(*args, **kwargs):
         # extract authorization token from http header
         try:
+          print('checking to see if token is in session')
           access_token = None
           if session and session["token"]:
+            print('token is in session')
             access_token = session["token"]
           else:
+            print('checking to see if auth header has token')
             access_token = get_token_auth_header()
+            print('access token: ' + access_token)
         except AuthError as e:
             log.warning(e)
             log.warning("No access token provided")
