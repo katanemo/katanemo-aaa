@@ -1,6 +1,6 @@
 # katanemo_auth.DefaultApi
 
-All URIs are relative to *http://localhost:8081*
+All URIs are relative to *https://auth.katanemo.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -26,10 +26,10 @@ from katanemo_auth.models.audit_log_entry import AuditLogEntry
 from katanemo_auth.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8081
+# Defining the host is optional and defaults to https://auth.katanemo.com
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_auth.Configuration(
-    host = "http://localhost:8081"
+    host = "https://auth.katanemo.com"
 )
 
 
@@ -91,10 +91,10 @@ from katanemo_auth.models.authorization_request import AuthorizationRequest
 from katanemo_auth.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8081
+# Defining the host is optional and defaults to https://auth.katanemo.com
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_auth.Configuration(
-    host = "http://localhost:8081"
+    host = "https://auth.katanemo.com"
 )
 
 
@@ -155,10 +155,10 @@ import katanemo_auth
 from katanemo_auth.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:8081
+# Defining the host is optional and defaults to https://auth.katanemo.com
 # See configuration.py for a list of all supported configuration parameters.
 configuration = katanemo_auth.Configuration(
-    host = "http://localhost:8081"
+    host = "https://auth.katanemo.com"
 )
 
 

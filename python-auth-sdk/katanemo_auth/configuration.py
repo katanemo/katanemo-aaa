@@ -68,7 +68,7 @@ class Configuration(object):
                  ):
         """Constructor
         """
-        self._base_path = "http://localhost:8081" if host is None else host
+        self._base_path = "https://auth.katanemo.com" if host is None else host
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
@@ -379,7 +379,7 @@ class Configuration(object):
         """
         return [
             {
-                'url': "http://localhost:8081",
+                'url': "https://auth.katanemo.com",
                 'description': "No description provided",
             }
         ]

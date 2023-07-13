@@ -52,9 +52,7 @@ class KatanemoFlaskAuth:
 
     def _get_access_api_client(self):
         # if not self.api_client:
-        self.api_client = katanemo_identity.ApiClient(katanemo_identity.Configuration(
-            host="https://api.katanemo.com"
-        ))
+        self.api_client = katanemo_identity.ApiClient(katanemo_identity.Configuration())
         if self.api_access_token:
           self.api_client.default_headers["Authorization"] = "Bearer " + self.api_access_token
         
@@ -62,8 +60,6 @@ class KatanemoFlaskAuth:
 
     def _get_auth_client(self):
         if not self.auth_client:
-            self.auth_client = katanemo_auth.ApiClient(katanemo_auth.Configuration(
-                host="https://auth.katanemo.com"
-            ))
+            self.auth_client = katanemo_auth.ApiClient(katanemo_auth.Configuration())
             self.auth_client.default_headers["Authorization"] = "Bearer " + self.api_access_token
         return katanemo_auth.DefaultApi(self.auth_client)
