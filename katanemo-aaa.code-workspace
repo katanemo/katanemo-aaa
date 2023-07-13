@@ -5,12 +5,28 @@
       "path": "."
     },
     {
-      "name": "python-sdk",
-      "path": "python-sdk"
+      "name": "katutil",
+      "path": "cli"
+    },
+    {
+      "name": "python-identity-sdk",
+      "path": "python-identity-sdk"
+    },
+    {
+      "name": "python-auth-sdk",
+      "path": "python-auth-sdk"
+    },
+    {
+      "name": "python-flask-sdk",
+      "path": "python-flask-sdk"
     },
     {
       "name": "ehr-service",
       "path": "samples/ehr-service"
+    },
+    {
+      "name": "ehr-flask",
+      "path": "samples/ehr-flask"
     },
     {
       "name": "arc",
