@@ -34,5 +34,3 @@ def get_token_auth_header():
 
     token = parts[1]
     return token
-
-

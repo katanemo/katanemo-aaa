@@ -2,8 +2,7 @@ from os import environ as env
 import logging as log
 from functools import wraps
 
-from utils import AuthError, get_token_auth_header
-from katanemo_flask import KatanemoFlaskAuth
+from katanemo_flask import KatanemoFlaskAuth, requires_authz
 from flask import Flask, request, session, redirect
 from dotenv import load_dotenv, find_dotenv
 
@@ -20,48 +19,19 @@ app.secret_key = env.get('APP_SECRET_KEY')
 kauth = KatanemoFlaskAuth(app)
 
 kauth.register(client_name="flask-auth",
-    service_id=env.get("KATANEMO_SERVICE_ID"),
-    client_id=env.get("KATANEMO_CLIENT_ID"),
-    client_secret=env.get("KATANEMO_CLIENT_SECRET"),
-)
-
-def requires_authz(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        # extract authorization token from http header
-        try:
-          print('checking to see if token is in session')
-          access_token = None
-          if session and session["token"]:
-            print('token is in session')
-            access_token = session["token"]
-          else:
-            print('checking to see if auth header has token')
-            access_token = get_token_auth_header()
-            print('access token: ' + access_token)
-        except AuthError as e:
-            log.warning(e)
-            log.warning("No access token provided")
-            return redirect("/login?redirect_url=" + request.path)
-        
-        # throw exception if authorization fails
-        kauth.authorize_request(
-            access_token = access_token,
-            request_path = request.path,
-            http_method = request.method,
-            request_body = None,
-        )
-        return f(*args, **kwargs)
-    
-    return decorated
+               service_id=env.get("KATANEMO_SERVICE_ID"),
+               client_id=env.get("KATANEMO_CLIENT_ID"),
+               client_secret=env.get("KATANEMO_CLIENT_SECRET"),
+               )
 
 
 @app.route('/login')
 def login():
     redirect_url = "/"
     if 'redirect_url' in request.args:
-      redirect_url = request.args['redirect_url']
-    login_redirect_url = kauth.authorize(redirect_uri=redirect_url, service_id=env.get("KATANEMO_SERVICE_ID"))
+        redirect_url = request.args['redirect_url']
+    login_redirect_url = kauth.authorize(
+        redirect_uri=redirect_url, service_id=env.get("KATANEMO_SERVICE_ID"))
     return redirect(login_redirect_url)
 
 
@@ -73,25 +43,25 @@ def callback():
 
 
 @app.route("/patient", methods=["POST"])
-@requires_authz
+@requires_authz(kauth)
 def create_patient():
     return 'creating patient'
 
 
 @app.route('/patient/<patient_id>', methods=['GET'])
-@requires_authz
+@requires_authz(kauth)
 def get_patient(patient_id):
     return 'patient id: ' + patient_id
 
 
 @app.route('/patient/<patient_id>', methods=['PUT'])
-@requires_authz
+@requires_authz(kauth)
 def update_patient(patient_id):
     return 'patient id: ' + patient_id
 
 
 @app.route('/patient/<patient_id>', methods=['DELETE'])
-@requires_authz
+@requires_authz(kauth)
 def delete_patient(patient_id):
     return 'patient id: ' + patient_id
 
