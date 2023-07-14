@@ -12,6 +12,7 @@ class KatanemoFlaskAuth:
         self.auth_client = None
         self.api_access_token = None
         self.client_id = None
+        self.api_config = katanemo_identity.Configuration()
 
     def register(self, client_name, service_id, client_id, client_secret):
         self.client_id = client_id
@@ -33,7 +34,8 @@ class KatanemoFlaskAuth:
         auth_api_client.authorize_request(req)
     
     def authorize(self, redirect_uri, service_id):
-        authorizeUrl = "https://api.katanemo.com/authorize?state={}&service={}".format(redirect_uri, service_id)
+        api_endpoint = self.api_config.get_host_settings()['url']
+        authorizeUrl = "{}/authorize?state={}&service={}".format(api_endpoint, redirect_uri, service_id)
         resp = requests.get(authorizeUrl, allow_redirects=False)
         if resp.status_code != 302:
             raise Exception("Failed to get login redirect url")
@@ -51,7 +53,7 @@ class KatanemoFlaskAuth:
         return resp.access_token, state
 
     def _get_access_api_client(self):
-        # if not self.api_client:
+        """ Get the access api client, creating it if necessary """
         self.api_client = katanemo_identity.ApiClient(katanemo_identity.Configuration())
         if self.api_access_token:
           self.api_client.default_headers["Authorization"] = "Bearer " + self.api_access_token
@@ -59,6 +61,7 @@ class KatanemoFlaskAuth:
         return self.api_client
 
     def _get_auth_client(self):
+        """ Get the auth client, creating it if necessary """
         if not self.auth_client:
             self.auth_client = katanemo_auth.ApiClient(katanemo_auth.Configuration())
             self.auth_client.default_headers["Authorization"] = "Bearer " + self.api_access_token
