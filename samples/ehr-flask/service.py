@@ -27,6 +27,8 @@ kauth.register(client_name="flask-auth",
 
 @app.route('/login')
 def login():
+    """ Redirect to the Katanemo login page"""
+    """ redirect_uri: the url to redirect to after successful login """
     redirect_url = "/"
     if 'redirect_url' in request.args:
         redirect_url = request.args['redirect_url']
