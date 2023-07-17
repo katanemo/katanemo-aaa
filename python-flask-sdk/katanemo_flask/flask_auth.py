@@ -22,6 +22,8 @@ class KatanemoFlaskAuth:
         """ client_secret: the secret of the client """
         self.client_id = client_id
         self.client_secret = client_secret
+        if not client_id or not client_secret:
+          raise Exception("Client id and secret must be provided")
         access_api_client = katanemo_identity.AccessControlApi(self._get_access_api_client())
         req = katanemo_identity.OAuthTokenRequest(clientId=client_id, clientSecret=client_secret)
         resp = access_api_client.get_short_term_token(req)
@@ -33,6 +35,8 @@ class KatanemoFlaskAuth:
         """ request_path: the path of the request """
         """ http_method: the http method of the request """
         """ request_body (optional): the body of the request"""
+        if not self.api_access_token:
+            raise Exception("No access token provided, initlize the sdk with a client id and secret")
         auth_api_client = self._get_auth_client()
 
         req = katanemo_auth.AuthorizationRequest(
@@ -47,7 +51,7 @@ class KatanemoFlaskAuth:
         """ redirects to katanemo login page """
         """ redirect_uri: the url to redirect to after successful login """
         """ service_id: the id of the service to authorize """
-        api_endpoint = self.api_config.get_host_settings()['url']
+        api_endpoint = self.api_config.get_host_settings()[0]['url']
         authorizeUrl = "{}/authorize?state={}&service={}".format(api_endpoint, redirect_uri, service_id)
         resp = requests.get(authorizeUrl, allow_redirects=False)
         if resp.status_code != 302:
@@ -58,6 +62,8 @@ class KatanemoFlaskAuth:
     def exchange_oauth_code(self):
         """ exchanges the oauth code for an access token """
         """ expects code and state to be in the request args """
+        if not self.api_access_token:
+            raise Exception("No access token provided, initlize the sdk with a client id and secret")
         code = flask_request.args.get("code")
         state = flask_request.args.get("state")
         if not code:
