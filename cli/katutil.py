@@ -3,7 +3,7 @@ import logging as log
 import core_utils
 import argparse
 import json
-import katanemo_sdk
+import katanemo_identity as katanemo_sdk
 
 log.basicConfig(level=log.INFO, format="%(message)s")
 
