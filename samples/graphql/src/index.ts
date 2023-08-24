@@ -25,13 +25,13 @@ let estates = [
 
 const resolvers = {
   PureQuery: {
-    estate: (_, args, _, _) => {
+    estate: (parent, args, context, info) => {
       const estate = estates.find(e => e.id === args.id)
       return estate
     },
   },
   PureMutation: {
-    createEstate: (_, args, _, _) => {
+    createEstate: (parent, args, context, info) => {
       const estate = {
         id: String(estates.length + 1),
         displayName: args.input.attributes["displayName"]
