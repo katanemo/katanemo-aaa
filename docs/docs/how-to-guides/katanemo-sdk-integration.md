@@ -38,7 +38,8 @@ Today, Katanemo supports Private Link in the us-east-1, us-east-2 and the us-wes
 
 Now, log in to the AWS management console, and follow steps in their guide to create an [interface endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html). Make sure that you select “**Service Defined” **for the **DNS record IP type** and for “Service Name” use the endpoint interface id that you got from the previous step above. _Note_, Katanemo accepts all interface endpoint connections and manages permissions to its endpoint interface via the AWS account id that you configured in the Katanemo Service Console.
 
-#### 2. Integrated as part of Amazon API Gateway or NGINX servers or Envoy Proxy 
+#### 2. Integrated as part of Amazon API Gateway 
 
-MISSING SECTION?
+To see how you can integrate Katanmeo ARC with API Gateway please see [this link](https://github.com/katanemo/katanemo-aaa/tree/main/samples/ehr-service). 
 
+Note that ARC can be integrated with other popular edge proxies (e.g. NGINX and Envoy Proxy) using similar pattern as outlined in Amazon API Gateway sample.
