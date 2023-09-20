@@ -25,6 +25,10 @@
       "path": "samples/ehr-service"
     },
     {
+      "name": "ehr-graphql",
+      "path": "samples/ehr-graphql-express"
+    },
+    {
       "name": "ehr-flask",
       "path": "samples/ehr-flask"
     },

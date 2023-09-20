@@ -1,0 +1,33 @@
+{
+  "name": "graphql-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc",
+    "start": "npm run compile && node ./dist/index.js",
+    "debug": "node ./node_modules/.bin/ts-node -- ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@envelop/core": "^4.0.0",
+    "@envelop/generic-auth": "^6.0.1",
+    "@graphql-tools/schema": "^10.0.0",
+    "apollo-server": "^3.12.1",
+    "apollo-server-express": "^3.12.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "graphql-yoga": "^4.0.4",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.4",
+    "typescript": "^4.9.5"
+  }
+}
