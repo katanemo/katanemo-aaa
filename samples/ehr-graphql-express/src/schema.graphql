@@ -1,0 +1,25 @@
+type Patient {
+  id: String!
+  name: String
+  age: Int
+  zipCode: String
+}
+
+type Query {
+  getPatient(id: ID!): Patient
+}
+
+type Mutation {
+  createPatient(patientInput: PatientInput!): Patient
+}
+
+input PatientInput {
+  name: String
+  age: Int
+  zipCode: String
+}
+
+type Error {
+  code: Int!
+  message: String!
+}
