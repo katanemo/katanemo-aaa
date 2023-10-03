@@ -38,7 +38,7 @@ six==1.16.0
 swagger-ui-bundle==0.0.9
 termcolor==2.2.0
 typing_extensions==4.3.0
-urllib3==1.26.14
+urllib3==1.26.17
 Werkzeug==2.2.3
 wrapt==1.15.0
 zipp==3.11.0
