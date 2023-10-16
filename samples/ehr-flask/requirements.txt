@@ -47,7 +47,7 @@ python-dateutil==2.8.2
 python-dotenv==1.0.0
 python-jose==3.3.0
 PyYAML==6.0
-requests==2.29.0
+requests==2.31.0
 rich==13.3.4
 rsa==4.9
 s3transfer==0.6.0
